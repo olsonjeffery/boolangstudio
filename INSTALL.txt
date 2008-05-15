@@ -1,0 +1,22 @@
+= HOWTO Install BooLangStudio Bins =
+
+1. Unzip the BooLangStudio zip file to some location, ie C:\BooLangStudio or wherever you prefer.
+2. Run the 'install.bat' file in the root of the project. This will kick off a NAnt script that will:
+ a. Build project and projectitem templates for Boo projects/files with the proper directory info in place
+ b. build a .reg file with the proper directories substitutions
+ c. deploy the templates to your MyDocuments template location (this will be the case until BooLangStudio gets a PLK)
+ d. merge the .reg file
+3. You can now create/open .booproj files by starting the MS Visual Studio 2008 Experimental Hive.
+
+NOTE: If, at a later date, you build BooLangStudio from source, building the BooLangStudio project will cause the registry settings to be overwritten by those that are present in the attributes on the BooLangStudioPackage class.
+
+= HOWTO Install BooLangStudio From Source =
+
+1. Open the BooLangStudio.sln file in the root of the project
+2. Build the BooLangStudio package. This is the Integration Project for the whole project and, when built, will do the registry installation for you.
+3. You will still need to install the Project and ProjectItem templates to your MyDocuments template folder. I would recommend running the installer as normal and THEN building from source. The registry settings will be overwritten each time you build, anyways.
+
+= HOWTO Un-install BooLangStudio from Bins or Source =
+
+1. The easiest way to uninstall BooLangStudio is to execute Start->Programs->Microsoft Visual Studio 2008 SDK->Tools->Reset the Microsoft Visual Studio 2008 SDK Experimental Hive
+2. You will also want to remove the project templates from your MyDocuments folder. They are located at My Documents\Visual Studio 2008\Templates and in the ItemTemplates and ProjectTemplates folders there will be a 'Boo' folder. Remove this folder and the templates will be gone.

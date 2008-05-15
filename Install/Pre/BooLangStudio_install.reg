@@ -1,0 +1,53 @@
+REGEDIT4
+
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\MSBuild\SafeImports]
+"Boo_0.8.1"="@BOOCTOOLPATH_REGSAFE@\\Boo.Microsoft.Build.targets"
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\InstalledProducts\BooLangStudioPackage]
+@="#110"
+"Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
+"ProductDetails"="#112"
+"PID"="1.0"
+"LogoID"="#400"
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}]
+@="Boo.BooLangStudio.BooLangStudioPackage, BooLangStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+"InprocServer32"="C:\\WINDOWS\\system32\\mscoree.dll"
+"Class"="Boo.BooLangStudio.BooLangStudioPackage"
+"Assembly"="BooLangStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Languages\File Extensions\.boo]
+@="{bc81f858-0ab5-45a0-985b-c160bcde7390}"
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Languages\Language Services\Boo]
+@="{bc81f858-0ab5-45a0-985b-c160bcde7390}"
+"Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
+"LangResID"=dword:00000000
+"CodeSense"=dword:00000001
+"MatchBraces"=dword:00000001
+"EnableCommenting"=dword:00000001
+"ShowCompletion"=dword:00000000
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}]
+"ID"=dword:00000001
+"MinEdition"="Standard"
+"ProductVersion"="1.0"
+"ProductName"="BooLangService"
+"CompanyName"="Boo"
+"CodeBase"="@BLSBINSPATH_REGSAFE@\\BooLangStudio.dll"
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}]
+@="BooLangProjectFactory"
+"DisplayName"="Boo"
+"DisplayProjectFileExtensions"="Boo Project Files (*.booproj);*.booproj"
+"Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
+"DefaultProjectExtension"="booproj"
+"PossibleProjectExtensions"="booproj"
+"ProjectTemplatesDir"="e:\\projects\\BooStudio\\Source\\BooLangStudio\\bin\\Debug\\.\\NullPath"
+"Language(VsTemplate)"="Boo"
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\NewProjectTemplates\TemplateDirs\{55663be2-a969-4279-82c5-a6f27936f4f7}\/1]
+@="Boo"
+"SortPriority"=dword:00000064
+"TemplatesDir"="e:\\projects\\BooStudio\\Source\\BooLangStudio\\bin\\Debug\\.\\NullPath"
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}\AddItemTemplates\TemplateDirs\{55663be2-a969-4279-82c5-a6f27936f4f7}\/1]
+@="Boo"
+"TemplatesDir"="e:\\projects\\BooStudio\\Source\\BooLangStudio\\bin\\Debug\\NullPath"
+"SortPriority"=dword:00000020
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Services\{bc81f858-0ab5-45a0-985b-c160bcde7390}]
+@="{55663be2-a969-4279-82c5-a6f27936f4f7}"
+"Name"="BooLangService"
+

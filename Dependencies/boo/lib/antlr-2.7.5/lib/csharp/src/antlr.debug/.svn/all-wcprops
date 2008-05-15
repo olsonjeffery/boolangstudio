@@ -1,0 +1,263 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug
+END
+LLkDebuggingParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/LLkDebuggingParser.cs
+END
+ParserTokenEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserTokenEventArgs.cs
+END
+ParseTreeDebugParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParseTreeDebugParser.cs
+END
+IDebugSubject.cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/IDebugSubject.cs
+END
+MessageListenerBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/MessageListenerBase.cs
+END
+Listener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/Listener.cs
+END
+InputBufferEventSupport.cs
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/InputBufferEventSupport.cs
+END
+MessageListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/MessageListener.cs
+END
+ParserEventSupport.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserEventSupport.cs
+END
+ANTLREventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ANTLREventArgs.cs
+END
+SyntacticPredicateEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/SyntacticPredicateEventArgs.cs
+END
+DebuggingCharScanner.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/DebuggingCharScanner.cs
+END
+SemanticPredicateEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/SemanticPredicateEventArgs.cs
+END
+NewLineListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/NewLineListener.cs
+END
+ParserMatchListenerBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserMatchListenerBase.cs
+END
+InputBufferReporter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/InputBufferReporter.cs
+END
+TraceEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/TraceEventArgs.cs
+END
+ParserMatchListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserMatchListener.cs
+END
+ParserReporter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserReporter.cs
+END
+Tracer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/Tracer.cs
+END
+NewLineEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/NewLineEventArgs.cs
+END
+SyntacticPredicateListenerBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/SyntacticPredicateListenerBase.cs
+END
+SemanticPredicateListenerBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/SemanticPredicateListenerBase.cs
+END
+ICharScannerDebugSubject.cs
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ICharScannerDebugSubject.cs
+END
+SyntacticPredicateListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/SyntacticPredicateListener.cs
+END
+ScannerEventSupport.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ScannerEventSupport.cs
+END
+ParserMatchEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserMatchEventArgs.cs
+END
+SemanticPredicateListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/SemanticPredicateListener.cs
+END
+InputBufferListenerBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/InputBufferListenerBase.cs
+END
+IParserDebugSubject.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/IParserDebugSubject.cs
+END
+ParserListenerBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserListenerBase.cs
+END
+ParserTokenListenerBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserTokenListenerBase.cs
+END
+InputBufferListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/InputBufferListener.cs
+END
+TraceListenerBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/TraceListenerBase.cs
+END
+ParserController.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserController.cs
+END
+ParserListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserListener.cs
+END
+ParserTokenListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/ParserTokenListener.cs
+END
+GuessingEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/GuessingEventArgs.cs
+END
+MessageEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/MessageEventArgs.cs
+END
+TraceListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/TraceListener.cs
+END
+DebuggingInputBuffer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/DebuggingInputBuffer.cs
+END
+DebuggingParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/DebuggingParser.cs
+END
+InputBufferEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.debug/InputBufferEventArgs.cs
+END

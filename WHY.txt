@@ -1,0 +1,36 @@
+= Why Have Something Like BooLangStudio =
+
+For many, many moons, Boo has languished in relative obscurity while other, more popular yet less capable languages have dominated the discourse in the space of .NET coding best practices. And why? Because of the tyranny of programmers and their managers who are unwilling to venture outside of the scope of tools considered "mainstream", for whatever reason. Many times I have personally heard the excuse that Boo was not an option simply because you would have to install another IDE to actually use it.
+
+Well, now you have one less excuse to not try Boo.
+
+Boo is a truely awesome language, in my opinion. And while I'm perfectly comfortable working with Boo in the confines of #dev (or scribes in loonix), I feel that now is the time to bring Boo "into the fold". I also hope that BooLangStudio will put increased scrutiny on the Boo language from a stability/feature perspective. Being an open source project, an increased user load on Boo will have the benefit of bringing to the surface more issues with the language/compiler itself in more timely fashion, which is something you can only hope to get from the C# team in three-year product release cycles. I'm sure the maintainers of Boo won't be thanking me for the increased harassment they must endure, but I consider this tough love.
+
+The 'boolang' google group is an excellent resource for news/information about the language/compiler/community. Since Boo [has official] releases fairly infrequently, yet most changes to the compiler/language are initiated on the mailing list, it's a great place to keep up to date on the goings-on of the Boo community. Please write to this group with issues *CONCERNING THE BOO LANGUAGE/COMPILER ITSELF*. Any other issues (that is, those relating to the greatness/suckiness of BooLangStudio) should be discussed on the BooLangStudio CodePlex site. While I won't apologize to the keepers of Boo for any increased scrutiny of bugs in the language/compiler, it'd be pretty stupid to spam them with issues about code (BooLangStudio) that they aren't responsible for.
+
+BooLangStudio is released under the terms of the Microsoft Public-License (Ms-PL). I decided to choose this license, which is pretty much a re-branded Apache License 2.0, in order to (hopefully) avoid any drama concerning all of the SDK code that I cribbed (I actually copied out the ProjectBase code from the SDK for some of my own ill-advised changes, instead of linking) as well as the fact that this is a VSIP package distributed as source. Better safe than sorry, I figure. Hopefully a swarm of lawyers will not descend upon me for these transgressions.
+
+BooLangStudio uses a slightly modified version of Boo.Lang.Parser.dll (small changes to BooParser and BooLexer to make it more friendly for use in an IDE). The changes to Boo.Lang.Parser are distributed in bin form (Boo.Lang.Parser.dll) for use by BooLangStudio and as source along with BooLangStudio. The actual Boo components are kept discreetly seperated from BooLongStudio. Anyone from the Boo community is free to integrate these changes back into the Boo code (although I doubt you would want to, it's quite kludge-tastic). Hopefully a swarm of Richard M. Stallmans will not descend upon me for these transgressions.
+
+BooLangStudio is still pretty rough around the edges, and for this I apologize. I've basically "pulled myself up by the bootstraps" in terms of implementing a Visual Studio Integration Package from scratch with no prior knowledge of best/worst practices. I hope you will forgive me.
+
+Despite this, I stand on the shoulder of giants. I have many people/projects to thank: 
+
+ * I'd like to thank Chris Bilson for putting the bug in my ear to implement this and managing to feign interest in the project for as long as he has. 
+
+ * Hilton Giesenow and Dylan Miles have an excellent series of videos on the MSDN site concerning VSIP. I would also like to thank Mr. Giesenow for his assistance via email with issues I had getting this project off the ground. 
+
+ * The IronPython Studio project has been a great source of inspiration and knowledge on how to implement a LanguageService/ProjectFactory/etc properly.
+
+ * Also, the ManagedBabel example project and the various bits of example code in the VS 2008 SDK has been of immeasurable value to me in the process of implementing BooLangStudio and the larger task of grokking VSIP in the confines of the Managed Package Framework. 
+
+ * Many, many thanks go to Rodrigo B. de Oliveira for making a language as great as Boo. Thanks also to the developers who tirelessly hack away on the Boo source code and, more importantly, endure an endless stream of questions on the mailing list.
+ 
+ * And last, but most certainly not least: Thanks to those co-users of Boo already out there in the wild, without whom Boo would just be Yet Another Programming Language.
+
+In closing, if you're a new to the world of programming with Boo: Welcome! I hope you enjoy your stay. Please don't blame Boo (as a language) for any of the crappyness of BooLangStudio. It's actually written in C#.
+
+If you're a longtime Boo user: Finally, we get to sit at the grown-up's table. If you're as big a fan of Boo as I, then here's to hoping you get to do more work in your language of choice :)
+
+Sincerely,
+Jeff Olson

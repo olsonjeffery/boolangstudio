@@ -1,0 +1,41 @@
+8
+
+dir
+2934
+http://svn.codehaus.org/boo/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr.collections
+http://svn.codehaus.org/boo
+
+
+
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+2c1201b4-01cd-e047-a400-b836ae1fbc61
+
+AST.cs
+file
+
+
+
+
+2008-05-03T00:27:47.291149Z
+3d8f337f0faa28d577c54a8e20be884f
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+has-props
+

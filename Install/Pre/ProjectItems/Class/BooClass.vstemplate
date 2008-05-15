@@ -1,0 +1,14 @@
+<VSTemplate Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+  <TemplateData>
+    <DefaultName>Class.boo</DefaultName>
+    <Name>Class</Name>
+    <Description>An empty class definition</Description>
+    <Icon>Class.ico</Icon>
+    <ProjectType>Boo</ProjectType>
+    <SortOrder>10</SortOrder>
+  </TemplateData>
+  <TemplateContent>
+    <References />
+    <ProjectItem SubType="Code" TargetFileName="$fileinputname$.boo" ReplaceParameters="true">Class.boo</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

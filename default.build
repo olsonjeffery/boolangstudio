@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE cruisecontrol [
+  <!ENTITY SomeEntity 'ploop'>
+]>
+<!-- 
+PLEASE NOTE: This NAnt script only carries out the "install"
+tasks for BooLangStudio (that is, building up and deploying
+project templates
+-->
+
+<project xmlns="http://nant.sf.net/schemas/nant.xsd" name="BooLangStudio nant script" default="install">
+
+  <property name="BLS_VERSION" value="0.1r_2936"/>
+  <property name="CurrentDirectory" value="dummy"/>
+  <property name="PostDir" value="Install\Post"/>
+  <property name="PreDir" value="Install\Pre"/>
+  <property name="BoocToolPath" value="dummy"/>
+  <property name="CurrentFolder" value="dummy"/>
+  <property name="ZipFileName" value="dummy"/>
+  <property name="BlsBinPath_RegSafe" value="dummy"/>
+  <property name="BoocToolPath_RegSafe" value="dummy"/>
+  <property name="BooLangStudioDllPath" value="Bin"/>
+  
+  <!-- install stuff -->
+  <target name="install">
+    <echo message="Installing BooLangStudio ${BLS_VERSION}"/>
+    <call target="buildProjectTemplates"/>
+    <call target="buildModifiedRegistrySettings"/>
+    
+    <description>
+      Main task to install BooLangStudio
+    </description>
+  </target>
+
+
+  
+  <target name="buildProjectTemplates">
+    <call target="buildProjectItemZips"/>
+    <description>
+      Build up the zips files for project templates,
+      also doing token substitutions to put the location
+      of the boo msbuild stuff in there
+    </description>
+  </target>
+
+  <target name="setupProperties">
+    <boo>
+      import System
+      currentDir = System.Environment.CurrentDirectory
+      Project.Properties['CurrentDirectory'] = currentDir
+      Project.Properties['BoocToolPath'] = currentDir + """\Dependencies\boo\build"""
+    </boo>
+    <echo message="CurrentDirectory: ${CurrentDirectory}"/>
+    <echo message="BoocToolPath: ${BoocToolPath}"/>
+    <description>
+      Setup folder paths for later steps
+    </description>
+  </target>
+  
+  <target name="cleanPostFolders" depends="setupProperties">
+    <delete dir="${CurrentDirectory}\${PostDir}"/>
+    <mkdir dir="${CurrentDirectory}\${PostDir}\Zips\Projects" failonerror="true"/>
+    <mkdir dir="${CurrentDirectory}\${PostDir}\Zips\ProjectItems" failonerror="true"/>
+    <mkdir dir="${CurrentDirectory}\${PostDir}\Raw" failonerror="true"/>
+    <description>
+      Delete and recreate the folders containing
+      the modified zips and raw stuff
+    </description>
+  </target>
+
+  <target name="moveAndDoTokenSubstitutionOnProjectFiles" depends="cleanPostFolders">
+    <foreach item="Folder" in="${CurrentDirectory}\${PreDir}\Projects" property="folder">
+      <boo>
+        Project.Properties['CurrentFolder'] = Project.Properties['folder'].Replace("Pre","""Post\Raw""")
+      </boo>
+      <mkdir dir="${CurrentFolder}"/>
+      <copy todir="${CurrentFolder}">
+        <fileset basedir="${folder}">
+          <include name="*.*"/>
+        </fileset>
+        <filterchain>
+          <replacetokens>
+            <token key="BOOCTOOLPATH" value="${BoocToolPath}"/>
+          </replacetokens>
+        </filterchain>
+      </copy>
+    </foreach>
+    <description>
+      Copy "pre" templates files to "post" location,
+      doing token substitutions in the process for
+      folder locations
+    </description>
+  </target>
+
+  <target name="buildProjectZips" depends="moveAndDoTokenSubstitutionOnProjectFiles">
+    <foreach item="Folder" in="${CurrentDirectory}\${PostDir}\Raw\Projects" property="folder">
+      <boo>
+        import System.IO
+        Project.Properties['ZipFileName'] = DirectoryInfo(Project.Properties['folder']).Name + ".zip"
+      </boo>
+      <zip zipfile="${CurrentDirectory}\${PostDir}\Zips\Projects\${ZipFileName}">
+        <fileset basedir="${folder}">
+          <include name="*.*"/>
+        </fileset>
+      </zip>
+    </foreach>
+    <description>
+      Build the Project template zip
+      files from the modified "post" templates
+      files
+    </description>
+  </target>
+  
+  <target name="buildProjectItemZips" depends="buildProjectZips">
+    <foreach item="Folder" in="${CurrentDirectory}\${PreDir}\ProjectItems" property="folder">
+      <boo>
+        import System.IO
+        Project.Properties['ZipFileName'] = DirectoryInfo(Project.Properties['folder']).Name + ".zip"
+      </boo>
+      <zip zipfile="${CurrentDirectory}\${PostDir}\Zips\ProjectItems\${ZipFileName}">
+        <fileset basedir="${folder}">
+          <include name="*.*"/>
+        </fileset>
+      </zip>
+    </foreach>
+    <description>
+      Build the ProjectItem template zip
+      files for the ProjectItem files
+    </description>
+  </target>
+
+  <target name="buildModifiedRegistrySettings">
+    <call target="moveAndDoTokenSubstituionOnRegistryFile"/>
+    <description>
+      Does token substitutions on our "base" registry file
+      and copies it into the Post directory for subsequent
+      use
+    </description>
+  </target>
+    
+  <target name="setupRegistryTokens" depends="setupProperties">
+    <boo>
+      boobinpath = Project.Properties['CurrentDirectory'] + """\""" + Project.Properties['BooLangStudioDllPath']
+      Project.Properties['BlsBinPath_RegSafe'] = boobinpath.Replace("""\""","""\\""")
+      Project.Properties['BoocToolPath_RegSafe'] = Project.Properties['BoocToolPath'].Replace("""\""","""\\""")
+    </boo>
+    <echo message="BLSBINPATH_REGSAFE: ${BlsBinPath_RegSafe}"/>
+    <echo message="BOOCTOOLPATH_REGSAFE: ${BoocToolPath_RegSafe}"/>
+    <description>
+      Sets up the properties items that we need in order to
+      do token substitution in the registry file... mainly, we have
+      to create of paths, and also escape all of the '\' items that
+      seperate folders
+    </description>
+  </target>
+
+  <target name="moveAndDoTokenSubstituionOnRegistryFile" depends="setupRegistryTokens">
+    <copy todir="${CurrentDirectory}\${PostDir}">
+      <fileset basedir="${CurrentDirectory}\${PreDir}">
+        <include name="BooLangStudio_install.reg"/>
+      </fileset>
+      <filterchain>
+        <replacetokens>
+          <token key="BOOCTOOLPATH_REGSAFE" value="${BoocToolPath_RegSafe}"/>
+          <token key="BLSBINSPATH_REGSAFE" value="${BlsBinPath_RegSafe}"/>
+        </replacetokens>
+      </filterchain>
+    </copy>
+    <description>
+      Copy the "pre" registry file to our "post" folder and, in the process,
+      do the token substitutions
+    </description>
+  </target>
+  
+  <!-- uninstall stuff -->
+  <target name="uninstall">
+    <echo message="Uninstalling BooLangStudio ${BLS_VERSION}"/>
+    <description>
+      Main task to uninstall BooLangStudio. Currently useless.
+    </description>
+  </target>
+</project>

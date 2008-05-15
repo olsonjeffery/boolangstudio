@@ -1,0 +1,25 @@
+What BooLangStudio Has:
+ * MsBuild integration in IDE (courtesy of the Boo team)
+ * Basic syntax highlighting (with caveats noted below)
+ * ClassLibrary and ConsoleApplication project types for boo
+ * Basic empty Class and Text file ProjectItems for Boo
+ * Auto-indentation when pressing enter after a ':' (colon) on the preceeding line
+
+What BooLangStudio DOES NOT Have (but if you want to implement it, PLEASE DO):
+ * Any form of IntelliSense, specifically:
+  * member listing (when you press '.' after an instance identifier or Class identifier)
+  * "declaration scope", where any objects/keywords in scope are displayed while typing
+   * valid, "in-scope" types coming after the 'as' keyword. ie: "foo as <types displayed here>"
+   * valid keywords by scope, ie: def, class, if, etc depending on scope/context
+   * valid, in-scope local/member variables
+  * tool tip support for types/method info
+  * parameter info when constructing a method call
+ * #region detection
+ * 'comment-region' functionality
+ * any refactoring functionality
+ * resolve functionality
+
+What BooLangStudio Has, But Needs Improvement On:
+ * Currently, there are some aberrations with syntax highlighting, specifically:
+  * multiline doc strings aren't parsed
+  * multiline comments have some issues with the appears of multiline comments that contain string delimiters.. something with the way that BooScanner is dealing with tokens it receives, most likely.

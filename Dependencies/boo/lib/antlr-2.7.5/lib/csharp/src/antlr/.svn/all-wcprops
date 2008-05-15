@@ -1,0 +1,329 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr
+END
+FileLineFormatter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/FileLineFormatter.cs
+END
+TreeParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TreeParser.cs
+END
+ASTNodeCreator.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ASTNodeCreator.cs
+END
+NoViableAltException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/NoViableAltException.cs
+END
+DefaultFileLineFormatter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/DefaultFileLineFormatter.cs
+END
+Token.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/Token.cs
+END
+ParseTreeRule.cs
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ParseTreeRule.cs
+END
+BaseAST.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/BaseAST.cs
+END
+CharQueue.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/CharQueue.cs
+END
+SemanticException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/SemanticException.cs
+END
+TokenQueue.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenQueue.cs
+END
+LexerSharedInputState.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/LexerSharedInputState.cs
+END
+InputBuffer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/InputBuffer.cs
+END
+IToken.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/IToken.cs
+END
+CommonToken.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/CommonToken.cs
+END
+MismatchedCharException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/MismatchedCharException.cs
+END
+Parser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/Parser.cs
+END
+RecognitionException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/RecognitionException.cs
+END
+CharStreamIOException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/CharStreamIOException.cs
+END
+TokenStreamIOException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenStreamIOException.cs
+END
+ASTPair.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ASTPair.cs
+END
+CharBuffer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/CharBuffer.cs
+END
+CharStreamException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/CharStreamException.cs
+END
+TokenStreamException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenStreamException.cs
+END
+TokenStreamRecognitionException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenStreamRecognitionException.cs
+END
+TokenStreamHiddenTokenFilter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenStreamHiddenTokenFilter.cs
+END
+ASTFactory.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ASTFactory.cs
+END
+CommonHiddenStreamToken.cs
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/CommonHiddenStreamToken.cs
+END
+IHiddenStreamToken.cs
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/IHiddenStreamToken.cs
+END
+TokenStreamRewriteEngine.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenStreamRewriteEngine.cs
+END
+ASTNULLType.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ASTNULLType.cs
+END
+NoViableAltForCharException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/NoViableAltForCharException.cs
+END
+TreeParserSharedInputState.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TreeParserSharedInputState.cs
+END
+CharScanner.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/CharScanner.cs
+END
+StringUtils.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/StringUtils.cs
+END
+ParseTree.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ParseTree.cs
+END
+ParseTreeToken.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ParseTreeToken.cs
+END
+CommonASTWithHiddenTokens.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/CommonASTWithHiddenTokens.cs
+END
+TokenStream.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenStream.cs
+END
+DumpASTVisitor.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/DumpASTVisitor.cs
+END
+ByteBuffer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ByteBuffer.cs
+END
+TokenStreamSelector.cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenStreamSelector.cs
+END
+MismatchedTokenException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/MismatchedTokenException.cs
+END
+LLkParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/LLkParser.cs
+END
+ANTLRException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ANTLRException.cs
+END
+CommonAST.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/CommonAST.cs
+END
+TokenCreator.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenCreator.cs
+END
+TokenStreamRetryException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenStreamRetryException.cs
+END
+ParserSharedInputState.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ParserSharedInputState.cs
+END
+TokenStreamBasicFilter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenStreamBasicFilter.cs
+END
+TokenWithIndex.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenWithIndex.cs
+END
+ASTVisitor.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ASTVisitor.cs
+END
+ANTLRPanicException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/ANTLRPanicException.cs
+END
+TokenBuffer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/boo/!svn/ver/1775/boo/trunk/lib/antlr-2.7.5/lib/csharp/src/antlr/TokenBuffer.cs
+END

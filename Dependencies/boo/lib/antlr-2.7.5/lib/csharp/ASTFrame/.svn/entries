@@ -1,0 +1,80 @@
+8
+
+dir
+2934
+http://svn.codehaus.org/boo/boo/trunk/lib/antlr-2.7.5/lib/csharp/ASTFrame
+http://svn.codehaus.org/boo
+
+
+
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+2c1201b4-01cd-e047-a400-b836ae1fbc61
+
+antlr.debug.misc
+dir
+
+AssemblyInfo.cs
+file
+
+
+
+
+2008-05-03T00:27:42.384774Z
+27f3adec0ab5cacad608f28496699e60
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+
+antlr.astframe.csproj
+file
+
+
+
+
+2008-05-03T00:27:42.400399Z
+c177df1e70d2828e2339c12fc114a4a5
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+
+Makefile.in
+file
+
+
+
+
+2008-05-03T00:27:42.400399Z
+0c3c4d5b0332b0de17040991d0e04458
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+
+antlr.astframe.dll
+file
+
+
+
+
+2008-05-03T00:27:42.416024Z
+f2bccda110d1edb6b2aa4d8e164d9a97
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+has-props
+

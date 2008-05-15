@@ -1,0 +1,3 @@
+E:\projects\boo\src\booc\obj\Debug\ResolveAssemblyReference.cache
+E:\projects\boo\ide-build\booc.exe
+E:\projects\boo\src\booc\obj\Debug\booc.exe

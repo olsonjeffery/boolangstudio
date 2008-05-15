@@ -1,0 +1,91 @@
+8
+
+dir
+2934
+http://svn.codehaus.org/boo/boo/trunk/lib/antlr-2.7.5/lib/csharp/src
+http://svn.codehaus.org/boo
+
+
+
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+2c1201b4-01cd-e047-a400-b836ae1fbc61
+
+AssemblyInfo.cs
+file
+
+
+
+
+2008-05-03T00:27:47.697410Z
+fcad972f0771b81862007ca206aadd66
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+has-props
+
+antlr
+dir
+
+Makefile.in
+file
+
+
+
+
+2008-05-03T00:27:47.713035Z
+20e4307ee3cff8edcb89565248d300f5
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+has-props
+
+antlr.debug
+dir
+
+SupportClass.cs
+file
+
+
+
+
+2008-05-03T00:27:47.728660Z
+55993c8b952b1fd38203df8d3e92063d
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+has-props
+
+antlr.runtime-2.7.5.csproj
+file
+
+
+
+
+2008-05-03T00:27:47.728660Z
+09b63e86b821bfd2fbfdb5ffe008cb13
+2005-05-17T13:49:59.111882Z
+1598
+bamboo
+
+antlr.collections
+dir
+
+antlr.collections.impl
+dir
+
