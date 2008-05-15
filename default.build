@@ -58,7 +58,7 @@ project templates
   </target>
   
   <target name="cleanPostFolders" depends="setupProperties">
-    <delete dir="${CurrentDirectory}\${PostDir}"/>
+    <delete dir="${CurrentDirectory}\${PostDir}" failonerror="false"/>
     <mkdir dir="${CurrentDirectory}\${PostDir}\Zips\Projects" failonerror="true"/>
     <mkdir dir="${CurrentDirectory}\${PostDir}\Zips\ProjectItems" failonerror="true"/>
     <mkdir dir="${CurrentDirectory}\${PostDir}\Raw" failonerror="true"/>
