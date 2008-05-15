@@ -1,17 +1,17 @@
 Who-coded-what in BooLangStudio:
 
- * RegisterMsBuildTargetsAttribute class (in BooLangStudio project):
+* RegisterMsBuildTargetsAttribute class (in BooLangStudio project):
 Based on the ProvideMSBuildTargetAttribute class in IronPython Studio, re-implemented by Jeff Olson
 
- * ProjectBase stuff:
+* ProjectBase stuff:
 Source code linked from the Microsoft Visual Studio 2008 SDK ... I wish there were an easier way besides linking to the source, but this is the "pattern" they're forcing us to use.
 
- * Boo deps:
+* Boo deps:
 Rodrigo B. de Oliveira and the Boo team
 
- * Changes to BooLexer.cs (post-code generation from grammar) to make it play nice w/ an IDE by Jeff Olson
+* Changes to BooLexer.cs (post-code generation from grammar) to make it play nice w/ an IDE by Jeff Olson
  
- * Overload to BooParser.CreateBooLexer() by Jeff Olson
+* Overload to BooParser.CreateBooLexer() by Jeff Olson
 
 * Everything else (all original code), by the contributor(s) to BooLangStudio
 
