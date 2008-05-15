@@ -1,4 +1,4 @@
 BooLangStudio ChangeLog:
 
 0.1_r2937 - 5/12/2008
- * initial release
+* initial version
