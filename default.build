@@ -20,19 +20,21 @@ project templates
   <property name="BlsBinPath_RegSafe" value="dummy"/>
   <property name="BoocToolPath_RegSafe" value="dummy"/>
   <property name="BooLangStudioDllPath" value="Bin"/>
+  <property name="MyDocsTemplatesPath" value="dummy"/>
   
   <!-- install stuff -->
   <target name="install">
     <echo message="Installing BooLangStudio ${BLS_VERSION}"/>
-    <call target="buildProjectTemplates"/>
+    <call target="setupProperties"/>
+    <call target="clean"/>
+    <!--<call target="buildProjectTemplates"/>-->
+    <call target="deployTemplateZips"/>
     <call target="buildModifiedRegistrySettings"/>
     
     <description>
       Main task to install BooLangStudio
     </description>
   </target>
-
-
   
   <target name="buildProjectTemplates">
     <call target="buildProjectItemZips"/>
@@ -68,7 +70,11 @@ project templates
     </description>
   </target>
 
-  <target name="moveAndDoTokenSubstitutionOnProjectFiles" depends="cleanPostFolders">
+  <target name="clean" depends="cleanPostFolders">
+    <echo message="doing folder clean-up"/>
+  </target>
+  
+  <target name="moveAndDoTokenSubstitutionOnProjectFiles" depends="cleanPostFolders,setupProperties">
     <foreach item="Folder" in="${CurrentDirectory}\${PreDir}\Projects" property="folder">
       <boo>
         Project.Properties['CurrentFolder'] = Project.Properties['folder'].Replace("Pre","""Post\Raw""")
@@ -163,6 +169,7 @@ project templates
         <replacetokens>
           <token key="BOOCTOOLPATH_REGSAFE" value="${BoocToolPath_RegSafe}"/>
           <token key="BLSBINSPATH_REGSAFE" value="${BlsBinPath_RegSafe}"/>
+          <token key="BLS_VERSION" value="${BLS_VERSION}"/>
         </replacetokens>
       </filterchain>
     </copy>
@@ -170,6 +177,33 @@ project templates
       Copy the "pre" registry file to our "post" folder and, in the process,
       do the token substitutions
     </description>
+  </target>
+
+  <target name="setupMyDocsProps">
+    <boo>
+      myDocs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+      Project.Properties['MyDocsTemplatesPath'] = myDocs + """\Visual Studio 2008\Templates"""
+    </boo>
+  </target>
+  
+  <target name="cleanMyDocsTemplatesDirs" depends="setupMyDocsProps">
+    <delete dir="${MyDocsTemplatesPath}\ProjectTemplates\Boo" failonerror="false"/>
+    <delete dir="${MyDocsTemplatesPath}\ItemTemplates\Boo" failonerror="false"/>
+    <mkdir dir="${MyDocsTemplatesPath}\ItemTemplates\Boo" failonerror="true"/>
+    <mkdir dir="${MyDocsTemplatesPath}\ProjectTemplates\Boo" failonerror="true"/>
+  </target>
+  
+  <target name="deployTemplateZips" depends="buildProjectTemplates,cleanMyDocsTemplatesDirs">
+    <copy todir="${MyDocsTemplatesPath}\ItemTemplates\Boo">
+      <fileset basedir="${CurrentDirectory}\${PostDir}\Zips\ProjectItems">
+        <include name="*.zip"/>
+      </fileset>
+    </copy>
+    <copy todir="${MyDocsTemplatesPath}\ProjectTemplates\Boo">
+      <fileset basedir="${CurrentDirectory}\${PostDir}\Zips\Projects">
+        <include name="*.zip"/>
+      </fileset>
+    </copy>
   </target>
   
   <!-- uninstall stuff -->
