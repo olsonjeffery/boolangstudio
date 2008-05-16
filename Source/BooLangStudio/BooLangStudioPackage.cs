@@ -65,7 +65,7 @@ namespace Boo.BooLangStudio
         @".\NullPath",
         32)]
     [RegisterMsBuildTargets("Boo_0.8.1",
-        @"e:\projects\BooStudio\Dependencies\boo\build\Boo.Microsoft.Build.targets"
+        @".\NullPath\Boo.Microsoft.Build.targets"
         )]
     [Guid(GuidList.guidBooLangStudioPkgString)]
     public sealed class BooLangStudioPackage : ProjectPackage

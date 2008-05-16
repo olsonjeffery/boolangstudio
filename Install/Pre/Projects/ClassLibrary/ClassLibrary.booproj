@@ -7,8 +7,6 @@
     <RootNamespace>$safeprojectname$</RootNamespace>
     <AssemblyName>$safeprojectname$</AssemblyName>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <BoocToolPath>@BOOCTOOLPATH@</BoocToolPath>
-    <BooBinPath>@BOOCTOOLPATH@</BooBinPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,5 +33,5 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-  <Import Project="$(BoocToolPath)\Boo.Microsoft.Build.targets" />
+  <Import Project="$(BooBinPath)\Boo.Microsoft.Build.targets" />
 </Project>
