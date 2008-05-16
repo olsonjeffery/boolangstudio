@@ -27,9 +27,8 @@ project templates
     <echo message="Installing BooLangStudio ${BLS_VERSION}"/>
     <call target="setupProperties"/>
     <call target="clean"/>
-    <!--<call target="buildProjectTemplates"/>-->
     <call target="deployTemplateZips"/>
-    <call target="buildModifiedRegistrySettings"/>
+    <call target="mergeBLSRegistrySettings"/>
     
     <description>
       Main task to install BooLangStudio
@@ -204,6 +203,12 @@ project templates
         <include name="*.zip"/>
       </fileset>
     </copy>
+  </target>
+
+  <target name="mergeBLSRegistrySettings" depends="moveAndDoTokenSubstituionOnRegistryFile">
+    <exec program="regedit.exe">
+      <arg line="/s ${CurrentDirectory}\${PostDir}\BooLangStudio_install.reg"/>
+    </exec>
   </target>
   
   <!-- uninstall stuff -->
