@@ -60,20 +60,29 @@ project templates
   
   <target name="cleanPostFolders" depends="setupProperties">
     <delete dir="${CurrentDirectory}\${PostDir}" failonerror="false"/>
-    <mkdir dir="${CurrentDirectory}\${PostDir}\Zips\Projects" failonerror="true"/>
-    <mkdir dir="${CurrentDirectory}\${PostDir}\Zips\ProjectItems" failonerror="true"/>
-    <mkdir dir="${CurrentDirectory}\${PostDir}\Raw" failonerror="true"/>
+
     <description>
       Delete and recreate the folders containing
       the modified zips and raw stuff
     </description>
   </target>
 
-  <target name="clean" depends="cleanPostFolders">
-    <echo message="doing folder clean-up"/>
+  <target name="makePostFolders" depends="cleanPostFolders">
+    <mkdir dir="${CurrentDirectory}\${PostDir}\Zips\Projects" failonerror="true"/>
+    <mkdir dir="${CurrentDirectory}\${PostDir}\Zips\ProjectItems" failonerror="true"/>
+    <mkdir dir="${CurrentDirectory}\${PostDir}\Raw" failonerror="true"/>
   </target>
   
-  <target name="moveAndDoTokenSubstitutionOnProjectFiles" depends="cleanPostFolders,setupProperties">
+  <target name="clean" depends="cleanPostFolders,cleanMyDocsTemplatesDirs,removeBooLangStudioConfigFromBinDir">
+    <echo message="doing folder clean-up"/>
+  </target>
+
+  <target name="removeBooLangStudioConfigFromBinDir">
+    <echo message="Removing BooLangStudio.dll.config from Bin dir"/>
+    <delete file="${CurrentDirectory}\Bin\BooLangStudio.dll.config" failonerror="false"/>
+  </target>
+  
+  <target name="moveAndDoTokenSubstitutionOnProjectFiles" depends="makePostFolders,setupProperties">
     <foreach item="Folder" in="${CurrentDirectory}\${PreDir}\Projects" property="folder">
       <boo>
         Project.Properties['CurrentFolder'] = Project.Properties['folder'].Replace("Pre","""Post\Raw""")
@@ -188,11 +197,15 @@ project templates
   <target name="cleanMyDocsTemplatesDirs" depends="setupMyDocsProps">
     <delete dir="${MyDocsTemplatesPath}\ProjectTemplates\Boo" failonerror="false"/>
     <delete dir="${MyDocsTemplatesPath}\ItemTemplates\Boo" failonerror="false"/>
+
+  </target>
+
+  <target name="makeMyDocsTemplatesDirs" depends="cleanMyDocsTemplatesDirs">
     <mkdir dir="${MyDocsTemplatesPath}\ItemTemplates\Boo" failonerror="true"/>
     <mkdir dir="${MyDocsTemplatesPath}\ProjectTemplates\Boo" failonerror="true"/>
   </target>
   
-  <target name="deployTemplateZips" depends="buildProjectTemplates,cleanMyDocsTemplatesDirs">
+  <target name="deployTemplateZips" depends="buildProjectTemplates,makeMyDocsTemplatesDirs">
     <copy todir="${MyDocsTemplatesPath}\ItemTemplates\Boo">
       <fileset basedir="${CurrentDirectory}\${PostDir}\Zips\ProjectItems">
         <include name="*.zip"/>
