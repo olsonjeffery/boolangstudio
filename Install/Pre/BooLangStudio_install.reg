@@ -6,7 +6,7 @@ REGEDIT4
 @="#110"
 "Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
 "ProductDetails"="#112"
-"PID"="1.0"
+"PID"="@BLS_VERSION@"
 "LogoID"="#400"
 [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}]
 @="Boo.BooLangStudio.BooLangStudioPackage, BooLangStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
@@ -26,7 +26,7 @@ REGEDIT4
 [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}]
 "ID"=dword:00000001
 "MinEdition"="Standard"
-"ProductVersion"="1.0"
+"ProductVersion"="@BLS_VERSION@"
 "ProductName"="BooLangService"
 "CompanyName"="Boo"
 "CodeBase"="@BLSBINSPATH_REGSAFE@\\BooLangStudio.dll"
