@@ -72,13 +72,8 @@ project templates
     <mkdir dir="${CurrentDirectory}\${PostDir}\Raw" failonerror="true"/>
   </target>
   
-  <target name="clean" depends="cleanPostFolders,cleanMyDocsTemplatesDirs,removeBooLangStudioConfigFromBinDir">
+  <target name="clean" depends="cleanPostFolders,cleanMyDocsTemplatesDirs">
     <echo message="doing folder clean-up"/>
-  </target>
-
-  <target name="removeBooLangStudioConfigFromBinDir">
-    <echo message="Removing BooLangStudio.dll.config from Bin dir"/>
-    <delete file="${CurrentDirectory}\Bin\BooLangStudio.dll.config" failonerror="false"/>
   </target>
   
   <target name="moveAndDoTokenSubstitutionOnProjectFiles" depends="makePostFolders,setupProperties">
@@ -225,9 +220,44 @@ project templates
   
   <!-- uninstall stuff -->
   <target name="uninstall">
-    <echo message="Uninstalling BooLangStudio ${BLS_VERSION}"/>
+    <echo message="This task currently does nothing. Good day, sir!"/>
     <description>
       Main task to uninstall BooLangStudio. Currently useless.
     </description>
   </target>
+
+  <!-- installer zip stuff -->
+  <target name="cleanInstallZip" depends="setupProperties">
+    <delete>
+      <fileset basedir="${CurrentDirectory}">
+        <include name="*.zip"/>
+      </fileset>
+    </delete>
+  </target>
+  
+  <target name="buildInstallZip" depends="cleanInstallZip,clean">
+    <zip zipfile="BooLangStudio_${BLS_VERSION}.zip">
+      <fileset basedir="${CurrentDirectory}\Bin" prefix="Bin">
+        <include name="**/*"/>
+      </fileset>
+      <fileset basedir="${CurrentDirectory}">
+        <include name=".\*.txt"/>
+        <include name=".\install.bat"/>
+        <include name=".\default.build"/>
+      </fileset>
+      <fileset basedir="${CurrentDirectory}\Dependencies\boo\build" prefix="Dependencies\boo\build">
+        <include name="**/*"/>
+      </fileset>
+      <fileset basedir="${CurrentDirectory}\Dependencies\nant" prefix="Dependencies\nant">
+        <include name="**/*"/>
+      </fileset>
+      <fileset basedir="${CurrentDirectory}\Install\Pre" prefix="Install\Pre">
+        <include name="**/*"/>
+      </fileset>
+    </zip>
+    <description>
+      Build the standalone installer zip file
+    </description>
+  </target>
+  
 </project>
