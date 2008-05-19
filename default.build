@@ -29,10 +29,23 @@ project templates
     <call target="clean"/>
     <call target="deployTemplateZips"/>
     <call target="mergeBLSRegistrySettings"/>
-    
+    <call target="deployBooLangStudioConfig"/>
     <description>
       Main task to install BooLangStudio
     </description>
+  </target>
+
+  <target name="deployBooLangStudioConfig">
+    <copy todir="${CurrentDirectory}\Bin">
+      <fileset basedir="${CurrentDirectory}\${PreDir}">
+        <include name="BooLangStudio.dll.config"/>
+      </fileset>
+      <filterchain>
+        <replacetokens>
+          <token key="BOOCTOOLPATH" value="${BoocToolPath}"/>
+        </replacetokens>
+      </filterchain>
+    </copy>
   </target>
   
   <target name="buildProjectTemplates">

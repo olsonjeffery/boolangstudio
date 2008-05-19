@@ -25,7 +25,18 @@ namespace Boo.BooLangProject
             }
 
         }
-        
+
+        /// <summary>
+        /// This is a very poor workaround. Until I can figure out how
+        /// to get our GlobalProperies into the ProjectShim that the
+        /// base version uses...
+        /// </summary>
+        /// <returns></returns>
+        protected override ProjectLoadOption IsProjectSecure()
+        {
+            return ProjectLoadOption.LoadNormally;
+        }
+
         private static ImageList imageList;
         static BooProjectNode()
         {
