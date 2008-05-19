@@ -1,5 +1,7 @@
 = HOWTO Install BooLangStudio Bins =
 
+0. Install Microsoft Visual Studio 2008 Standard Edition or greater
+0.1. Install the Microsoft Visual Studio 2008 SDK
 1. Unzip the BooLangStudio zip file to some location, ie C:\BooLangStudio or wherever you prefer.
 2. Run the 'install.bat' file in the root of the project. This will kick off a NAnt script that will:
  a. Build project and projectitem templates for Boo projects/files with the proper directory info in place
