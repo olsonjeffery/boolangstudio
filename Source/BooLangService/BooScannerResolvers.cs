@@ -13,16 +13,6 @@ namespace Boo.BooLangService
 
         #region token builder helper methods
 
-        public void ConfigureTokenInfo(antlr.CommonToken token, TokenInfo tokenInfo)
-        {
-            ResolveBooTokenStartAndEndIndex(token, tokenInfo);
-
-            ResolveBooTokenTypeAndColor(token, tokenInfo);
-            
-
-            //throw new NotImplementedException();
-        }
-
         public void ResolveBooTokenStartAndEndIndex(antlr.CommonToken token, TokenInfo tokenInfo)
         {
             int oneCharBack = token.getColumn() - 1;
@@ -40,11 +30,14 @@ namespace Boo.BooLangService
                 tokenInfo.StartIndex = oneCharBack;
                 tokenInfo.EndIndex = oneCharBack+ 5 + token.getText().Length;
             }
-            // else
+            else if (token.Type == 1)
+            {
+                return;
+            }
             else
             {
                 tokenInfo.StartIndex = oneCharBack;
-                tokenInfo.EndIndex = oneCharBack + (token.getText().Length -1);
+                tokenInfo.EndIndex = oneCharBack + (token.getText().Length - 1);
             }
         }
 

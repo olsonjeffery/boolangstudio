@@ -30,6 +30,7 @@ REGEDIT4
 "ProductName"="BooLangService"
 "CompanyName"="Boo"
 "CodeBase"="@BLSBINSPATH_REGSAFE@\\BooLangStudio.dll"
+"BooBinPath"="@BOOCTOOLPATH_REGSAFE@"
 [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}]
 @="BooLangProjectFactory"
 "DisplayName"="Boo"

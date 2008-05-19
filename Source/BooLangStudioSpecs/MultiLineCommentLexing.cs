@@ -104,7 +104,8 @@ namespace Boo.BooLangStudioSpecs
             //            0         1         2
             //            012345678901234567890123456789
             rawLines.Add("    /* start of multi-liner"); // 5
-            rawLines.Add("    some \"comments\" go here"); // 6
+            //            01234567899012345678890123456789
+            rawLines.Add("    some \"comments\" gohere"); // 6
             //            0         1         2
             //            012345678901234567890123456789
             rawLines.Add("    and we are done */"); // 7

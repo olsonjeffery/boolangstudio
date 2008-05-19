@@ -42,11 +42,26 @@ namespace Boo.BooLangService
             {
                 // supress that shiiet
             }
+
+            // resolve token start and stop positions. Need
+            // to do this first.
+            ResolveBooTokenStartAndEndIndex(_reusableToken, tokenInfo);
+
             // if we get an EOF token, we're done.
             if (_reusableToken.Type == 1)
             {
                 tokenInfo.Type = TokenType.WhiteSpace;
-                
+                // if we're in a ML_COMMENT zone, let's
+                // just make sure that everything is
+                // parsed as a comment...
+                if (state == 13)
+                {
+                    tokenInfo.StartIndex = 0;
+                    tokenInfo.EndIndex = _currentLine.Length;
+                    tokenInfo.Type = TokenType.Comment;
+                    tokenInfo.Color = TokenColor.Comment;
+                }
+
                 return false;
             }
             else if (state == 13)
@@ -73,8 +88,8 @@ namespace Boo.BooLangService
                 }
             }
 
-            // configure the token
-            ConfigureTokenInfo(_reusableToken,tokenInfo);
+            // set up token color and type
+            ResolveBooTokenTypeAndColor(_reusableToken, tokenInfo);
             return true;
         }
 
