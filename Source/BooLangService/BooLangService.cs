@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using Boo.BooLangService.VSInterop;
+using Boo.Lang.Compiler;
+using Boo.Lang.Compiler.IO;
+using Boo.Lang.Compiler.Pipelines;
+using Boo.Lang.Compiler.Steps;
 using BooLangService;
 using EnvDTE;
 using Microsoft.VisualStudio;
@@ -79,6 +85,290 @@ namespace Boo.BooLangService
             return new BooSource(this, buffer, new Colorizer(this, buffer, GetScanner(buffer)));
         }
 
+        public class BooScopeTree
+        {
+            
+        }
+
+        public class ParseTreeNodeSet : IList<IBooParseTreeNode>
+        {
+            private readonly List<IBooParseTreeNode> innerList = new List<IBooParseTreeNode>();
+            private readonly IBooParseTreeNode parent;
+
+            public ParseTreeNodeSet(IBooParseTreeNode parent)
+            {
+                this.parent = parent;
+            }
+
+            public int IndexOf(IBooParseTreeNode item)
+            {
+                return innerList.IndexOf(item);
+            }
+
+            public void Insert(int index, IBooParseTreeNode item)
+            {
+                innerList.Insert(index, item);
+            }
+
+            public void RemoveAt(int index)
+            {
+                innerList.RemoveAt(index);
+            }
+
+            public IBooParseTreeNode this[int index]
+            {
+                get { return innerList[index]; }
+                set { innerList[index] = value; }
+            }
+
+            public void Add(IBooParseTreeNode item)
+            {
+                item.Parent = parent;
+                innerList.Add(item);
+            }
+
+            public void Clear()
+            {
+                innerList.Clear();
+            }
+
+            public bool Contains(IBooParseTreeNode item)
+            {
+                return innerList.Contains(item);
+            }
+
+            public void CopyTo(IBooParseTreeNode[] array, int arrayIndex)
+            {
+                innerList.CopyTo(array, arrayIndex);
+            }
+
+            public bool Remove(IBooParseTreeNode item)
+            {
+                return innerList.Remove(item);
+            }
+
+            public int Count
+            {
+                get { return innerList.Count; }
+            }
+
+            public bool IsReadOnly
+            {
+                get { return false; }
+            }
+
+            IEnumerator<IBooParseTreeNode> IEnumerable<IBooParseTreeNode>.GetEnumerator()
+            {
+                return innerList.GetEnumerator();
+            }
+
+            public IEnumerator GetEnumerator()
+            {
+                return ((IEnumerable<IBooParseTreeNode>)this).GetEnumerator();
+            }
+        }
+
+        public interface IBooParseTreeNode
+        {
+            IBooParseTreeNode Parent { get; set; }
+            IList<IBooParseTreeNode> Children { get; }
+            string Name { get; set; }
+            int StartLine { get; set; }
+            int EndLine { get; set; }
+        }
+
+        public abstract class AbstractTreeNode : IBooParseTreeNode
+        {
+            private IBooParseTreeNode parent;
+            private readonly IList<IBooParseTreeNode> children;
+            private string name;
+            private int startLine;
+            private int endLine;
+
+            public AbstractTreeNode()
+            {
+                children = new ParseTreeNodeSet(this);
+            }
+
+            public IBooParseTreeNode Parent
+            {
+                get { return parent; }
+                set { parent = value; }
+            }
+
+            public IList<IBooParseTreeNode> Children
+            {
+                get { return children; }
+            }
+
+            public string Name
+            {
+                get { return name; }
+                set { name = value; }
+            }
+
+            public int StartLine
+            {
+                get { return startLine; }
+                set { startLine = value; }
+            }
+
+            public int EndLine
+            {
+                get { return endLine; }
+                set { endLine = value; }
+            }
+        }
+
+        public class RootTreeNode : AbstractTreeNode
+        {}
+
+        public class NamespaceTreeNode : AbstractTreeNode
+        {}
+
+        public class ClassTreeNode : AbstractTreeNode
+        {}
+
+        public class MethodTreeNode : AbstractTreeNode
+        {}
+
+        public class LocalTreeNode : AbstractTreeNode
+        {}
+
+        public class BooDocumentVisitor : AbstractTransformerCompilerStep
+        {
+            private IBooParseTreeNode root = new RootTreeNode();
+            private IBooParseTreeNode currentScope;
+
+            public override void Run()
+            {
+                currentScope = root;
+
+                Visit(CompileUnit);
+            }
+
+            public override bool EnterClassDefinition(Boo.Lang.Compiler.Ast.ClassDefinition node)
+            {
+                Push(new ClassTreeNode(), node.Name, node.LexicalInfo.Line);
+
+                return base.EnterClassDefinition(node);
+            }
+
+            public override bool EnterMethod(Boo.Lang.Compiler.Ast.Method node)
+            {
+                Push(new MethodTreeNode(), node.Name, node.LexicalInfo.Line);
+
+                return base.EnterMethod(node);
+            }
+
+            public override void LeaveMethod(Boo.Lang.Compiler.Ast.Method node)
+            {
+                base.LeaveMethod(node);
+
+                Pop(node.Body.EndSourceLocation.Line);
+            }
+
+            public override void LeaveClassDefinition(Boo.Lang.Compiler.Ast.ClassDefinition node)
+            {
+                base.LeaveClassDefinition(node);
+
+                Pop(node.EndSourceLocation.Line);
+            }
+
+            private void Push(IBooParseTreeNode node, string name, int line)
+            {
+                node.Parent = currentScope;
+                node.Name = name;
+                node.StartLine = line;
+
+                currentScope.Children.Add(node);
+                currentScope = node;
+            }
+
+            private void Pop(int endLine)
+            {
+                currentScope.EndLine = endLine;
+                currentScope = currentScope.Parent;
+            }
+        }
+
+        public class DocumentVisualiser
+        {
+            public static string Output(IBooParseTreeNode node)
+            {
+                return Output(node, 0);
+            }
+
+            private static string Output(IBooParseTreeNode node, int indentLevel)
+            {
+                string indent = "";
+
+                for (int i = 0; i < indentLevel; i++)
+                {
+                    indent += "  ";
+                }
+
+                string output = indent +
+                    node.GetType().Name + ": " +
+                    node.Name +
+                    "(" + node.StartLine + "," + node.EndLine + ")" +
+                    Environment.NewLine;
+
+                foreach (IBooParseTreeNode child in node.Children)
+                {
+                    output += Output(child, indentLevel + 1);
+                }
+
+                return output;
+            }
+        }
+
+        public class BooDocumentCompiler
+        {
+            private readonly BooCompiler compiler = new BooCompiler();
+            private readonly BooDocumentVisitor visitor = new BooDocumentVisitor();
+
+            public BooDocumentCompiler()
+            {
+                compiler.Parameters.OutputWriter = new StringWriter();
+                compiler.Parameters.Pipeline = new ResolveExpressions();
+                compiler.Parameters.Pipeline.BreakOnErrors = false;
+                compiler.Parameters.Pipeline.Add(visitor);
+            }
+
+            public void Compile(string filename, string source)
+            {
+                compiler.Parameters.Input.Add(new StringInput(filename, source));
+                compiler.Run();
+            }
+        }
+
+        // scopes for ctrl+space in whitespace (non-assignments)
+        //
+        // namespace
+        // {
+        //   keywords
+        //
+        //   class
+        //   {
+        //     [parent scope]
+        //     types
+        //     methods
+        //     class member declarations
+        //
+        //     method
+        //     {
+        //       [parent scope]
+        //       local declarations
+        //
+        //       inner scope
+        //       {
+        //         [parent scope]
+        //         local declarations
+        //       }
+        //     }
+        //   }
+        // }
         /// <summary>
         /// EPIC!!!!
         /// </summary>
@@ -86,19 +376,9 @@ namespace Boo.BooLangService
         /// <returns></returns>
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            // parses the document, then returns the authoring scope that
-            // provides the intellisense info.
-            // I think this should be implemented elsewhere. Just have the
-            // parsing happen here, then the scope should handle creating the
-            // declarations.
-            BooSource source = (BooSource)GetSource(req.View);
-            string line = source.GetLineUptoPosition(req.Line, req.Col);
+            BooDocumentCompiler compiler = new BooDocumentCompiler();
 
-            if (line.TrimStart().StartsWith(ImportKeyword))
-                return GetNamespaces(req, line);
-            
-            //if (IsMemberSelect(req))
-            //    return docParser.GetMemberSelectScope(req, source);
+            compiler.Compile(req.FileName, req.Text);
 
             return null;
         }
