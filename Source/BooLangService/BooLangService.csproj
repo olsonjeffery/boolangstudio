@@ -91,14 +91,14 @@
     <Compile Include="Document\IMemberDeclaration.cs" />
     <Compile Include="Document\NamespaceMemberDeclaration.cs" />
     <Compile Include="Document\Nodes\IBooParseTreeNode.cs" />
-    <Compile Include="IntellisenseIcon.cs" />
-    <Compile Include="IntellisenseIconResolver.cs" />
     <Compile Include="Document\Nodes\LocalTreeNode.cs" />
     <Compile Include="BooDeclarations.cs" />
     <Compile Include="Document\Nodes\MethodTreeNode.cs" />
     <Compile Include="Document\Nodes\NamespaceTreeNode.cs" />
     <Compile Include="Document\Nodes\ParseTreeNodeSet.cs" />
     <Compile Include="Document\Nodes\RootTreeNode.cs" />
+    <Compile Include="Intellisense\IntellisenseIcon.cs" />
+    <Compile Include="Intellisense\IntellisenseIconResolver.cs" />
     <Compile Include="VSInterop\ProjectHierarchy.cs" />
     <Compile Include="VSInterop\ProjectReference.cs" />
     <Compile Include="BooLangService.cs" />

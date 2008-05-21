@@ -1,3 +1,5 @@
+using Boo.BooLangService.Intellisense;
+
 namespace Boo.BooLangService.Document
 {
     public class NamespaceMemberDeclaration : IMemberDeclaration

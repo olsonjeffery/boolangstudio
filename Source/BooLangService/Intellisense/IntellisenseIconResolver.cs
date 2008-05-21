@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
 
-namespace Boo.BooLangService
+namespace Boo.BooLangService.Intellisense
 {
     public class IntellisenseIconResolver
     {

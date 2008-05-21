@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
+using Boo.BooLangService.Intellisense;
 using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangService

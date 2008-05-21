@@ -1,4 +1,4 @@
-namespace Boo.BooLangService
+namespace Boo.BooLangService.Intellisense
 {
     public enum IntellisenseIcon
     {
