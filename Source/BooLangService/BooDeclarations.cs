@@ -14,9 +14,10 @@ namespace Boo.BooLangService
     /// </remarks>
     public class BooDeclarations : Declarations
     {
-        private readonly IList<IMemberDeclaration> members = new List<IMemberDeclaration>();
+        private readonly IntellisenseIconResolver icons = new IntellisenseIconResolver();
+        private readonly IList<IBooParseTreeNode> members = new List<IBooParseTreeNode>();
 
-        public BooDeclarations(IList<IMemberDeclaration> members)
+        public BooDeclarations(IList<IBooParseTreeNode> members)
         {
             this.members = members;
         }
@@ -28,7 +29,7 @@ namespace Boo.BooLangService
 
         public override string GetDescription(int index)
         {
-            return members[index].Description;
+            return GetDisplayText(index);
         }
 
         public override string GetDisplayText(int index)
@@ -38,12 +39,35 @@ namespace Boo.BooLangService
 
         public override int GetGlyph(int index)
         {
-            return (int)members[index].Icon;
+            IBooParseTreeNode node = members[index];
+            
+            return (int)icons.Resolve(node);
         }
 
         public override string GetName(int index)
         {
             return GetDisplayText(index);
+        }
+    }
+
+    public class IntellisenseIconResolver
+    {
+        private readonly IDictionary<Type, IntellisenseIcon> treeNodeIconMap = new Dictionary<Type, IntellisenseIcon>();
+
+        public IntellisenseIconResolver()
+        {
+            treeNodeIconMap.Add(typeof(MethodTreeNode), IntellisenseIcon.Method);
+            treeNodeIconMap.Add(typeof(LocalTreeNode), IntellisenseIcon.Variable);
+        }
+
+        public IntellisenseIcon Resolve(IBooParseTreeNode node)
+        {
+            Type nodeType = node.GetType();
+
+            if (treeNodeIconMap.ContainsKey(nodeType))
+                return treeNodeIconMap[nodeType];
+
+            return 0;
         }
     }
 }

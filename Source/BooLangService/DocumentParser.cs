@@ -41,9 +41,12 @@ namespace Boo.BooLangService
                 }
             }
 
-            BooDeclarations decs = new BooDeclarations(namespaces);
+            throw new NotImplementedException("Probably need to subclass AuthoringScope again to provide namespace support separate from MemberSelect.");
 
-            return new BooScope(decs);
+//            BooDeclarations decs = new BooDeclarations(namespaces);
+
+
+            return new BooScope(null);
         }
     }
 }

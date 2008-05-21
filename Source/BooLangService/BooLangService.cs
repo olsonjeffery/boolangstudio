@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using Boo.BooLangService.VSInterop;
 using Boo.Lang.Compiler;
+using Boo.Lang.Compiler.Ast;
 using Boo.Lang.Compiler.IO;
 using Boo.Lang.Compiler.Pipelines;
 using Boo.Lang.Compiler.Steps;
@@ -168,15 +169,6 @@ namespace Boo.BooLangService
             }
         }
 
-        public interface IBooParseTreeNode
-        {
-            IBooParseTreeNode Parent { get; set; }
-            IList<IBooParseTreeNode> Children { get; }
-            string Name { get; set; }
-            int StartLine { get; set; }
-            int EndLine { get; set; }
-        }
-
         public abstract class AbstractTreeNode : IBooParseTreeNode
         {
             private IBooParseTreeNode parent;
@@ -220,25 +212,21 @@ namespace Boo.BooLangService
             }
         }
 
-        public class RootTreeNode : AbstractTreeNode
-        {}
-
         public class NamespaceTreeNode : AbstractTreeNode
         {}
 
         public class ClassTreeNode : AbstractTreeNode
         {}
 
-        public class MethodTreeNode : AbstractTreeNode
-        {}
-
-        public class LocalTreeNode : AbstractTreeNode
-        {}
-
         public class BooDocumentVisitor : AbstractTransformerCompilerStep
         {
-            private IBooParseTreeNode root = new RootTreeNode();
+            private readonly IBooParseTreeNode root = new RootTreeNode();
             private IBooParseTreeNode currentScope;
+
+            public IBooParseTreeNode Root
+            {
+                get { return root; }
+            }
 
             public override void Run()
             {
@@ -247,28 +235,37 @@ namespace Boo.BooLangService
                 Visit(CompileUnit);
             }
 
-            public override bool EnterClassDefinition(Boo.Lang.Compiler.Ast.ClassDefinition node)
+            public override bool EnterClassDefinition(ClassDefinition node)
             {
                 Push(new ClassTreeNode(), node.Name, node.LexicalInfo.Line);
 
                 return base.EnterClassDefinition(node);
             }
 
-            public override bool EnterMethod(Boo.Lang.Compiler.Ast.Method node)
+            public override bool EnterMethod(Method node)
             {
                 Push(new MethodTreeNode(), node.Name, node.LexicalInfo.Line);
 
                 return base.EnterMethod(node);
             }
 
-            public override void LeaveMethod(Boo.Lang.Compiler.Ast.Method node)
+            public override void OnLocal(Local node)
+            {
+                Push(new LocalTreeNode(), node.Name, node.LexicalInfo.Line);
+
+                base.OnLocal(node);
+
+                Pop(node.LexicalInfo.Line);
+            }
+
+            public override void LeaveMethod(Method node)
             {
                 base.LeaveMethod(node);
 
                 Pop(node.Body.EndSourceLocation.Line);
             }
 
-            public override void LeaveClassDefinition(Boo.Lang.Compiler.Ast.ClassDefinition node)
+            public override void LeaveClassDefinition(ClassDefinition node)
             {
                 base.LeaveClassDefinition(node);
 
@@ -336,10 +333,12 @@ namespace Boo.BooLangService
                 compiler.Parameters.Pipeline.Add(visitor);
             }
 
-            public void Compile(string filename, string source)
+            public IBooParseTreeNode Compile(string filename, string source)
             {
                 compiler.Parameters.Input.Add(new StringInput(filename, source));
                 compiler.Run();
+
+                return visitor.Root;
             }
         }
 
@@ -377,10 +376,9 @@ namespace Boo.BooLangService
         public override AuthoringScope ParseSource(ParseRequest req)
         {
             BooDocumentCompiler compiler = new BooDocumentCompiler();
+            IBooParseTreeNode compiledTree = compiler.Compile(req.FileName, req.Text);
 
-            compiler.Compile(req.FileName, req.Text);
-
-            return null;
+            return new BooScope(compiledTree);
         }
 
         private AuthoringScope GetNamespaces(ParseRequest req, string line)
@@ -452,5 +450,23 @@ namespace Boo.BooLangService
 
        #endregion
 
+    }
+
+    public class RootTreeNode : BooLangService.AbstractTreeNode
+    {}
+
+    public class LocalTreeNode : BooLangService.AbstractTreeNode
+    {}
+
+    public class MethodTreeNode : BooLangService.AbstractTreeNode
+    {}
+
+    public interface IBooParseTreeNode
+    {
+        IBooParseTreeNode Parent { get; set; }
+        IList<IBooParseTreeNode> Children { get; }
+        string Name { get; set; }
+        int StartLine { get; set; }
+        int EndLine { get; set; }
     }
 }
