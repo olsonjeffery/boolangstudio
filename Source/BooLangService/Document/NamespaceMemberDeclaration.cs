@@ -1,7 +1,9 @@
+using System;
 using Boo.BooLangService.Intellisense;
 
 namespace Boo.BooLangService.Document
 {
+    [Obsolete("Being phased out in favor of the tree parser.")]
     public class NamespaceMemberDeclaration : IMemberDeclaration
     {
         private readonly string namespaceName;

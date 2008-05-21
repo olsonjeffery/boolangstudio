@@ -12,8 +12,10 @@ namespace Boo.BooLangService.Document
     /// Will parse the document for MemberSelect, but also handles querying the available namespaces
     /// for intellisense. Probably needs splitting and renaming.
     /// </summary>
+    [Obsolete("Being phased out in favor of the tree parser.")]
     public class DocumentParser
     {
+        [Obsolete("Being phased out in favor of the tree parser.")]
         public AuthoringScope GetNamespaceSelect(IList<ProjectReference> references, string search)
         {
             List<IMemberDeclaration> namespaces = new List<IMemberDeclaration>();

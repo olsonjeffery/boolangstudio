@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
@@ -87,6 +88,7 @@ namespace Boo.BooLangService
             return new BooScope(compiledTree);
         }
 
+        [Obsolete("Being phased out in favor of the tree parser.")]
         private AuthoringScope GetNamespaces(ParseRequest req, string line)
         {
             // get any namespace already written (i.e. "Boo.Lang.")
