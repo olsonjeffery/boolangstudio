@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Boo.BooLangService.Members;
+using Boo.BooLangService.Document.Nodes;
 using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangService
@@ -47,27 +47,6 @@ namespace Boo.BooLangService
         public override string GetName(int index)
         {
             return GetDisplayText(index);
-        }
-    }
-
-    public class IntellisenseIconResolver
-    {
-        private readonly IDictionary<Type, IntellisenseIcon> treeNodeIconMap = new Dictionary<Type, IntellisenseIcon>();
-
-        public IntellisenseIconResolver()
-        {
-            treeNodeIconMap.Add(typeof(MethodTreeNode), IntellisenseIcon.Method);
-            treeNodeIconMap.Add(typeof(LocalTreeNode), IntellisenseIcon.Variable);
-        }
-
-        public IntellisenseIcon Resolve(IBooParseTreeNode node)
-        {
-            Type nodeType = node.GetType();
-
-            if (treeNodeIconMap.ContainsKey(nodeType))
-                return treeNodeIconMap[nodeType];
-
-            return 0;
         }
     }
 }

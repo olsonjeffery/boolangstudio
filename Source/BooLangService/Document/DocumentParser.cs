@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Boo.BooLangService.Members;
 using Boo.BooLangService.VSInterop;
 using BooLangService;
 using Microsoft.VisualStudio.Package;
-using Microsoft.VisualStudio.TextManager.Interop;
 
-namespace Boo.BooLangService
+namespace Boo.BooLangService.Document
 {
     /// <summary>
     /// Badly named.

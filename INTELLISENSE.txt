@@ -1,5 +1,32 @@
 Intellisense stories
 
+scopes for ctrl+space in whitespace (non-assignments)
+
+namespace
+{
+  keywords
+
+  class
+  {
+    [parent scope]
+    types
+    methods
+    class member declarations
+    
+    method
+    {
+      [parent scope]
+      local declarations
+      
+      inner scope
+      {
+        [parent scope]
+        local declarations
+      }
+    }
+  }
+}
+
 These are based on using C#, so the Boo implementation may vary but these
 should be the starting point. I'd like to translate these into tests at
 some point, but I'm not yet sure how to do that yet.

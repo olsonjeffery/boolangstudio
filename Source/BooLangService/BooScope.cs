@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Boo.BooLangService;
+using Boo.BooLangService.Document.Nodes;
 using Microsoft.VisualStudio.Package;
 
 namespace BooLangService
@@ -21,6 +22,30 @@ namespace BooLangService
             throw new NotImplementedException();
         }
 
+        public override Declarations GetDeclarations(Microsoft.VisualStudio.TextManager.Interop.IVsTextView view, int line, int col, TokenInfo info, ParseReason reason)
+        {
+            // get the node that the caret is in
+            IBooParseTreeNode scope = GetContainingNode(compiledDocument, line);
+
+            List<IBooParseTreeNode> displayableInScope = new List<IBooParseTreeNode>();
+
+            // add anything "below" the scope (e.g. locals in a method, methods in a class)
+            displayableInScope.AddRange(FlattenDown(scope.Children));
+
+            // add anything "above" the scope (e.g. classes in a method)
+            // also walks sideways (e.g. other methods in same class if scope is a method)
+            displayableInScope.AddRange(FlattenUp(scope));
+
+            // tidy em up
+            displayableInScope.Sort(delegate(IBooParseTreeNode x, IBooParseTreeNode y) {
+                return x.Name.CompareTo(y.Name);
+            });
+
+            return new BooDeclarations(displayableInScope);
+        }
+
+        // extract the next three methods...
+
         private IBooParseTreeNode GetContainingNode(IBooParseTreeNode node, int line)
         {
             foreach (IBooParseTreeNode child in node.Children)
@@ -35,25 +60,6 @@ namespace BooLangService
                 return node;
 
             return null;
-        }
-
-        public override Declarations GetDeclarations(Microsoft.VisualStudio.TextManager.Interop.IVsTextView view, int line, int col, TokenInfo info, ParseReason reason)
-        {
-            // returns the declarations pre-prepared by the BooLangService.ParseSource method
-            // I really think the parsing should be done in ParseSource, but the searching should
-            // be done in here.
-            IBooParseTreeNode scope = GetContainingNode(compiledDocument, line);
-
-            List<IBooParseTreeNode> displayableInScope = new List<IBooParseTreeNode>();
-
-            displayableInScope.AddRange(FlattenDown(scope.Children));
-            displayableInScope.AddRange(FlattenUp(scope));
-
-            displayableInScope.Sort(delegate(IBooParseTreeNode x, IBooParseTreeNode y) {
-                return x.Name.CompareTo(y.Name);
-            });
-
-            return new BooDeclarations(displayableInScope);
         }
 
         private IList<IBooParseTreeNode> FlattenUp(IBooParseTreeNode node)

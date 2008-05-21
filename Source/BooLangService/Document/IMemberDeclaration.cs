@@ -1,4 +1,4 @@
-namespace Boo.BooLangService.Members
+namespace Boo.BooLangService.Document
 {
     public interface IMemberDeclaration
     {
