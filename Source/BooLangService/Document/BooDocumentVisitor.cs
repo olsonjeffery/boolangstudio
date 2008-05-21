@@ -70,7 +70,8 @@ namespace Boo.BooLangService.Document
 
         private void Pop(int endLine)
         {
-            currentScope.EndLine = endLine;
+            // if the scope is incomplete, then there won't be an end so just use the start
+            currentScope.EndLine = (endLine == -1) ? currentScope.StartLine : endLine;
             currentScope = currentScope.Parent;
         }
     }
