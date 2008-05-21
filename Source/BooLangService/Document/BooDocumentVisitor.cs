@@ -1,6 +1,7 @@
 using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler.Ast;
 using Boo.Lang.Compiler.Steps;
+using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document
 {
@@ -19,6 +20,24 @@ namespace Boo.BooLangService.Document
             currentScope = root;
 
             Visit(CompileUnit);
+        }
+
+        public override void OnImport(Import node)
+        {
+            // this is a bit nasty - get all the members of the referenced namespace
+            // then push them on the tree, so they're referencable
+            INamespace ns = (INamespace)TypeSystemServices.GetEntity(node);
+            IEntity[] entites = ns.GetMembers();
+
+            foreach (IEntity entity in entites)
+            {
+                if (entity is IType)
+                    PushAndPop(new ClassTreeNode(), entity.Name, 0); // line as 0 for now, because it exists outside of the file
+                else if (entity is INamespace)
+                    PushAndPop(new ImportedNamespaceTreeNode(), entity.Name, 0);
+            }
+
+            base.OnImport(node);
         }
 
         public override bool EnterClassDefinition(ClassDefinition node)
@@ -73,6 +92,12 @@ namespace Boo.BooLangService.Document
             // if the scope is incomplete, then there won't be an end so just use the start
             currentScope.EndLine = (endLine == -1) ? currentScope.StartLine : endLine;
             currentScope = currentScope.Parent;
+        }
+
+        private void PushAndPop(IBooParseTreeNode node, string name, int line)
+        {
+            Push(node, name, line);
+            Pop(line);
         }
     }
 }

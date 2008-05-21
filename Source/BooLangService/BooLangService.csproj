@@ -91,6 +91,7 @@
     <Compile Include="Document\IMemberDeclaration.cs" />
     <Compile Include="Document\NamespaceMemberDeclaration.cs" />
     <Compile Include="Document\Nodes\IBooParseTreeNode.cs" />
+    <Compile Include="Document\Nodes\ImportedNamespaceTreeNode.cs" />
     <Compile Include="Document\Nodes\LocalTreeNode.cs" />
     <Compile Include="BooDeclarations.cs" />
     <Compile Include="Document\Nodes\MethodTreeNode.cs" />
