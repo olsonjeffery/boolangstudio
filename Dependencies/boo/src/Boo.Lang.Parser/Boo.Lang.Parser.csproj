@@ -21,9 +21,9 @@
     <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <NoStdLib>false</NoStdLib>
@@ -48,14 +48,6 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Boo.Lang, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\build\Boo.Lang.dll</HintPath>
-    </Reference>
-    <Reference Include="Boo.Lang.Compiler, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\build\Boo.Lang.Compiler.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <HintPath>..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.dll</HintPath>
     </Reference>
@@ -186,6 +178,16 @@
     <Compile Include="WSABooParser.cs" />
     <Compile Include="WSABooParserBase.cs" />
     <Compile Include="WSABooParsingStep.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Boo.Lang.Compiler\Boo.Lang.Compiler.csproj">
+      <Project>{83C914F8-1F12-4879-925D-D831A04366BD}</Project>
+      <Name>Boo.Lang.Compiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Boo.Lang\Boo.Lang.csproj">
+      <Project>{8F36FEA8-5EC9-46D3-BE8D-39AE484C1266}</Project>
+      <Name>Boo.Lang</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

@@ -106,11 +106,10 @@ namespace Boo.Lang.Compiler.TypeSystem
 		{
 			CallableSignature rhs = other as CallableSignature;
 			if (null == rhs
-				|| _returnType != rhs._returnType
+				|| !_returnType.Equals(rhs._returnType)
 				|| _acceptVarArgs != rhs._acceptVarArgs)
-			{
 				return false;
-			}
+
 			return AreSameParameters(_parameters, rhs._parameters);
 		}
 		
@@ -128,27 +127,27 @@ namespace Boo.Lang.Compiler.TypeSystem
 			buffer.Append(_returnType.ToString());
 			return buffer.ToString();
 		}
-		
+
 		static public bool AreSameParameters(IParameter[] lhs, IParameter[] rhs)
 		{
-			if (lhs.Length != rhs.Length)
-			{
+			int len = lhs.Length;
+			if (len != rhs.Length)
 				return false;
-			}
-			for (int i=0; i<lhs.Length; ++i)
+
+			for (int i=0; i < len; ++i)
 			{
-				if (lhs[i].Type != rhs[i].Type)
-				{
+				IParameter lp = lhs[i];
+				IParameter rp = rhs[i];
+				if (lp.IsByRef != rp.IsByRef)
 					return false;
-				}
-				if (lhs[i].IsByRef != rhs[i].IsByRef)
-				{
+				IType rpType = rp.IsByRef ? rp.Type.GetElementType() : rp.Type;
+				if (!lp.Type.Equals(rpType))
 					return false;
-				}
 			}
+
 			return true;
 		}
-		
+
 		void InitializeHashCode()
 		{
 			_hashCode = _acceptVarArgs ? 1 : 2;
@@ -158,5 +157,8 @@ namespace Boo.Lang.Compiler.TypeSystem
 			}
 			_hashCode ^= _returnType.GetHashCode();
 		}
+
 	}
+
 }
+

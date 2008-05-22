@@ -105,25 +105,26 @@ namespace Boo.Lang.Parser
 			parser.Error += errorHandler;
 			return parser;
 		}
+		
+		public static antlr.TokenStream CreateBooLexer(int tabSize, string readerName, TextReader reader, bool enableVSLexer)
+		{
+			antlr.TokenStreamSelector selector = new antlr.TokenStreamSelector();
+		
+			BooLexer lexer = new BooLexer(reader);
+			lexer.setFilename(readerName);
+			lexer.Initialize(selector, tabSize, BooToken.TokenCreator,enableVSLexer);
+		
+			IndentTokenStreamFilter filter = new IndentTokenStreamFilter(lexer, WS, INDENT, DEDENT, EOL);
+			selector.select(filter);
+			
+			return selector;
+		}
 
-        public static antlr.TokenStream CreateBooLexer(int tabSize, string readerName, TextReader reader, bool enableVSLexer, bool insideML_COMMENT)
+        public static antlr.TokenStream CreateBooLexer(int tabSize, string readerName, TextReader reader)
         {
-            antlr.TokenStreamSelector selector = new antlr.TokenStreamSelector();
-
-            BooLexer lexer = new BooLexer(reader);
-            lexer.setFilename(readerName);
-            lexer.Initialize(selector, tabSize, BooToken.TokenCreator,enableVSLexer,insideML_COMMENT);
-
-            IndentTokenStreamFilter filter = new IndentTokenStreamFilter(lexer, WS, INDENT, DEDENT, EOL);
-            selector.select(filter);
-
-            return selector;
+            return CreateBooLexer(tabSize, readerName, reader, false);
         }
 
-		public static antlr.TokenStream CreateBooLexer(int tabSize, string readerName, TextReader reader)
-		{
-            return CreateBooLexer(tabSize, readerName, reader, false, false);
-		}
 
 		override public void reportError(antlr.RecognitionException x)
 		{

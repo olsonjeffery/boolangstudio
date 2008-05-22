@@ -477,6 +477,15 @@ interface_method [TypeMemberCollection container]
 		AddAttributes(m.Attributes);
 		container.Add(m);
 	}
+	(
+		(
+			LBRACK (OF)? generic_parameter_declaration_list[m.GenericParameters] RBRACK
+		)
+		|
+		(
+			OF generic_parameter_declaration[m.GenericParameters]
+		)
+	)?
 	LPAREN parameter_declaration_list[m.Parameters] RPAREN
 	(AS rt=type_reference { m.ReturnType=rt; })?			
 	(
@@ -1112,7 +1121,7 @@ macro_stmt returns [MacroStatement returnValue]
 	}:
 	id:ID expression_list[macro.Arguments]
 	(
-		compound_stmt[macro.Block] |
+		compound_stmt[macro.Block] { macro.Annotate("compound"); } |
 		eos |
 		modifier=stmt_modifier eos { macro.Modifier = modifier; }
 	)
