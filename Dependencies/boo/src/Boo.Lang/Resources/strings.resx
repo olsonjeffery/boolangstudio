@@ -292,7 +292,7 @@
     <value>Primitive '{0}' can't be redefined.</value>
   </data>
   <data name="BCE0058" xml:space="preserve">
-    <value>Object required.</value>
+    <value>'self' is not valid in a static method, static property, or static field initializer.</value>
   </data>
   <data name="BCE0059" xml:space="preserve">
     <value>The 'lock' macro expects at least one argument.</value>

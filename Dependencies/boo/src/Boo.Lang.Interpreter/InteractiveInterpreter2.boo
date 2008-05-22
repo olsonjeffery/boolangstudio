@@ -75,6 +75,11 @@ class InteractiveInterpreter2(AbstractInterpreter):
 
 	def Initialize():
 		_disableColors = true if Environment.GetEnvironmentVariable("BOOISH_DISABLE_COLORS") is not null
+		if not _disableColors: #make sure setting color does not throw an exception
+			try:
+				Console.ForegroundColor = ConsoleColor.DarkGray
+			except:
+				_disableColors = true
 		_disableAutocompletion = true if Environment.GetEnvironmentVariable("BOOISH_DISABLE_AUTOCOMPLETION") is not null
 		InitializeStandardReferences()
 		LoadHistory()
@@ -97,6 +102,7 @@ class InteractiveInterpreter2(AbstractInterpreter):
 
 	private _buffer = StringBuilder()	#buffer to be executed
 	private _line = StringBuilder()		#line being edited
+	private _multiline = false			#is the current line a multi-line?
 
 
 	CurrentPrompt as string:
@@ -119,29 +125,29 @@ class InteractiveInterpreter2(AbstractInterpreter):
 	_disableAutocompletion = false
 
 	[property(InterpreterColor)] # messages from the interpreter (not from user code)
-	_interpreterColor = ConsoleColor.Gray
+	_interpreterColor = ConsoleColor.DarkGray
 
 	[property(PromptColor)]
-	_promptColor = ConsoleColor.Green
+	_promptColor = ConsoleColor.DarkGreen
 
 	[property(ExceptionColor)]
-	_exceptionColor = ConsoleColor.Red
+	_exceptionColor = ConsoleColor.DarkRed
 
 	[property(SuggestionsColor)]
-	_suggestionsColor = ConsoleColor.Yellow
+	_suggestionsColor = ConsoleColor.DarkYellow
 
 	[property(SelectedSuggestionColor)]
-	_selectedSuggestionColor = ConsoleColor.Magenta
+	_selectedSuggestionColor = ConsoleColor.DarkMagenta
 
 	[property(SelectedSuggestionIndex)]
-	_selectedSuggestionIndex = -1
+	_selectedSuggIdx as int?
 
 	[property(Suggestions)]
 	_suggestions as (object)
 
 	CanAutoComplete as bool:
 		get:
-			return _selectedSuggestionIndex >= 0 and _suggestions is not null
+			return _selectedSuggIdx is not null
 
 
 	private _builtins as (IEntity)
@@ -188,7 +194,7 @@ class InteractiveInterpreter2(AbstractInterpreter):
 			if i > 20: #TODO: maxcandidates pref + paging?
 				Console.Write("... (too much candidates)")
 				break
-			if i == _selectedSuggestionIndex:
+			if i == _selectedSuggIdx:
 				Console.ForegroundColor = _selectedSuggestionColor if not _disableColors
 			if s isa IEntity:
 				Console.Write(DescribeEntity(s as IEntity))
@@ -202,6 +208,10 @@ class InteractiveInterpreter2(AbstractInterpreter):
 		ConsolePrintPrompt()
 		Console.Write(_line.ToString())
 		Console.CursorLeft = cursorLeft
+
+	protected def Write(s as string):
+		Console.Write(s)
+		_line.Append(s)
 
 
 	private static re_open = Regex("\\(", RegexOptions.Singleline)
@@ -230,7 +240,7 @@ class InteractiveInterpreter2(AbstractInterpreter):
 									unless not var.ToString().StartsWith(_filter))
 
 		if not _suggestions or 0 == len(_suggestions):
-			_selectedSuggestionIndex = -1
+			_selectedSuggIdx = null
 			#Console.Beep() #TODO: flash background?
 		elif 1 == len(_suggestions):
 			AutoComplete()
@@ -239,33 +249,17 @@ class InteractiveInterpreter2(AbstractInterpreter):
 
 
 	def AutoComplete():
-		if not _suggestions:
-			raise InvalidOperationException("no suggestions")
+		raise InvalidOperationException("no suggestions") if _suggestions is null or _selectedSuggIdx is null
 
-		s = _suggestions[_selectedSuggestionIndex] as IEntity
-		if s:
-			if s.EntityType == EntityType.Method:
-				m = s as IMethod		
-				completion = s.Name[len(_filter):]
-				Console.Write(completion) #FIXME: insert at cursor!
-				_line.Append(completion) 
-				if not m.GetParameters() or m.GetParameters().Length == 0:
-					Console.Write('()') #FIXME: insert at cursor!
-					_line.Append('()')
-				else:
-					Console.Write('(') #FIXME: insert at cursor!
-					_line.Append('(')
+		s = _suggestions[_selectedSuggIdx.Value] as IEntity
+		completion = (s.Name[len(_filter):] if s is not null else (_suggestions[_selectedSuggIdx.Value] as string)[len(_filter):])
+		Write(completion)
+		if s and s.EntityType == EntityType.Method:
+			Write("(")
+			m = s as IMethod
+			Write(')') if m.GetParameters().Length == 0
 
-			else: # not a Method
-				completion = s.Name[len(_filter):]
-				Console.Write(completion) #FIXME: insert at cursor!
-				_line.Append(completion)
-		else:
-			completion = (_suggestions[_selectedSuggestionIndex] as string)[len(_filter):]
-			Console.Write(completion) #FIXME: insert at cursor!
-			_line.Append(completion)
-
-		_selectedSuggestionIndex = -1
+		_selectedSuggIdx = null
 		_suggestions = null
 
 
@@ -278,9 +272,8 @@ class InteractiveInterpreter2(AbstractInterpreter):
 		Console.Write(string.Empty.PadLeft(_line.Length, char(' ')))
 		line = _history.ToArray()[_historyIndex]
 		_line.Length = 0
-		_line.Append(line)
 		Console.CursorLeft = len(CurrentPrompt)
-		Console.Write(line)
+		Write(line)
 
 
 	def ConsoleLoopEval():
@@ -290,7 +283,7 @@ class InteractiveInterpreter2(AbstractInterpreter):
 		lastChar = char('0')
 		key = ConsoleKey.LeftArrow
 		while not _quit:						
-			cki = Console.ReadKey(true) #TODO: fix mono different behavior when ()
+			cki = Console.ReadKey(true)
 			key = cki.Key
 			keyChar = cki.KeyChar
 			control = false
@@ -303,45 +296,45 @@ class InteractiveInterpreter2(AbstractInterpreter):
 					test = char(' ')
 					test = _line.ToString()[_line.Length-1] if _line.Length > 0
 					if char.IsLetterOrDigit(test) or test == char('.'):
-						_selectedSuggestionIndex = 0
+						_selectedSuggIdx = 0
 						DisplaySuggestions(_line.ToString())					
 					else:
-						_line.Append("    ") #TODO: _tabWidth pref
-						Console.Write("    ")
+						Write("    ")
 
 				#line-editing support
-				if key == ConsoleKey.Backspace:
-					if Console.CursorLeft > len(CurrentPrompt) and _line.Length > 0:
-						cx = Console.CursorLeft-len(CurrentPrompt)-1
-						_line.Remove(cx, 1)
-						cx2 = --Console.CursorLeft
-						Console.Write("${_line.ToString(cx, _line.Length-cx)} ")
-						Console.CursorLeft = cx2
-				elif key == ConsoleKey.Delete:
-					if Console.CursorLeft >= len(CurrentPrompt) and _line.Length > 0:
-						cx = Console.CursorLeft-len(CurrentPrompt)
-						if cx < _line.Length:
+				if not _multiline:
+					if key == ConsoleKey.Backspace:
+						if Console.CursorLeft > len(CurrentPrompt) and _line.Length > 0:
+							cx = Console.CursorLeft-len(CurrentPrompt)-1
 							_line.Remove(cx, 1)
-							cx2 = Console.CursorLeft
+							cx2 = --Console.CursorLeft
 							Console.Write("${_line.ToString(cx, _line.Length-cx)} ")
 							Console.CursorLeft = cx2
-				elif key == ConsoleKey.LeftArrow:
-					if Console.CursorLeft > len(CurrentPrompt) and _line.Length > 0:
-						Console.CursorLeft--
-				elif key == ConsoleKey.RightArrow:
-					if Console.CursorLeft < (len(CurrentPrompt)+_line.Length):
-						Console.CursorLeft++
-				elif key == ConsoleKey.Home:
-					Console.CursorLeft = len(CurrentPrompt)
-				elif key == ConsoleKey.End:
-					Console.CursorLeft = len(CurrentPrompt) + _line.Length
+					elif key == ConsoleKey.Delete:
+						if Console.CursorLeft >= len(CurrentPrompt) and _line.Length > 0:
+							cx = Console.CursorLeft-len(CurrentPrompt)
+							if cx < _line.Length:
+								_line.Remove(cx, 1)
+								cx2 = Console.CursorLeft
+								Console.Write("${_line.ToString(cx, _line.Length-cx)} ")
+								Console.CursorLeft = cx2
+					elif key == ConsoleKey.LeftArrow:
+						if Console.CursorLeft > len(CurrentPrompt) and _line.Length > 0:
+							Console.CursorLeft--
+					elif key == ConsoleKey.RightArrow:
+						if Console.CursorLeft < (len(CurrentPrompt)+_line.Length):
+							Console.CursorLeft++
+					elif key == ConsoleKey.Home:
+						Console.CursorLeft = len(CurrentPrompt)
+					elif key == ConsoleKey.End:
+						Console.CursorLeft = len(CurrentPrompt) + _line.Length
 
 				#history support
 				if key == ConsoleKey.UpArrow:
 					if _historyIndex > 0:
 						_historyIndex--
 						DisplayHistory()
-				if key == ConsoleKey.DownArrow:
+				elif key == ConsoleKey.DownArrow:
 					if _historyIndex < _history.Count-1:
 						_historyIndex++
 						DisplayHistory()
@@ -349,16 +342,16 @@ class InteractiveInterpreter2(AbstractInterpreter):
 				#auto-completion support
 				if CanAutoComplete:
 					if key == ConsoleKey.LeftArrow:
-						if _selectedSuggestionIndex > 0:
-							_selectedSuggestionIndex--
+						if _selectedSuggIdx > 0:
+							_selectedSuggIdx--
 						else:
-							_selectedSuggestionIndex = len(_suggestions)					 
+							_selectedSuggIdx = len(_suggestions)
 						DisplaySuggestions(_line.ToString())
-					if key == ConsoleKey.RightArrow:
-						if _selectedSuggestionIndex+1 < len(_suggestions):
-							_selectedSuggestionIndex++
+					elif key == ConsoleKey.RightArrow:
+						if _selectedSuggIdx <= len(_suggestions):
+							_selectedSuggIdx++
 						else:
-							_selectedSuggestionIndex = 0
+							_selectedSuggIdx = 0
 						DisplaySuggestions(_line.ToString())
 					if newLine:
 						AutoComplete()
@@ -366,24 +359,29 @@ class InteractiveInterpreter2(AbstractInterpreter):
 				if not newLine:
 					continue
 
-			_selectedSuggestionIndex = -1
+			_selectedSuggIdx = null
 
-			cx = Console.CursorLeft-len(CurrentPrompt)			
-			line = _line.ToString()
+			cx = Console.CursorLeft-len(CurrentPrompt)
+			#multi-line?
+			if cx < 0 or _line.Length >= Console.WindowWidth-len(CurrentPrompt):
+				cx = _line.Length
+				_multiline = true
 
 			if not newLine:
-				if cx < len(line):	#line-editing support
+				#line-editing support
+				if cx < _line.Length and not _multiline:
 					_line.Insert(cx, keyChar) if not control
 					Console.Write(_line.ToString(cx, _line.Length-cx))
 					Console.CursorLeft = len(CurrentPrompt)+cx+1
 				else:
 					_line.Append(keyChar) if not control
 					Console.Write(keyChar)
-			
-			line = _line.ToString()
 
 			if newLine:
+				_multiline = false
 				Console.Write(Environment.NewLine)
+
+				line = _line.ToString()
 
 				if not TryRunCommand(line):
 					_buffer.Append(line)
@@ -393,18 +391,18 @@ class InteractiveInterpreter2(AbstractInterpreter):
 					try:
 						if len(line) > 0:
 							_indent++ if line[len(line)-1] in _blockStarters
-							_indent-- if line[len(line)-1] == keyChar and _indent > 0
-						else:
+							_indent-- if line.EndsWith(keyChar.ToString()) and _indent > 0
+						elif _indent > 0:
 							_indent--
 						if _indent == 0:
 							InternalLoopEval(_buffer.ToString())
-							_buffer.Length = 0
+							_buffer.Length = 0 #truncate buffer
 					except x as System.Reflection.TargetInvocationException:
 						ConsolePrintException(x.InnerException)
 					except x:
 						ConsolePrintException(x)
 
-					_line.Length = 0
+					_line.Length = 0 #truncate line
 					ConsolePrintPrompt()
 
 			lastChar = keyChar
@@ -425,7 +423,7 @@ class InteractiveInterpreter2(AbstractInterpreter):
 				quit()
 			elif cmd[0] == "/?" or cmd[0] == "/h" or cmd[0] == "/help":
 				DisplayHelp()
-				_selectedSuggestionIndex = -1
+				_selectedSuggIdx = null
 				_buffer.Length = 0
 				ConsolePrintPrompt()
 			elif cmd[0] == "/g" or cmd[0] == "/globals":

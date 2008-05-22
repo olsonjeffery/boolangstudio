@@ -1,34 +1,3 @@
-﻿#region license
-// Copyright (c) 2003, 2004, 2005 Rodrigo B. de Oliveira (rbo@acm.org)
-// All rights reserved.
-// 
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-// 
-//     * Redistributions of source code must retain the above copyright notice,
-//     this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright notice,
-//     this list of conditions and the following disclaimer in the documentation
-//     and/or other materials provided with the distribution.
-//     * Neither the name of Rodrigo B. de Oliveira nor the names of its
-//     contributors may be used to endorse or promote products derived from this
-//     software without specific prior written permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
-// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-// THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#endregion
-
-
-using System;
-
 #region license
 // Copyright (c) 2003, 2004, 2005 Rodrigo B. de Oliveira (rbo@acm.org)
 // All rights reserved.
@@ -57,6 +26,8 @@ using System;
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
+
 namespace Boo.Lang.Compiler.Steps
 {
 	using System.Diagnostics;
@@ -68,6 +39,7 @@ namespace Boo.Lang.Compiler.Steps
 		private Boo.Lang.List _newAbstractClasses;
 		private Boo.Lang.Hash _classDefinitionList;
 		private int depth = 0;
+
 		public ProcessInheritedAbstractMembers()
 		{
 		}
@@ -172,7 +144,7 @@ namespace Boo.Lang.Compiler.Steps
 			}
 		}
 		/// <summary>
-		/// This function checks for inheriting implementatinos from EXTERNAL classes only.
+		/// This function checks for inheriting implementations from EXTERNAL classes only.
 		/// </summary>
 		bool CheckInheritsInterfaceImplementation(ClassDefinition node, IEntity entity)
 		{
@@ -227,24 +199,24 @@ namespace Boo.Lang.Compiler.Steps
 			}
 			return false;
 		}
-		bool CheckInheritedMethodImpl(IMethod impl, IMethod target)
+
+		bool CheckInheritedMethodImpl(IMethod impl, IMethod baseMethod)
 		{
-			if(TypeSystemServices.CheckOverrideSignature(impl, target))
+			if(TypeSystemServices.CheckOverrideSignature(impl, baseMethod))
 			{
-				
-				if(impl.ReturnType == target.ReturnType)
-				{					
+				if(impl.ReturnType == baseMethod.ReturnType)
 					return true;
-				}
 				//TODO: Oh snap! No reusable error messages for this!
 				//Errors(CompilerErrorFactory.ConflictWithInheritedMember());
 			}
 			return false;
 		}
+
 		bool CheckInheritedEventImpl(IEvent impl, IEvent target)
 		{
 			return impl.Type == target.Type;
 		}
+
 		bool CheckInheritedPropertyImpl(IProperty impl, IProperty target)
 		{
 			if(impl.Type == target.Type)
@@ -277,21 +249,24 @@ namespace Boo.Lang.Compiler.Steps
 			}
 			return false;
 		}
-		bool HasGetter(IProperty property)
+
+		private static bool HasGetter(IProperty property)
 		{
 			return property.GetGetMethod() != null;
 		}
-		bool HasSetter(IProperty property)
+
+		private static bool HasSetter(IProperty property)
 		{
 			return property.GetSetMethod() != null;
 		}
-		bool IsAbstract(IType type)
+
+		private bool IsAbstract(IType type)
 		{
 			if (type.IsAbstract)
 			{
 				return true;
 			}
-			
+
 			AbstractInternalType internalType = type as AbstractInternalType;
 			if (null != internalType)
 			{
@@ -300,7 +275,7 @@ namespace Boo.Lang.Compiler.Steps
 			return false;
 		}
 
-		IProperty GetPropertyEntity(TypeMember member)
+		private IProperty GetPropertyEntity(TypeMember member)
 		{
 			return (IProperty)GetEntity(member);
 		}
@@ -309,18 +284,17 @@ namespace Boo.Lang.Compiler.Steps
 			TypeReference baseTypeRef,
 			IProperty entity)
 		{			
-			
+			bool resolved = false;
+
 			foreach (TypeMember member in node.Members)
 			{
 				if (entity.Name != member.Name
 					|| NodeType.Property != member.NodeType
 					|| !IsCorrectExplicitMemberImplOrNoExplicitMemberAtAll(member, entity)
 					|| !TypeSystemServices.CheckOverrideSignature(entity.GetParameters(), GetPropertyEntity(member).GetParameters()))
-				{
 					continue;
-				}
 
-				Property p = (Property)member;
+				Property p = (Property) member;
 				ProcessPropertyAccessor(p, p.Getter, entity.GetGetMethod());
 				ProcessPropertyAccessor(p, p.Setter, entity.GetSetMethod());
 				if (null == p.Type)
@@ -330,12 +304,14 @@ namespace Boo.Lang.Compiler.Steps
 				else
 				{
 					if (entity.Type != p.Type.Entity)
-					{
 						Error(CompilerErrorFactory.ConflictWithInheritedMember(p, p.FullName, entity.FullName));
-					}
 				}
-				return;
+				resolved = true;
 			}
+
+			if (resolved)
+				return;
+
 			foreach(SimpleTypeReference parent in node.BaseTypes)
 			{
 				if(_classDefinitionList.Contains(parent.Name))
@@ -345,10 +321,10 @@ namespace Boo.Lang.Compiler.Steps
 					depth--;
 				}
 			}
+
 			if(CheckInheritsInterfaceImplementation(node, entity))
-			{
 				return;
-			}
+
 			if(depth == 0)
 			{
 				node.Members.Add(CreateAbstractProperty(baseTypeRef, entity));
@@ -356,7 +332,7 @@ namespace Boo.Lang.Compiler.Steps
 			}
 		}
 
-		private void ProcessPropertyAccessor(Property p, Method accessor, IMethod method)
+		private static void ProcessPropertyAccessor(Property p, Method accessor, IMethod method)
 		{
 			if (null != accessor)
 			{
@@ -445,10 +421,10 @@ namespace Boo.Lang.Compiler.Steps
 			IMethod entity)
 		{
 			if (entity.IsSpecialName)
-			{
 				return;
-			}
-			
+
+			bool resolved = false;
+
 			foreach (TypeMember member in node.Members)
 			{
 				if (entity.Name == member.Name
@@ -456,35 +432,35 @@ namespace Boo.Lang.Compiler.Steps
 					&& IsCorrectExplicitMemberImplOrNoExplicitMemberAtAll(member, entity))
 				{
 					Method method = (Method)member;
+
 					if (TypeSystemServices.CheckOverrideSignature(GetEntity(method), entity))
 					{
 						if (IsUnknown(method.ReturnType))
 						{
 							method.ReturnType = CodeBuilder.CreateTypeReference(entity.ReturnType);
 						}
-						else
+						else if (GenericsServices.IsGenericParameter(method.ReturnType.Entity)
+									== GenericsServices.IsGenericParameter(entity.ReturnType))
 						{
-							if (entity.ReturnType != method.ReturnType.Entity)
-							{
+							if (!entity.ReturnType.Equals(method.ReturnType.Entity))
 								Error(CompilerErrorFactory.ConflictWithInheritedMember(method, method.FullName, entity.FullName));
-							}
 						}
 
 						if (null != method.ExplicitInfo)
-						{
 							method.ExplicitInfo.Entity = entity;
-						}
 
 						if (!method.IsOverride && !method.IsVirtual)
-						{
 							method.Modifiers |= TypeMemberModifiers.Virtual;
-						}
-						
+
 						_context.TraceInfo("{0}: Method {1} implements {2}", method.LexicalInfo, method, entity);
-						return;
+						resolved = true;
 					}
 				}
 			}
+
+			if (resolved)
+				return;
+
 			foreach(SimpleTypeReference parent in node.BaseTypes)
 			{
 				if(_classDefinitionList.Contains(parent.Name))
@@ -494,10 +470,10 @@ namespace Boo.Lang.Compiler.Steps
 					depth--;
 				}
 			}
+
 			if(CheckInheritsInterfaceImplementation(node, entity))
-			{
 				return;
-			}	
+
 			if(depth == 0)
 			{			
 				if (!AbstractMemberNotImplemented(node, baseTypeRef, entity))
@@ -515,7 +491,7 @@ namespace Boo.Lang.Compiler.Steps
 				|| entity.DeclaringType == GetType(info.InterfaceType);
 		}
 
-		bool IsUnknown(TypeReference typeRef)
+		private static bool IsUnknown(TypeReference typeRef)
 		{
 			return Unknown.Default == typeRef.Entity;
 		}
@@ -554,7 +530,7 @@ namespace Boo.Lang.Compiler.Steps
 			return false;
 		}
 
-		private bool IsValueType(ClassDefinition node)
+		private static bool IsValueType(ClassDefinition node)
 		{
 			return ((IType)node.Entity).IsValueType;
 		}
@@ -625,7 +601,7 @@ namespace Boo.Lang.Compiler.Steps
 			}
 		}
 		
-		bool IsAbstractAccessor(IMethod accessor)
+		private static bool IsAbstractAccessor(IMethod accessor)
 		{
 			if (null != accessor)
 			{
@@ -675,3 +651,4 @@ namespace Boo.Lang.Compiler.Steps
 		}
 	}
 }
+
