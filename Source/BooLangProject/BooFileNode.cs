@@ -21,7 +21,12 @@ namespace Boo.BooLangProject
         {
             get
             {
-                return _imageIndex + 0;
+                if (FileName.ToLower().EndsWith(".boo"))
+				{
+					return _imageIndex + 0;	
+				}
+
+            	return base.ImageIndex;
             }
         }
 
