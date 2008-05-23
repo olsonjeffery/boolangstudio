@@ -45,12 +45,10 @@ namespace Boo.BooLangStudio
     [ProvideService(typeof(Boo.BooLangService.BooLangService))]
     [ProvideLanguageExtension(typeof(Boo.BooLangService.BooLangService), Boo.BooLangService.BooLangService.LanguageExtension)]
     [ProvideLanguageService(typeof(Boo.BooLangService.BooLangService), Boo.BooLangService.BooLangService.LanguageName, 0,
-        CodeSense = true,
-        DefaultToInsertSpaces = true,
-        EnableCommenting = true,
-        MatchBraces = true,
-        ShowCompletion = true,
-        ShowMatchingBrace = true)]
+        CodeSense=true,
+        MatchBraces=true,
+        EnableCommenting=true,
+        ShowCompletion=false)]
     
     [ProvideProjectFactory(typeof(BooLangProjectFactory),
         "Boo",

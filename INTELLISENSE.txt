@@ -1,0 +1,68 @@
+Intellisense stories
+
+scopes for ctrl+space in whitespace (non-assignments)
+
+namespace
+{
+  keywords
+
+  class
+  {
+    [parent scope]
+    types
+    methods
+    class member declarations
+    
+    method
+    {
+      [parent scope]
+      local declarations
+      
+      inner scope
+      {
+        [parent scope]
+        local declarations
+      }
+    }
+  }
+}
+
+These are based on using C#, so the Boo implementation may vary but these
+should be the starting point. I'd like to translate these into tests at
+some point, but I'm not yet sure how to do that yet.
+
+The following is a non-exhaustive list that I'll add to when I come across
+more.
+
+Type "using ":
+  1. Hit control-space, intellisense pops up with top-level namespaces
+  2. Start typing uses name completion
+  3. Hit enter closes intellisense and inserts selection
+  4. Hit "." opens up intellisense again with refined list
+  5. Repeat from 2
+
+Type "using ":
+  1. Start typing namespace WITHOUT intellisense up, pops it up with name
+     completion
+
+Treat namespace keword as the same as using
+
+If in method scope, or sub-scope (if statements etc):
+  1. Hit control-space
+  2. Show variables defined in scope
+  3. Show fields, properties, and methods from the class scope
+  4. Show classes from current namespace
+  5. Show sub-classes declared in class
+  6. Show classes from imported namespaces
+
+Type assignment "x = ":
+  1. Hit control-space
+  2. Show same as method scope
+  3. Show keywords (true, false etc)
+
+If in class scope (between methods):
+  1. Hit control-space
+  2. Show keywords for methods
+  3. Show classes in namespace
+  4. Show sub-classes declared in class
+  5. Show classes from imported namespaces

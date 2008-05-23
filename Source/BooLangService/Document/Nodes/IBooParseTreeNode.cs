@@ -1,0 +1,13 @@
+using System.Collections.Generic;
+
+namespace Boo.BooLangService.Document.Nodes
+{
+    public interface IBooParseTreeNode
+    {
+        IBooParseTreeNode Parent { get; set; }
+        IList<IBooParseTreeNode> Children { get; }
+        string Name { get; set; }
+        int StartLine { get; set; }
+        int EndLine { get; set; }
+    }
+}

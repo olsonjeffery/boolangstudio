@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Package;
 using System.Runtime.InteropServices;
+using Boo.BooLangService.Document;
+using Boo.BooLangService.Document.Nodes;
+using Boo.BooLangService.VSInterop;
+using BooLangService;
+using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
-using System.Drawing;
+using VSLangProj;
 
 namespace Boo.BooLangService
 {
@@ -14,6 +15,8 @@ namespace Boo.BooLangService
     [Guid(GuidList.guidBooLangServiceClassString)]
     public class BooLangService : LanguageService
     {
+        private readonly DocumentParser docParser = new DocumentParser();
+        private const string ImportKeyword = "import";
 
         #region ctor
         public BooLangService()
@@ -42,7 +45,7 @@ namespace Boo.BooLangService
             if (_languagePreferences == null)
             {
                 _languagePreferences = new LanguagePreferences(this.Site, typeof(BooLangService).GUID, BooLangService.LanguageName);
-                _languagePreferences.EnableCommenting = true;
+                _languagePreferences.Init();
             }
             
             return _languagePreferences;
@@ -67,7 +70,10 @@ namespace Boo.BooLangService
             return _scanner;
         }
 
-
+        public override Source CreateSource(IVsTextLines buffer)
+        {
+            return new BooSource(this, buffer, new Colorizer(this, buffer, GetScanner(buffer)));
+        }
 
         /// <summary>
         /// EPIC!!!!
@@ -76,8 +82,25 @@ namespace Boo.BooLangService
         /// <returns></returns>
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            Source source = GetSource(req.View);
-            throw new NotImplementedException();
+            BooDocumentCompiler compiler = new BooDocumentCompiler();
+            IBooParseTreeNode compiledTree = compiler.Compile(req.FileName, req.Text);
+
+            return new BooScope(compiledTree);
+        }
+
+        [Obsolete("Being phased out in favor of the tree parser.")]
+        private AuthoringScope GetNamespaces(ParseRequest req, string line)
+        {
+            // get any namespace already written (i.e. "Boo.Lang.")
+            string namespaceContinuation = line.Trim();
+            namespaceContinuation = namespaceContinuation.Remove(0, ImportKeyword.Length).Trim();
+
+            // get project references for the project that the current file is in
+            ProjectHierarchy projects = new ProjectHierarchy(this);
+            VSProject project = projects.GetContainingProject(req.FileName);
+            IList<ProjectReference> references = projects.GetReferences(project);
+
+            return docParser.GetNamespaceSelect(references, namespaceContinuation);
         }
 
         #endregion

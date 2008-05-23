@@ -307,7 +307,8 @@ namespace Boo.BooLangService
                     // TODO: what to do with the splice operator?
                     break;
                 case BooLexer.DOT:
-                    tokenInfo.Type = TokenType.Operator;
+                    tokenInfo.Type = TokenType.Delimiter;
+                    tokenInfo.Trigger = TokenTriggers.MemberSelect;
                     // TODO: DOT OPERATOR.. NEED TO STUB OUT STUFF FOR INTELLISENSE HERE
                     break;
                 case BooLexer.COLON:
