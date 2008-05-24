@@ -3,18 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Boo.BooLangService;
+using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
+using Boo.BooLangService.VSInterop;
 using Microsoft.VisualStudio.Package;
+using VSLangProj;
 
 namespace BooLangService
 {
     public class BooScope : AuthoringScope
     {
         private readonly IBooParseTreeNode compiledDocument;
+        private readonly Source source;
+        private LanguageService service;
+        private string fileName;
+        private const string ImportKeyword = "import";
 
-        public BooScope(IBooParseTreeNode compiledDocument)
+        public BooScope(LanguageService service, IBooParseTreeNode compiledDocument, Source source, string fileName)
         {
+            this.service = service;
             this.compiledDocument = compiledDocument;
+            this.source = source;
+            this.fileName = fileName;
         }
 
         public override string GetDataTipText(int line, int col, out Microsoft.VisualStudio.TextManager.Interop.TextSpan span)
@@ -22,10 +32,41 @@ namespace BooLangService
             throw new NotImplementedException();
         }
 
-        public override Declarations GetDeclarations(Microsoft.VisualStudio.TextManager.Interop.IVsTextView view, int line, int col, TokenInfo info, ParseReason reason)
+        public override Declarations GetDeclarations(Microsoft.VisualStudio.TextManager.Interop.IVsTextView view, int lineNum, int col, TokenInfo info, ParseReason reason)
+        {
+            string line = source.GetLine(lineNum);
+
+            if (line.StartsWith(ImportKeyword))
+            {
+                // handle this separately from normal intellisense, because:
+                //  a) the open import statement will have broken the document
+                //  b) we don't need the doc anyway, all imports would be external to the current file
+                return GetImportIntellisenseDeclarations(line);
+            }
+            
+            return GetScopedIntellisenseDeclarations(lineNum);
+        }
+
+        private Declarations GetImportIntellisenseDeclarations(string line)
+        {
+            NamespaceFinder availableNamespaces = new NamespaceFinder();
+
+            // get any namespace already written (i.e. "Boo.Lang.")
+            string namespaceContinuation = line.Trim();
+            namespaceContinuation = namespaceContinuation.Remove(0, ImportKeyword.Length).Trim();
+
+            // get project references for the project that the current file is in
+            ProjectHierarchy projects = new ProjectHierarchy(service);
+            VSProject project = projects.GetContainingProject(fileName);
+            IList<ProjectReference> references = projects.GetReferences(project);
+
+            return new BooDeclarations(availableNamespaces.QueryNamespacesFromReferences(references, namespaceContinuation));
+        }
+
+        private Declarations GetScopedIntellisenseDeclarations(int lineNum)
         {
             // get the node that the caret is in
-            IBooParseTreeNode scope = GetContainingNode(compiledDocument, line);
+            IBooParseTreeNode scope = GetContainingNode(compiledDocument, lineNum);
 
             BooParseTreeNodeList displayableInScope = new BooParseTreeNodeList();
 

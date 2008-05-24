@@ -22,6 +22,7 @@ namespace Boo.BooLangService.Document
         public IBooParseTreeNode Compile(string filename, string source)
         {
             compiler.Parameters.Input.Add(new StringInput(filename, source));
+            
             compiler.Run();
 
             return visitor.Root;

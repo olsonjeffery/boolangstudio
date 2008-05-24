@@ -22,6 +22,16 @@ namespace Boo.BooLangService.Document
             Visit(CompileUnit);
         }
 
+        public override bool EnterImport(Import node)
+        {
+            return base.EnterImport(node);
+        }
+
+        protected override void OnNode(Node node)
+        {
+            base.OnNode(node);
+        }
+
         public override void OnImport(Import node)
         {
             // this is a bit nasty - get all the members of the referenced namespace

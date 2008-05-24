@@ -15,7 +15,7 @@ namespace Boo.BooLangService
     [Guid(GuidList.guidBooLangServiceClassString)]
     public class BooLangService : LanguageService
     {
-        private readonly DocumentParser docParser = new DocumentParser();
+        private readonly NamespaceFinder availableNamespaces = new NamespaceFinder();
         private const string ImportKeyword = "import";
 
         #region ctor
@@ -85,22 +85,7 @@ namespace Boo.BooLangService
             BooDocumentCompiler compiler = new BooDocumentCompiler();
             IBooParseTreeNode compiledTree = compiler.Compile(req.FileName, req.Text);
 
-            return new BooScope(compiledTree);
-        }
-
-        [Obsolete("Being phased out in favor of the tree parser.")]
-        private AuthoringScope GetNamespaces(ParseRequest req, string line)
-        {
-            // get any namespace already written (i.e. "Boo.Lang.")
-            string namespaceContinuation = line.Trim();
-            namespaceContinuation = namespaceContinuation.Remove(0, ImportKeyword.Length).Trim();
-
-            // get project references for the project that the current file is in
-            ProjectHierarchy projects = new ProjectHierarchy(this);
-            VSProject project = projects.GetContainingProject(req.FileName);
-            IList<ProjectReference> references = projects.GetReferences(project);
-
-            return docParser.GetNamespaceSelect(references, namespaceContinuation);
+            return new BooScope(this, compiledTree, GetSource(req.View), req.FileName);
         }
 
         #endregion
