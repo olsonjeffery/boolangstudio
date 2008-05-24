@@ -72,6 +72,7 @@ namespace BooLangService
             // get the node that the caret is in
             Keywords keywords = new Keywords();
             BooParseTreeNodeFlatterner flattener = new BooParseTreeNodeFlatterner();
+
             IBooParseTreeNode scope = compiledDocument.GetScopeByLine(lineNum);
 
             keywords.InjectIntoScope(scope);

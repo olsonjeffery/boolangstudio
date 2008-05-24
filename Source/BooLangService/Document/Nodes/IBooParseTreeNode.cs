@@ -9,5 +9,6 @@ namespace Boo.BooLangService.Document.Nodes
         string Name { get; set; }
         int StartLine { get; set; }
         int EndLine { get; set; }
+        bool ContainsLine(int line);
     }
 }

@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
+using Boo.BooLangService.Intellisense;
 
-namespace BooLangService
+namespace Boo.BooLangService.Document
 {
     public class BooParseTreeNodeFlatterner
     {
         public BooParseTreeNodeList FlattenFrom(IBooParseTreeNode node)
         {
-            BooParseTreeNodeList flattened = new BooParseTreeNodeList();
+            BooParseTreeNodeList flattened = new IntellisenseNodeList();
 
             // add anything "below" the scope (e.g. locals in a method, methods in a class)
             flattened.AddRange(FlattenDown(node.Children));
@@ -21,7 +22,7 @@ namespace BooLangService
 
         private IList<IBooParseTreeNode> FlattenUp(IBooParseTreeNode node)
         {
-            List<IBooParseTreeNode> flattened = new List<IBooParseTreeNode>();
+            IList<IBooParseTreeNode> flattened = new IntellisenseNodeList();
             IBooParseTreeNode parent = node;
 
             while ((parent = parent.Parent) != null)
@@ -31,8 +32,7 @@ namespace BooLangService
                     flattened.Add(sibling);
                 }
 
-                if (!(parent is RootTreeNode))
-                    flattened.Add(parent); // don't add the root node, because it's only there as a container
+                flattened.Add(parent);
             }
 
             return flattened;
@@ -40,7 +40,7 @@ namespace BooLangService
 
         private IList<IBooParseTreeNode> FlattenDown(IList<IBooParseTreeNode> nodes)
         {
-            List<IBooParseTreeNode> flattened = new List<IBooParseTreeNode>();
+            BooParseTreeNodeList flattened = new IntellisenseNodeList();
 
             foreach (IBooParseTreeNode node in nodes)
             {

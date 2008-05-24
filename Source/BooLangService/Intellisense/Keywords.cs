@@ -7,6 +7,8 @@ namespace Boo.BooLangService.Intellisense
     {
         public void InjectIntoScope(IBooParseTreeNode scope)
         {
+            if (scope == null) return;
+
             TypeKeywordResolver keywords = new TypeKeywordResolver();
 
             string[] words = keywords.GetForScope(scope);

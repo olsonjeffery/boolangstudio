@@ -72,7 +72,7 @@ namespace Boo.BooLangService.Intellisense
 
         public TypeKeywordResolver()
         {
-            scopeKeywordMap.Add(typeof(ClassTreeNode), new string[] {
+            Add<ClassTreeNode>(
                 "abstract",
                 "class",
                 "constructor",
@@ -89,17 +89,14 @@ namespace Boo.BooLangService.Intellisense
                 "private",
                 "static",
                 "struct",
-                "virtual",
-            });
-            scopeKeywordMap.Add(typeof(MethodTreeNode), new string[] {
+                "virtual"
+            );
+            Add<MethodTreeNode>(
                 "cast",
                 "def",
                 "do",
                 "elif",
                 "else",
-                "ensure",
-                "except",
-                "failure",
                 "from",
                 "for",
                 "goto",
@@ -112,8 +109,13 @@ namespace Boo.BooLangService.Intellisense
                 "typeof",
                 "unless",
                 "while",
-                "yield",
-            });
+                "yield"
+            );
+            Add<TryTreeNode, MethodTreeNode>(
+                "ensure",
+                "except",
+                "failure"
+            );
         }
 
         public string[] GetForScope(IBooParseTreeNode scope)
@@ -126,6 +128,26 @@ namespace Boo.BooLangService.Intellisense
                 return scopeKeywordMap[type];
 
             return new string[] {};
+        }
+
+        private void Add<T>(params string[] keywords) where T : IBooParseTreeNode
+        {
+            scopeKeywordMap.Add(typeof(T), keywords);
+        }
+
+        private void Add<TTarget, TSource>(params string[] additionalKeywords)
+            where TTarget : IBooParseTreeNode
+            where TSource : IBooParseTreeNode
+        {
+            string[] sourceKeywords = new string[] {};
+
+            scopeKeywordMap.TryGetValue(typeof (TSource), out sourceKeywords);
+
+            List<string> keywords = new List<string>(sourceKeywords);
+
+            keywords.AddRange(additionalKeywords);
+
+            Add<TTarget>(keywords.ToArray());
         }
     }
 }

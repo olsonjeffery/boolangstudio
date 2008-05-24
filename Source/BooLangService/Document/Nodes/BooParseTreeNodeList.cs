@@ -45,7 +45,7 @@ namespace Boo.BooLangService.Document.Nodes
             }
         }
 
-        public void Add(IBooParseTreeNode item)
+        public virtual void Add(IBooParseTreeNode item)
         {
             if (IsValidForAdding(item))
                 inner.Add(item);

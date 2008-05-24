@@ -84,6 +84,11 @@
   <ItemGroup>
     <Compile Include="Document\CompiledDocument.cs" />
     <Compile Include="Document\BooParseTreeNodeFlatterner.cs" />
+    <Compile Include="Intellisense\IntellisenseVisibleAttribute.cs" />
+    <Compile Include="Intellisense\IntellisenseNodeList.cs" />
+    <Compile Include="Document\Nodes\TryTreeNode.cs" />
+    <Compile Include="Document\ScopableAttribute.cs" />
+    <Compile Include="AttributeHelper.cs" />
     <Compile Include="Intellisense\TypeKeywordResolver.cs" />
     <Compile Include="Document\NamespaceFinder.cs" />
     <Compile Include="Document\Nodes\AbstractTreeNode.cs" />

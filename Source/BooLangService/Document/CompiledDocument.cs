@@ -26,7 +26,9 @@ namespace Boo.BooLangService.Document
                     return foundNode;
             }
 
-            if (node.StartLine <= line && node.EndLine > line)
+            bool isScopable = AttributeHelper.Has<ScopableAttribute>(node.GetType());
+
+            if (isScopable && node.ContainsLine(line))
                 return node;
 
             return null;

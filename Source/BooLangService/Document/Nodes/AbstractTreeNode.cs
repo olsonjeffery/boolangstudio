@@ -15,6 +15,11 @@ namespace Boo.BooLangService.Document.Nodes
             children = new ParseTreeNodeSet(this);
         }
 
+        public bool ContainsLine(int line)
+        {
+            return StartLine <= line && EndLine >= line;
+        }
+
         public IBooParseTreeNode Parent
         {
             get { return parent; }
@@ -40,8 +45,21 @@ namespace Boo.BooLangService.Document.Nodes
 
         public int EndLine
         {
-            get { return endLine; }
+            get { return endLine > -1 ? endLine : GetHighestChildEndLine(); }
             set { endLine = value; }
+        }
+
+        private int GetHighestChildEndLine()
+        {
+            int end = 0;
+
+            foreach (IBooParseTreeNode child in Children)
+            {
+                if (child.EndLine > end)
+                    end = child.EndLine;
+            }
+
+            return end;
         }
     }
 }
