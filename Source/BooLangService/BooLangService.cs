@@ -83,9 +83,9 @@ namespace Boo.BooLangService
         public override AuthoringScope ParseSource(ParseRequest req)
         {
             BooDocumentCompiler compiler = new BooDocumentCompiler();
-            IBooParseTreeNode compiledTree = compiler.Compile(req.FileName, req.Text);
+            CompiledDocument document = compiler.Compile(req.FileName, req.Text);
 
-            return new BooScope(this, compiledTree, GetSource(req.View), req.FileName);
+            return new BooScope(this, document, GetSource(req.View), req.FileName);
         }
 
         #endregion

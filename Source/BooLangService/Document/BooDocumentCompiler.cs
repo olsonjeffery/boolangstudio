@@ -3,6 +3,7 @@ using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler;
 using Boo.Lang.Compiler.IO;
 using Boo.Lang.Compiler.Pipelines;
+using BooLangService;
 
 namespace Boo.BooLangService.Document
 {
@@ -19,13 +20,13 @@ namespace Boo.BooLangService.Document
             compiler.Parameters.Pipeline.Add(visitor);
         }
 
-        public IBooParseTreeNode Compile(string filename, string source)
+        public CompiledDocument Compile(string filename, string source)
         {
             compiler.Parameters.Input.Add(new StringInput(filename, source));
             
             compiler.Run();
 
-            return visitor.Root;
+            return new CompiledDocument(visitor.Root);
         }
     }
 }

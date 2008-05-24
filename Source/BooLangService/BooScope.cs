@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Boo.BooLangService;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
+using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.VSInterop;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
+using Microsoft.VisualStudio.TextManager.Interop;
 using VSLangProj;
 
 namespace BooLangService
 {
     public class BooScope : AuthoringScope
     {
-        private readonly IBooParseTreeNode compiledDocument;
+        private readonly CompiledDocument compiledDocument;
         private readonly Source source;
         private readonly LanguageService service;
         private readonly string fileName;
         private const string ImportKeyword = "import";
 
-        public BooScope(LanguageService service, IBooParseTreeNode compiledDocument, Source source, string fileName)
+        public BooScope(LanguageService service, CompiledDocument compiledDocument, Source source, string fileName)
         {
             this.service = service;
             this.compiledDocument = compiledDocument;
@@ -27,12 +28,12 @@ namespace BooLangService
             this.fileName = fileName;
         }
 
-        public override string GetDataTipText(int line, int col, out Microsoft.VisualStudio.TextManager.Interop.TextSpan span)
+        public override string GetDataTipText(int line, int col, out TextSpan span)
         {
             throw new NotImplementedException();
         }
 
-        public override Declarations GetDeclarations(Microsoft.VisualStudio.TextManager.Interop.IVsTextView view, int lineNum, int col, TokenInfo info, ParseReason reason)
+        public override Declarations GetDeclarations(IVsTextView view, int lineNum, int col, TokenInfo info, ParseReason reason)
         {
             string line = source.GetLine(lineNum);
 
@@ -69,31 +70,13 @@ namespace BooLangService
         private Declarations GetScopedIntellisenseDeclarations(int lineNum)
         {
             // get the node that the caret is in
-            IBooParseTreeNode scope = GetContainingNode(compiledDocument, lineNum);
+            Keywords keywords = new Keywords();
             BooParseTreeNodeFlatterner flattener = new BooParseTreeNodeFlatterner();
-            BooParseTreeNodeList displayableInScope = flattener.FlattenFrom(scope);
+            IBooParseTreeNode scope = compiledDocument.GetScopeByLine(lineNum);
 
-            // tidy em up
-            displayableInScope.Sort();
+            keywords.InjectIntoScope(scope);
 
-            return new BooDeclarations(displayableInScope);
-        }
-
-        // extract the next method...
-        private IBooParseTreeNode GetContainingNode(IBooParseTreeNode node, int line)
-        {
-            foreach (IBooParseTreeNode child in node.Children)
-            {
-                IBooParseTreeNode foundNode = GetContainingNode(child, line);
-
-                if (foundNode != null)
-                    return foundNode;
-            }
-
-            if (node.StartLine <= line && node.EndLine >= line)
-                return node;
-
-            return null;
+            return new BooDeclarations(flattener.FlattenFrom(scope));
         }
 
         public override Methods GetMethods(int line, int col, string name)
@@ -101,7 +84,7 @@ namespace BooLangService
             throw new NotImplementedException();
         }
 
-        public override string Goto(Microsoft.VisualStudio.VSConstants.VSStd97CmdID cmd, Microsoft.VisualStudio.TextManager.Interop.IVsTextView textView, int line, int col, out Microsoft.VisualStudio.TextManager.Interop.TextSpan span)
+        public override string Goto(VSConstants.VSStd97CmdID cmd, IVsTextView textView, int line, int col, out TextSpan span)
         {
             throw new NotImplementedException();
         }
