@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="Boo.Lang.Compiler, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependencies\boo\bin\Boo.Lang.Compiler.dll</HintPath>
+      <HintPath>..\..\Dependencies\boo\build\Boo.Lang.Compiler.dll</HintPath>
     </Reference>
     <Reference Include="Boo.Lang.Parser, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,6 +85,7 @@
     <Compile Include="Document\Nodes\AbstractTreeNode.cs" />
     <Compile Include="Document\BooDocumentCompiler.cs" />
     <Compile Include="Document\BooDocumentVisitor.cs" />
+    <Compile Include="Document\Nodes\BooParseTreeNodeList.cs" />
     <Compile Include="Document\Nodes\ClassTreeNode.cs" />
     <Compile Include="Document\DocumentParser.cs" />
     <Compile Include="Document\DocumentVisualiser.cs" />

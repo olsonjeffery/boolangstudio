@@ -27,7 +27,7 @@ namespace BooLangService
             // get the node that the caret is in
             IBooParseTreeNode scope = GetContainingNode(compiledDocument, line);
 
-            List<IBooParseTreeNode> displayableInScope = new List<IBooParseTreeNode>();
+            BooParseTreeNodeList displayableInScope = new BooParseTreeNodeList();
 
             // add anything "below" the scope (e.g. locals in a method, methods in a class)
             displayableInScope.AddRange(FlattenDown(scope.Children));
@@ -37,9 +37,7 @@ namespace BooLangService
             displayableInScope.AddRange(FlattenUp(scope));
 
             // tidy em up
-            displayableInScope.Sort(delegate(IBooParseTreeNode x, IBooParseTreeNode y) {
-                return x.Name.CompareTo(y.Name);
-            });
+            displayableInScope.Sort();
 
             return new BooDeclarations(displayableInScope);
         }
