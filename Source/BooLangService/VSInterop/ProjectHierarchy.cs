@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using EnvDTE;
+using Microsoft.VisualStudio.Package;
 using VSLangProj;
 
 namespace Boo.BooLangService.VSInterop
 {
     public class ProjectHierarchy
     {
-        private readonly BooLangService language;
+        private readonly LanguageService language;
 
-        public ProjectHierarchy(BooLangService language)
+        public ProjectHierarchy(LanguageService language)
         {
             this.language = language;
         }
@@ -40,6 +41,8 @@ namespace Boo.BooLangService.VSInterop
                     projRef.Target = reference.SourceProject.Name;
                     projRef.IsAssembly = true;
                 }
+
+                references.Add(projRef);
             }
 
             return references;

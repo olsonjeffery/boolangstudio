@@ -2,7 +2,7 @@ using Boo.BooLangService.Intellisense;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [Scopable, IntellisenseVisible]
-    public class NamespaceTreeNode : AbstractTreeNode
+    [IntellisenseVisible]
+    public class KeywordTreeNode : AbstractTreeNode
     {}
 }

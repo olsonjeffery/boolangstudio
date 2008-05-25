@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Intellisense;
 using Microsoft.VisualStudio.Package;
@@ -16,11 +14,12 @@ namespace Boo.BooLangService
     public class BooDeclarations : Declarations
     {
         private readonly IntellisenseIconResolver icons = new IntellisenseIconResolver();
-        private readonly IList<IBooParseTreeNode> members = new List<IBooParseTreeNode>();
+        private readonly BooParseTreeNodeList members;
 
-        public BooDeclarations(IList<IBooParseTreeNode> members)
+        public BooDeclarations(BooParseTreeNodeList members)
         {
             this.members = members;
+            this.members.Sort();
         }
 
         public override int GetCount()
