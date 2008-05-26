@@ -109,10 +109,10 @@
     <Compile Include="Intellisense\IntellisenseIcon.cs" />
     <Compile Include="Intellisense\IntellisenseIconResolver.cs" />
     <Compile Include="Intellisense\Keywords.cs" />
+    <Compile Include="LineIndenter.cs" />
     <Compile Include="VSInterop\ProjectHierarchy.cs" />
     <Compile Include="VSInterop\ProjectReference.cs" />
     <Compile Include="BooLangService.cs" />
-    <Compile Include="BooLanguageLineIndent.cs" />
     <Compile Include="BooScanner.cs" />
     <Compile Include="BooScannerResolvers.cs" />
     <Compile Include="BooScope.cs" />
