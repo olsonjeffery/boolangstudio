@@ -56,7 +56,6 @@
 	<property name="nosign" value="false" />
 	
 	<property name="nant-csc-keyfile-bug" value="${version::get-minor(assemblyname::get-version(assembly::get-name(nant::get-assembly()))) &lt; 86}" />
-
 	
 	<target name="sign">
 		<property name="keyfile.path" value="src/boo.snk" overwrite="false" />
@@ -350,6 +349,7 @@
 		<!-- MSBuild doesn't appear to be supported in mono-2.0 -->
 	</target>
 	
+	<property name="keyfile.path" value="src\boo.snk"/>
 	<target name="msbuild">
 		<booc target="library"
 			output="${build.dir}/Boo.Microsoft.Build.Tasks.dll"
@@ -360,6 +360,7 @@
 			<sources basedir="src/Boo.Microsoft.Build.Tasks">
 				<include name="**/*.boo" />
 			</sources>
+			
 			<references basedir="${build.dir}">
 				<include name="Microsoft.Build.Utilities.dll" />
 				<include name="Microsoft.Build.Tasks.dll" />
@@ -448,7 +449,7 @@
 			verbose="${verbose}"
 			debug="${debug}"
 			unless="${skip.Boo.Lang.Extensions}"
-			exename=".\build\booc.exe">
+			exename="build\booc.exe">
 			<sources basedir="src/Boo.Lang.Extensions">
 				<include name="**/*.boo" />
 			</sources>
@@ -778,7 +779,7 @@
 	</target>
 	
 	<target name="SVNUtil" depends="core">
-		<booc target="library" output="${build.dir}/SVNUtil.dll">
+		<booc target="library" output="${build.dir}/SVNUtil.dll" 			exename="build\booc.exe">
 			<sources basedir="scripts">
 				<include name="SVNUtil.boo" />
 			</sources>

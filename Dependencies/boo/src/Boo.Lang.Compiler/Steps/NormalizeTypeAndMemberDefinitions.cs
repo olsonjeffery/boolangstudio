@@ -75,6 +75,8 @@ namespace Boo.Lang.Compiler.Steps
 			{
 				node.Modifiers |= TypeMemberModifiers.Protected;
 			}
+
+			LeaveMember(node);
 		}
 		
 		override public void LeaveProperty(Property node)
@@ -201,6 +203,17 @@ namespace Boo.Lang.Compiler.Steps
 					node.DeclaringType.Modifiers |= TypeMemberModifiers.Abstract;
 				}
 			}
+
+			//protected in a sealed type == private, so let the compiler mark
+			//them private in order to get unused members warnings free
+			//(and to make IL analysis tools happy as a bonus)
+			if (node.IsProtected && node.DeclaringType.IsFinal)
+			{
+				node.Modifiers ^= TypeMemberModifiers.Protected;
+				node.Modifiers |= TypeMemberModifiers.Private;
+				if (node.IsProtected && node.IsPrivate)
+					throw new System.Exception("foo");
+			}
 		}
 
 		bool IsInterface(TypeDefinition node)
@@ -210,10 +223,12 @@ namespace Boo.Lang.Compiler.Steps
 		
 		override public void LeaveConstructor(Constructor node)
 		{
-			if (!node.IsVisibilitySet)
-			{
+			if (node.IsVisibilitySet) return;
+
+			if (!node.IsStatic)
 				node.Modifiers |= TypeMemberModifiers.Public;
-			}
+			else
+				node.Modifiers |= TypeMemberModifiers.Private;
 		}
 
 	}

@@ -106,25 +106,19 @@ namespace Boo.Lang.Parser
 			return parser;
 		}
 		
-		public static antlr.TokenStream CreateBooLexer(int tabSize, string readerName, TextReader reader, bool enableVSLexer)
+		public static antlr.TokenStream CreateBooLexer(int tabSize, string readerName, TextReader reader)
 		{
 			antlr.TokenStreamSelector selector = new antlr.TokenStreamSelector();
 		
 			BooLexer lexer = new BooLexer(reader);
 			lexer.setFilename(readerName);
-			lexer.Initialize(selector, tabSize, BooToken.TokenCreator,enableVSLexer);
+			lexer.Initialize(selector, tabSize, BooToken.TokenCreator);
 		
 			IndentTokenStreamFilter filter = new IndentTokenStreamFilter(lexer, WS, INDENT, DEDENT, EOL);
 			selector.select(filter);
 			
 			return selector;
 		}
-
-        public static antlr.TokenStream CreateBooLexer(int tabSize, string readerName, TextReader reader)
-        {
-            return CreateBooLexer(tabSize, readerName, reader, false);
-        }
-
 
 		override public void reportError(antlr.RecognitionException x)
 		{

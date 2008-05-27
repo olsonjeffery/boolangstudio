@@ -367,7 +367,7 @@
     <value>'{0}' is not callable. Event type must be callable.</value>
   </data>
   <data name="BCE0083" xml:space="preserve">
-    <value>Static constructors must be public.</value>
+    <value>Static constructors must be private.</value>
   </data>
   <data name="BCE0084" xml:space="preserve">
     <value>Static constructors can not declare parameters.</value>

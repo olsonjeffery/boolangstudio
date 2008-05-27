@@ -176,14 +176,7 @@ using Boo.Lang.Parser.Util;
 	TokenStreamRecorder _erecorder;
 	
 	antlr.TokenStreamSelector _selector;
-
-    protected bool inVSLexerMode = false;
-    internal void Initialize(antlr.TokenStreamSelector selector, int tabSize, antlr.TokenCreator tokenCreator, bool enableVSLexer)
-    {
-        inVSLexerMode = enableVSLexer;
-        Initialize(selector, tabsize, tokenCreator);
-    }
-
+	
 	internal void Initialize(antlr.TokenStreamSelector selector, int tabSize, antlr.TokenCreator tokenCreator)
 	{
 		setTabSize(tabSize);
@@ -333,87 +326,6 @@ tryAgain:
 				{
 					try     // for lexical error handling
 					{
-
-                         // here is where we do our inVSLexerMode
-                        // check and, if so, take a brief refrain
-                        // to check if some situations are satisfied
-                        if (inVSLexerMode)
-                        {
-
-                            // first let's check if our current token
-                            // is a ML_COMMENT closer token..
-                            if (cached_LA1 == '*' && cached_LA2 == '/')
-                            {
-
-                                // return a final ML_COMMENT token
-                                // and set inML_COMMENT to false
-                                match("*/");
-                                returnToken_ = makeToken(BooLexer.ML_COMMENT);
-                                returnToken_.setFilename("LEAVINGML_COMMENT");
-                                returnToken_.setText("*/");
-                                theRetToken = returnToken_;
-                                goto skiptoend;
-                            }
-
-                            // looking for an openening ml_comment
-                            else if ((cached_LA1 == '/') && (cached_LA2 == '*'))
-                            {
-                                // we are in a ML_COMMENT region... everything from here
-                                // on out will be marked as an ML_COMMENT token until
-                                // we stumble upon a ML_COMMENT closer, as above
-                                // build an ML_COMMENT token
-                                match("/*");
-                                returnToken_ = makeToken(BooLexer.ML_COMMENT);
-                                returnToken_.setText("/*");
-                                theRetToken = returnToken_;
-                                goto skiptoend;
-
-                            }
-                            // it turns out that we should be good sports and,
-                            // if we are inML_COMMENT, we still have to catch
-                            // and deal with those EOF_CHARs.. we because
-                            // we have the possibility of never returning
-                            // the EOL/EOF token and thus getting stuck
-                            // in an infinite hell upstream, because the
-                            // the BooLangStudio scanner is waiting for it's
-                            // EOF_CHAR token, which it'll never get because
-                            // of teh struct below
-                            else if (cached_LA1 == EOF_CHAR)
-                            {
-                                returnToken_ = makeToken(BooLexer.EOF);
-                                theRetToken = returnToken_;
-                                goto skiptoend;
-                            }
-
-                            // SL_COMMENT variation 1
-                            if ((cached_LA1 == '/') && (cached_LA2 == '/'))
-                            {
-                                // block off everything else in this line
-                                match("//");
-                                returnToken_ = makeToken(BooLexer.SL_COMMENT);
-                                while (cached_LA1 != EOF_CHAR && cached_LA1 != '\n')
-                                {
-                                    consume();
-                                }
-                                returnToken_.setText(text.ToString());
-                                theRetToken = returnToken_;
-                                goto skiptoend;
-                            }
-                            else if ((cached_LA1 == '#') && ((LA(2) >= '\u0003' && LA(2) <= '\ufffe')))
-                            {
-                                // ditto as above
-                                match('#');
-                                returnToken_ = makeToken(BooLexer.SL_COMMENT);
-                                while (cached_LA1 != '\n' && cached_LA1 != EOF_CHAR)
-                                {
-                                    consume();
-                                }
-                                returnToken_.setText(text.ToString());
-                                theRetToken = returnToken_;
-                                goto skiptoend;
-                            }
-                        }
-
 						switch ( cached_LA1 )
 						{
 						case '\\':
@@ -637,27 +549,10 @@ tryAgain:
 							}
 						else
 						{
-                            // trying to short-circuit
-                            // the lexer from pooping itself
-                            // when it runs into a long
-                            // '!' char...
-                            //
-                            // This needs to stay where it is.. as a "last resort"
-                            // before throwing an exception...
-                            if (inVSLexerMode && cached_LA1 == '!')
-                            {
-                                // cut some corners
-                                match('!');
-                                returnToken_ = makeToken(BooLexer.ID_LETTER);
-                                returnToken_.setText("!");
-                                theRetToken = returnToken_;
-                            }
-
-							else if (cached_LA1==EOF_CHAR) { uponEOF(); returnToken_ = makeToken(Token.EOF_TYPE); }
+							if (cached_LA1==EOF_CHAR) { uponEOF(); returnToken_ = makeToken(Token.EOF_TYPE); }
 				else {throw new NoViableAltForCharException(cached_LA1, getFilename(), getLine(), getColumn());}
 						}
 						break; }
-                        skiptoend:
 						if ( null==returnToken_ ) goto tryAgain; // found SKIP token
 						_ttype = returnToken_.Type;
 						returnToken_.Type = _ttype;
