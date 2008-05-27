@@ -10,6 +10,7 @@ namespace Boo.BooLangService.Intellisense
 
         public IntellisenseIconResolver()
         {
+            treeNodeIconMap.Add(typeof(KeywordTreeNode), IntellisenseIcon.Macro);
             treeNodeIconMap.Add(typeof(ClassTreeNode), IntellisenseIcon.Class);
             treeNodeIconMap.Add(typeof(MethodTreeNode), IntellisenseIcon.Method);
             treeNodeIconMap.Add(typeof(LocalTreeNode), IntellisenseIcon.Variable);

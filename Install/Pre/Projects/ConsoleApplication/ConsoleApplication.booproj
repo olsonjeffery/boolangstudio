@@ -24,6 +24,14 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Boo.Lang">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BooBinPath)\Boo.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang.Useful">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BooBinPath)\Boo.Lang.Useful.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.boo">

@@ -47,11 +47,34 @@ namespace Boo.BooLangService.Document
             return base.EnterClassDefinition(node);
         }
 
+        public override void OnField(Field node)
+        {
+            Push(new LocalTreeNode(), node.Name, node.LexicalInfo.Line);
+
+            base.OnField(node);
+
+            Pop(node.LexicalInfo.Line);
+        }
+
         public override bool EnterMethod(Method node)
         {
             Push(new MethodTreeNode(), node.Name, node.LexicalInfo.Line);
 
             return base.EnterMethod(node);
+        }
+
+        public override bool EnterTryStatement(TryStatement node)
+        {
+            Push(new TryTreeNode(), "", node.LexicalInfo.Line);
+
+            return base.EnterTryStatement(node);
+        }
+
+        public override void LeaveTryStatement(TryStatement node)
+        {
+            base.LeaveTryStatement(node);
+
+            Pop(node.ProtectedBlock.EndSourceLocation.Line);
         }
 
         public override void OnLocal(Local node)
@@ -90,7 +113,7 @@ namespace Boo.BooLangService.Document
         private void Pop(int endLine)
         {
             // if the scope is incomplete, then there won't be an end so just use the start
-            currentScope.EndLine = (endLine == -1) ? currentScope.StartLine : endLine;
+            currentScope.EndLine = endLine;
             currentScope = currentScope.Parent;
         }
 

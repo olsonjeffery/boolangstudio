@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -15,11 +15,6 @@
     <BaseAddress>4194304</BaseAddress>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <NoStdLib>false</NoStdLib>
@@ -44,18 +39,6 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Boo.Lang, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\build\Boo.Lang.dll</HintPath>
-    </Reference>
-    <Reference Include="Boo.Lang.Compiler, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\build\Boo.Lang.Compiler.dll</HintPath>
-    </Reference>
-    <Reference Include="Boo.Lang.Parser, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\build\Boo.Lang.Parser.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <HintPath>..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.dll</HintPath>
     </Reference>
@@ -72,6 +55,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Boo.Lang.Compiler\Boo.Lang.Compiler-VS2005.csproj">
+      <Project>{7EAC855C-AB70-4CEB-9B9A-8B60712277E2}</Project>
+      <Name>Boo.Lang.Compiler-VS2005</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Boo.Lang.Parser\Boo.Lang.Parser-VS2005.csproj">
+      <Project>{BA0306B9-A10B-4D29-B219-0DFBE24741E8}</Project>
+      <Name>Boo.Lang.Parser-VS2005</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Boo.Lang\Boo.Lang-VS2005.csproj">
+      <Project>{A359E52E-5E90-40F3-A5F0-257FE2D545EE}</Project>
+      <Name>Boo.Lang-VS2005</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
