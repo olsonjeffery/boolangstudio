@@ -100,11 +100,11 @@ namespace Boo.BooLangService
             _currentLine = source;
             if (_currentLine == string.Empty)
             {
-                lexer = BooParser.CreateBooLexer(1, "", new StringReader(" "), true);
+                lexer = BooParser.CreateBooLexer(1, "", new StringReader(" "));
             }
             else
             {
-               lexer = BooParser.CreateBooLexer(1, "", new StringReader(_currentLine), true);
+               lexer = BooParser.CreateBooLexer(1, "", new StringReader(_currentLine));
             }
         }
         #endregion
