@@ -40,7 +40,12 @@ namespace Boo.BooLangService
             }
             catch (Exception e)
             {
-                // supress that shiiet
+                // deal with the event of a trailing excl. point
+                if (_currentLine[_currentLine.Length - 1] == '!')
+                {
+                    SetSource(_currentLine.Substring(0, _currentLine.Length - 1) + 'A', _offset);
+                }
+                    
             }
 
             // resolve token start and stop positions. Need
@@ -94,9 +99,11 @@ namespace Boo.BooLangService
         }
 
         private string _currentLine;
+        private int _offset;
 
         public  void SetSource(string source, int offset)
         {
+            _offset = offset;
             _currentLine = source;
             if (_currentLine == string.Empty)
             {
