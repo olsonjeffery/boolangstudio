@@ -38,7 +38,7 @@ namespace Boo.BooLangService
             {
                 _reusableToken = lexer.nextToken() as antlr.CommonToken;
             }
-            catch (antlr.TokenStreamRecognitionException e)
+            catch (Exception e)
             {
                 // supress that shiiet
             }
