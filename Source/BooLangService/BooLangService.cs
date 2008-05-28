@@ -5,6 +5,7 @@ using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.VSInterop;
 using BooLangService;
+using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
 using VSLangProj;
@@ -15,9 +16,6 @@ namespace Boo.BooLangService
     [Guid(GuidList.guidBooLangServiceClassString)]
     public class BooLangService : LanguageService
     {
-        private readonly NamespaceFinder availableNamespaces = new NamespaceFinder();
-        private const string ImportKeyword = "import";
-
         #region ctor
         public BooLangService()
             : base()
@@ -142,6 +140,5 @@ namespace Boo.BooLangService
         }
 
        #endregion
-
     }
 }

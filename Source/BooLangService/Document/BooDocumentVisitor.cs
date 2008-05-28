@@ -7,17 +7,17 @@ namespace Boo.BooLangService.Document
 {
     public class BooDocumentVisitor : AbstractTransformerCompilerStep
     {
-        private readonly IBooParseTreeNode root = new RootTreeNode();
+        private readonly IBooParseTreeNode document = new DocumentTreeNode();
         private IBooParseTreeNode currentScope;
 
-        public IBooParseTreeNode Root
+        public IBooParseTreeNode Document
         {
-            get { return root; }
+            get { return document; }
         }
 
         public override void Run()
         {
-            currentScope = root;
+            currentScope = document;
 
             Visit(CompileUnit);
         }
