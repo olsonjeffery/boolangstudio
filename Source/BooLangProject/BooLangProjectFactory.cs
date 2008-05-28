@@ -22,6 +22,7 @@ namespace Boo.BooLangProject
             this.package = (ProjectPackage)package;
             this.BuildEngine.GlobalProperties["BoocToolPath"] = new BuildProperty("BoocToolPath", booBinPath);
             this.BuildEngine.GlobalProperties["BooBinPath"] = new BuildProperty("BooBinPath",booBinPath);
+			this.BuildEngine.GlobalProperties["GenerateFullPaths"] = new BuildProperty("GenerateFullPaths", "True");
         }
 
         protected override ProjectNode CreateProject()
