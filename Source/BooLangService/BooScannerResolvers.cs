@@ -18,8 +18,8 @@ namespace Boo.BooLangService
             int oneCharBack = token.getColumn() - 1;
             int lengthOfTokenText = token.getText() == null ? 0 : token.getText().Length;
             int oneCharAfterToken = token.getColumn() + lengthOfTokenText;
-
-            // single quoted string
+            
+            // single/double quoted string
             if (token.Type == BooLexer.SINGLE_QUOTED_STRING || token.Type == BooLexer.DOUBLE_QUOTED_STRING)
             {
                 tokenInfo.StartIndex = oneCharBack;

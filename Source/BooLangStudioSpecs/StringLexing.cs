@@ -163,7 +163,7 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> parenTokens = new List<TokenInfo>(from i in tokens
                                                               where i.Type == TokenType.Delimiter
                                                               select i);
-            Assert.IsTrue(parenTokens.Count == 2);
+            Assert.IsTrue(parenTokens.Count == 2, "Expected 2, actual paren count: "+parenTokens.Count.ToString());
             Assert.IsTrue(parenTokens[0].StartIndex == 15, "LPAREN start Actual " + parenTokens[0].StartIndex);
             Assert.IsTrue(parenTokens[0].EndIndex == 15, "LPAREN end Actual " + parenTokens[0].EndIndex);
             Assert.IsTrue(parenTokens[1].StartIndex == 34, "LPAREN start Actual " + parenTokens[0].StartIndex);
