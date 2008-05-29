@@ -37,7 +37,10 @@ namespace Boo.BooLangService
         {
             get
             {
-                return _internalCurrentLinePosition;
+                if (_internalCurrentLinePosition >= _currentLine.Length)
+                    return _currentLine.Length - 1;
+                else
+                    return _internalCurrentLinePosition;
             }
         }
 
