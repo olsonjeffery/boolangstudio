@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  
+  <?define BooVersion = 0.8.2 ?>
+  <?define ProductName = BooLangStudio ?>
+  <?define ProductVersion = 0.0.2 ?>
+  <?define BOOCTOOLPATH_REGSAFE = . ?>
+  <?define BLSBINSPATH_REGSAFE = . ?>
+
+  
+  <Product Id="ca6530a3-aba6-4511-8397-e36142f532bf" 
+             Name="$(var.ProductName)" 
+             Language="1033" 
+             Version="$(var.ProductVersion)" 
+             Manufacturer="OSS" 
+             UpgradeCode="daa52bdb-2051-40cb-9aaf-f5079f747df2">
+      
+		  <Package InstallerVersion="200" Compressed="yes" />
+
+		  <Media Id="1" Cabinet="$(var.ProductName).cab" EmbedCab="yes" />
+
+		  <Directory Id="TARGETDIR" Name="SourceDir">
+        <Directory Id="ProgramFilesFolder">
+          <Directory Id="INSTALLLOCATION" Name="BooLangStudio">
+					  <Component Id="ProductComponent" Guid="6f52a39f-3374-41c1-a8df-df2eb12a8309">
+              <!--File Id="FoobarEXE" 
+                    Name="Foobar10.exe" 
+                    DiskId="1"
+                    Source="FoobarAppl10.exe" 
+                    Vital="yes">
+
+                <Shortcut Id="startmenuFoobar10" Directory="ProgramMenuDir" Name="Foobar10"
+                  LongName="Foobar 1.0" WorkingDirectory='INSTALLDIR'
+                  Icon="Foobar10.exe" IconIndex="0" />
+                
+              </File-->
+
+              <!--
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\MSBuild\SafeImports]
+              "Boo_0.8.1"="@BOOCTOOLPATH_REGSAFE@\\Boo.Microsoft.Build.targets"
+              -->
+              <RegistryKey Id="RegTargets"
+                           Action="create"
+                           Root="HKCU"
+                           Key="Software\Microsoft\VisualStudio\9.0\Configuration\MSBuild\SafeImports">
+
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="Boo_$(var.BooVersion)"
+                               Value="$(var.BOOCTOOLPATH_REGSAFE)\\Boo.Microsoft.Build.targets" />
+              </RegistryKey>           
+
+              <!--
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\InstalledProducts\BooLangStudioPackage]
+              @="#110"
+              "Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
+              "ProductDetails"="#112"
+              "PID"="@BLS_VERSION@"
+              "LogoID"="#400"
+              -->
+              <RegistryKey Id="RegInstalledProducts"
+                           Action="create"
+                           Root="HKCU"
+                           Key="Software\Microsoft\VisualStudio\9.0\Configuration\InstalledProducts\BooLangStudioPackage">
+
+                <RegistryValue Action="write"
+                               Type="string"
+                               Value="#110" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="Package"
+                               Value="{55663be2-a969-4279-82c5-a6f27936f4f7}" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="ProductDetails"
+                               Value="#112" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="PID"
+                               Value="$(var.ProductVersion)" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="LogoID"
+                               Value="#400" />
+
+              </RegistryKey>
+
+              <!--              
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}]
+              @="Boo.BooLangStudio.BooLangStudioPackage, BooLangStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              "InprocServer32"="C:\\WINDOWS\\system32\\mscoree.dll"
+              "Class"="Boo.BooLangStudio.BooLangStudioPackage"
+              "Assembly"="BooLangStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              -->
+              <RegistryKey Id="RegPackages"
+                           Action="create"
+                           Root="HKCU"
+                           Key="Software\Microsoft\VisualStudio\9.0\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}">
+
+                <RegistryValue Action="write"
+                               Type="string"
+                               Value="Boo.BooLangStudio.BooLangStudioPackage, BooLangStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="InprocServer32"
+                               Value="C:\\WINDOWS\\system32\\mscoree.dll" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="Class"
+                               Value="Boo.BooLangStudio.BooLangStudioPackage" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="Assembly"
+                               Value="BooLangStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+
+              </RegistryKey>
+              
+              
+              <!--
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Languages\File Extensions\.boo]
+              @="{bc81f858-0ab5-45a0-985b-c160bcde7390}"
+              -->
+              <RegistryKey Action="create"
+                           Root="HKCU"
+                           Key="Software\Microsoft\VisualStudio\9.0\Configuration\Languages\File Extensions\.boo">
+
+                <RegistryValue Action="write"
+                               Type="string"
+                               Value="{bc81f858-0ab5-45a0-985b-c160bcde7390}" />
+              </RegistryKey>
+              
+              <!--
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Languages\Language Services\Boo]
+              @="{bc81f858-0ab5-45a0-985b-c160bcde7390}"
+              "Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
+              "LangResID"=dword:00000000
+              "CodeSense"=dword:00000001
+              "MatchBraces"=dword:00000001
+              "EnableCommenting"=dword:00000001
+              "ShowCompletion"=dword:00000000
+              -->
+              <RegistryKey Action="create"
+                           Root="HKCU"
+                           Key="Software\Microsoft\VisualStudio\9.0\Configuration\Languages\Language Services\Boo">
+
+                <RegistryValue Action="write"
+                               Type="string"
+                               Value="{bc81f858-0ab5-45a0-985b-c160bcde7390}" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="Package"
+                               Value="{55663be2-a969-4279-82c5-a6f27936f4f7}" />
+                <RegistryValue Action="write"
+                               Type="integer"
+                               Name="LangResID"
+                               Value="1" />
+                <RegistryValue Action="write"
+                               Type="integer"
+                               Name="CodeSense"
+                               Value="1" />
+                <RegistryValue Action="write"
+                               Type="integer"
+                               Name="MatchBraces"
+                               Value="1" />
+                <RegistryValue Action="write"
+                               Type="integer"
+                               Name="EnableCommenting"
+                               Value="1" />
+                <RegistryValue Action="write"
+                               Type="integer"
+                               Name="ShowCompletion"
+                               Value="0" />
+              </RegistryKey>
+              
+              <!--
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}]
+              "ID"=dword:00000001
+              "MinEdition"="Standard"
+              "ProductVersion"="@BLS_VERSION@"
+              "ProductName"="BooLangService"
+              "CompanyName"="Boo"
+              "CodeBase"="@BLSBINSPATH_REGSAFE@\\BooLangStudio.dll"
+              "BooBinPath"="@BOOCTOOLPATH_REGSAFE@"
+              -->
+              <RegistryKey Action="create"
+                          Root="HKCU"
+                          Key="Software\Microsoft\VisualStudio\9.0\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}">
+
+                <RegistryValue Action="write"
+                               Type="integer"
+                               Name="ID"
+                               Value="1" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="MinEdition"
+                               Value="Standard" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="ProductVersion"
+                               Value="$(var.ProductVersion)" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="ProductName"
+                               Value="$(var.ProductName)" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="CompanyName"
+                               Value="Boo" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="CodeBase"
+                               Value="$(var.BLSBINSPATH_REGSAFE)\\$(var.ProductName).dll" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="BooBinPath"
+                               Value="$(var.BOOCTOOLPATH_REGSAFE)" />
+              </RegistryKey>
+              
+              <!--
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}]
+              @="BooLangProjectFactory"
+              "DisplayName"="Boo"
+              "DisplayProjectFileExtensions"="Boo Project Files (*.booproj);*.booproj"
+              "Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
+              "DefaultProjectExtension"="booproj"
+              "PossibleProjectExtensions"="booproj"
+              "ProjectTemplatesDir"="e:\\projects\\BooStudio\\Source\\BooLangStudio\\bin\\Debug\\.\\NullPath"
+              "Language(VsTemplate)"="Boo"
+              -->
+              <RegistryKey Action="create"
+                          Root="HKCU"
+                          Key="Software\Microsoft\VisualStudio\9.0\Configuration\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}">
+
+                <RegistryValue Action="write"
+                               Type="string"
+                               Value="BooLangProjectFactory" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="DisplayName"
+                               Value="Boo" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="DisplayProjectFileExtensions"
+                               Value="Boo Project Files (*.booproj);*.booproj" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="Package"
+                               Value="{55663be2-a969-4279-82c5-a6f27936f4f7}" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="DefaultProjectExtension"
+                               Value="booproj" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="PossibleProjectExtensions"
+                               Value="booproj" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="ProjectTemplatesDir"
+                               Value=".\\NullPath" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="Language(VsTemplate)"
+                               Value="Boo" />
+              </RegistryKey>
+              
+              <!--
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\NewProjectTemplates\TemplateDirs\{55663be2-a969-4279-82c5-a6f27936f4f7}\/1]
+              @="Boo"
+              "SortPriority"=dword:00000064
+              "TemplatesDir"="e:\\projects\\BooStudio\\Source\\BooLangStudio\\bin\\Debug\\.\\NullPath"
+              -->
+              <RegistryKey Action="create"
+                          Root="HKCU"
+                          Key="Software\Microsoft\VisualStudio\9.0\Configuration\NewProjectTemplates\TemplateDirs\{55663be2-a969-4279-82c5-a6f27936f4f7}\/1">
+
+                <RegistryValue Action="write"
+                               Type="string"
+                               Value="Boo" />
+                <RegistryValue Action="write"
+                               Type="integer"
+                               Name="SortPriority"
+                               Value="64" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="TemplatesDir"
+                               Value=".\\NullPath" />
+              </RegistryKey>
+              
+              <!--
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}\AddItemTemplates\TemplateDirs\{55663be2-a969-4279-82c5-a6f27936f4f7}\/1]
+              @="Boo"
+              "TemplatesDir"="e:\\projects\\BooStudio\\Source\\BooLangStudio\\bin\\Debug\\NullPath"
+              "SortPriority"=dword:00000020
+              -->
+              <RegistryKey Action="create"
+                          Root="HKCU"
+                          Key="Software\Microsoft\VisualStudio\9.0\Configuration\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}\AddItemTemplates\TemplateDirs\{55663be2-a969-4279-82c5-a6f27936f4f7}\/1">
+
+                <RegistryValue Action="write"
+                               Type="string"
+                               Value="Boo" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="TemplatesDir"
+                               Value=".\\NullPath" />
+                <RegistryValue Action="write"
+                               Type="integer"
+                               Name="SortPriority"
+                               Value="20" />
+              </RegistryKey>
+              
+              <!--
+              [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Services\{bc81f858-0ab5-45a0-985b-c160bcde7390}]
+              @="{55663be2-a969-4279-82c5-a6f27936f4f7}"
+              "Name"="BooLangService"
+              -->
+              <RegistryKey Action="create"
+                          Root="HKCU"
+                          Key="Software\Microsoft\VisualStudio\9.0\Configuration\Services\{bc81f858-0ab5-45a0-985b-c160bcde7390}">
+
+                <RegistryValue Action="write"
+                               Type="string"
+                               Value="{55663be2-a969-4279-82c5-a6f27936f4f7}" />
+                <RegistryValue Action="write"
+                               Type="string"
+                               Name="Name"
+                               Value="$(var.ProductName)" />
+              </RegistryKey>
+
+            </Component>
+
+				  </Directory>
+			  </Directory>
+		  </Directory>
+
+      <Feature Id="ProductFeature" Title="All" Level="1">
+			  <ComponentRef Id="ProductComponent" />
+		  </Feature>
+
+      <!--Icon Id="Foobar10.exe" SourceFile="FoobarAppl10.exe" /-->
+
+    </Product>
+</Wix>
