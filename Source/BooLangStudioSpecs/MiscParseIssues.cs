@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
+using Xunit;
 using Microsoft.VisualStudio.Package;
 using System.IO;
-using Context = MbUnit.Framework.TestFixtureAttribute;
-using Spec = MbUnit.Framework.TestAttribute;
+using Xunit;
+using Spec = Xunit.FactAttribute;
 
 namespace Boo.BooLangStudioSpecs
 {
 
-    [Context]
+    
     public class WhenParsingMalformedStringTokensWithNoClosingQuotes : LexingBaseFixture
     {
-        public override void SetUp()
+        public WhenParsingMalformedStringTokensWithNoClosingQuotes()
+            : base()
         {
-            base.SetUp();
 
         }
 
@@ -59,19 +59,19 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> stringTokens = new List<TokenInfo>(from i in tokens
                                                                where i.Type == TokenType.String
                                                                select i);
-            Assert.IsTrue(stringTokens.Count == 1, "Not expected string token count! Expected 1, Actual: " + stringTokens.Count.ToString());
-            Assert.IsTrue(stringTokens[0].StartIndex == start, "string token start index mismatch! Expected "+start.ToString()+", Actual: " + stringTokens[0].StartIndex.ToString());
-            Assert.IsTrue(stringTokens[0].EndIndex == end, "string token end index mismatch! Expected "+end.ToString()+", Actual: " + stringTokens[0].EndIndex.ToString());
+            Assert.True(stringTokens.Count == 1, "Not expected string token count! Expected 1, Actual: " + stringTokens.Count.ToString());
+            Assert.True(stringTokens[0].StartIndex == start, "string token start index mismatch! Expected "+start.ToString()+", Actual: " + stringTokens[0].StartIndex.ToString());
+            Assert.True(stringTokens[0].EndIndex == end, "string token end index mismatch! Expected "+end.ToString()+", Actual: " + stringTokens[0].EndIndex.ToString());
         }
 
     }
 
-    [Context]
+    
     public class WhenWorkingWithTheInternalParseTracker : LexingBaseFixture
     {
-        public override void SetUp()
+        public WhenWorkingWithTheInternalParseTracker()
+            : base()
         {
-            base.SetUp();
         }
 
         [Spec]
@@ -85,7 +85,7 @@ namespace Boo.BooLangStudioSpecs
             {
                 TokenInfo token = new TokenInfo();
                 moreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref _mlState);
-                Assert.IsTrue(scanner.InternalCurrentLinePosition == token.EndIndex + 1, "Internal track pos mismatch! Expected: "+(token.EndIndex+1).ToString()+" Actual: "+scanner.InternalCurrentLinePosition);
+                Assert.True(scanner.InternalCurrentLinePosition == token.EndIndex + 1, "Internal track pos mismatch! Expected: "+(token.EndIndex+1).ToString()+" Actual: "+scanner.InternalCurrentLinePosition);
                 
                 int lengthCount = 0;
                 if ((token.EndIndex-token.StartIndex+1) >= rawCodeString.Length)

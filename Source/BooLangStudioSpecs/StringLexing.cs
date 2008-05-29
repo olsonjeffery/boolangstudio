@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
 using Microsoft.VisualStudio.Package;
 using System.IO;
-using Context = MbUnit.Framework.TestFixtureAttribute;
-using Spec = MbUnit.Framework.TestAttribute;
+using Xunit;
+using Spec = Xunit.FactAttribute;
 
 namespace Boo.BooLangStudioSpecs
 {
-    [Context]
+    
     public abstract class LexingBaseFixture
     {
         protected antlr.TokenStream lexer;
@@ -18,8 +17,7 @@ namespace Boo.BooLangStudioSpecs
         protected Boo.BooLangService.BooScanner scanner;
         protected string rawCodeString = " ";
 
-        [SetUp]
-        public virtual void SetUp()
+        public LexingBaseFixture()
         {
             lexer = GetLexer(rawCodeString);
             tokens = new List<TokenInfo>();
@@ -50,7 +48,7 @@ namespace Boo.BooLangStudioSpecs
         }
     }
 
-    [Context]
+    
     public abstract class StringLexingContext : LexingBaseFixture
     {
 
@@ -60,19 +58,18 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> trimList = new List<TokenInfo>(from i in tokens
                                                            where i.Type == type
                                                            select i);
-            Assert.IsTrue(trimList.Count == 1, "Expected 1, actual " + trimList.Count.ToString());
+            Assert.True(trimList.Count == 1, "Expected 1, actual " + trimList.Count.ToString());
             trimmed = trimList[0];
         }
     }
 
-    [Context]
+    
     public class WhenParsingSingleQuotes : StringLexingContext
     {
         
-        [SetUp]
-        public override void SetUp()
+        public WhenParsingSingleQuotes()
+            :base()
         {
-            base.SetUp();
             //                0         1         2         3
             //                012345678901234567890123456789012345
             rawCodeString = @"someMethodClass('aStringParameter')";
@@ -86,20 +83,20 @@ namespace Boo.BooLangStudioSpecs
         public void TokenShouldStartAndEndAtAppropIndex()
         {
             BuildTrimmed(TokenType.String);
-            Assert.IsTrue(trimmed.StartIndex == 16, "Failed start index check. Expected 16, Actual " + trimmed.StartIndex.ToString());
-            Assert.IsTrue(trimmed.EndIndex == 33, "Failed end index check. Expected 33, Actual " + trimmed.EndIndex.ToString());
+            Assert.True(trimmed.StartIndex == 16, "Failed start index check. Expected 16, Actual " + trimmed.StartIndex.ToString());
+            Assert.True(trimmed.EndIndex == 33, "Failed end index check. Expected 33, Actual " + trimmed.EndIndex.ToString());
         }
         [Spec]
         public void TokenShouldHaveTokenTypeOfString()
         {
             BuildTrimmed(TokenType.String);
-            Assert.IsTrue(trimmed.Type == TokenType.String);
+            Assert.True(trimmed.Type == TokenType.String);
         }
         [Spec]
         public void TokenShouldHaveTokenColorOfString()
         {
             BuildTrimmed(TokenType.String);
-            Assert.IsTrue(trimmed.Color == TokenColor.String);
+            Assert.True(trimmed.Color == TokenColor.String);
         }
 
         [Spec]
@@ -108,11 +105,11 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> parenTokens = new List<TokenInfo>(from i in tokens
                                                               where i.Type == TokenType.Delimiter
                                                               select i);
-            Assert.IsTrue(parenTokens.Count == 2);
-            Assert.IsTrue(parenTokens[0].StartIndex == 15, "LPAREN start Actual " + parenTokens[0].StartIndex);
-            Assert.IsTrue(parenTokens[0].EndIndex == 15, "LPAREN end Actual " + parenTokens[0].EndIndex);
-            Assert.IsTrue(parenTokens[1].StartIndex == 34, "LPAREN start Actual " + parenTokens[0].StartIndex);
-            Assert.IsTrue(parenTokens[1].EndIndex == 34, "LPAREN end Actual " + parenTokens[0].EndIndex);
+            Assert.True(parenTokens.Count == 2);
+            Assert.True(parenTokens[0].StartIndex == 15, "LPAREN start Actual " + parenTokens[0].StartIndex);
+            Assert.True(parenTokens[0].EndIndex == 15, "LPAREN end Actual " + parenTokens[0].EndIndex);
+            Assert.True(parenTokens[1].StartIndex == 34, "LPAREN start Actual " + parenTokens[0].StartIndex);
+            Assert.True(parenTokens[1].EndIndex == 34, "LPAREN end Actual " + parenTokens[0].EndIndex);
 
         }
     }
@@ -121,13 +118,12 @@ namespace Boo.BooLangStudioSpecs
     /// These tests are repetitive of the ones above.. should merge into a 
     /// single set of data-driven tests
     /// </summary>
-    [Context]
+    
     public class WhenParsingDoubleQuotes : StringLexingContext
     {
-        [SetUp]
-        public override void SetUp()
+        public WhenParsingDoubleQuotes()
+            : base()
         {
-            base.SetUp();
             //               0         1         2         3
             //               01234567890123456678901234567890123345
             rawCodeString = "someMethodClass(\"aStringParameter\")";
@@ -141,20 +137,20 @@ namespace Boo.BooLangStudioSpecs
         public void TokenShouldStartAndEndAtAppropIndex()
         {
             BuildTrimmed(TokenType.String);
-            Assert.IsTrue(trimmed.StartIndex == 16, "Failed start index check. Expected 16, Actual " + trimmed.StartIndex.ToString());
-            Assert.IsTrue(trimmed.EndIndex == 33, "Failed end index check. Expected 33, Actual " + trimmed.EndIndex.ToString());
+            Assert.True(trimmed.StartIndex == 16, "Failed start index check. Expected 16, Actual " + trimmed.StartIndex.ToString());
+            Assert.True(trimmed.EndIndex == 33, "Failed end index check. Expected 33, Actual " + trimmed.EndIndex.ToString());
         }
         [Spec]
         public void TokenShouldHaveTokenTypeOfString()
         {
             BuildTrimmed(TokenType.String);
-            Assert.IsTrue(trimmed.Type == TokenType.String);
+            Assert.True(trimmed.Type == TokenType.String);
         }
         [Spec]
         public void TokenShouldHaveTokenColorOfString()
         {
             BuildTrimmed(TokenType.String);
-            Assert.IsTrue(trimmed.Color == TokenColor.String);
+            Assert.True(trimmed.Color == TokenColor.String);
         }
 
         [Spec]
@@ -163,11 +159,11 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> parenTokens = new List<TokenInfo>(from i in tokens
                                                               where i.Type == TokenType.Delimiter
                                                               select i);
-            Assert.IsTrue(parenTokens.Count == 2, "Expected 2, actual paren count: "+parenTokens.Count.ToString());
-            Assert.IsTrue(parenTokens[0].StartIndex == 15, "LPAREN start Actual " + parenTokens[0].StartIndex);
-            Assert.IsTrue(parenTokens[0].EndIndex == 15, "LPAREN end Actual " + parenTokens[0].EndIndex);
-            Assert.IsTrue(parenTokens[1].StartIndex == 34, "LPAREN start Actual " + parenTokens[0].StartIndex);
-            Assert.IsTrue(parenTokens[1].EndIndex == 34, "LPAREN end Actual " + parenTokens[0].EndIndex);
+            Assert.True(parenTokens.Count == 2, "Expected 2, actual paren count: "+parenTokens.Count.ToString());
+            Assert.True(parenTokens[0].StartIndex == 15, "LPAREN start Actual " + parenTokens[0].StartIndex);
+            Assert.True(parenTokens[0].EndIndex == 15, "LPAREN end Actual " + parenTokens[0].EndIndex);
+            Assert.True(parenTokens[1].StartIndex == 34, "LPAREN start Actual " + parenTokens[0].StartIndex);
+            Assert.True(parenTokens[1].EndIndex == 34, "LPAREN end Actual " + parenTokens[0].EndIndex);
 
         }
 
@@ -176,14 +172,13 @@ namespace Boo.BooLangStudioSpecs
     /// <summary>
     /// also repetitive
     /// </summary>
-    [Context]
+    
     public class WhenParsingTripleQuotes : StringLexingContext
     {
 
-        [SetUp]
-        public override void SetUp()
+        public WhenParsingTripleQuotes()
+            : base()
         {
-            base.SetUp();
             //               0         1            2
             //               012345678901122334567890123456677889
             rawCodeString = "methodCall(\"\"\"tripleQuotes\"\"\")";
@@ -194,20 +189,20 @@ namespace Boo.BooLangStudioSpecs
         public void TokenShouldStartAndEndAtAppropIndex()
         {
             BuildTrimmed(TokenType.String);
-            Assert.IsTrue(trimmed.StartIndex == 11, "Failed start index check. Expected 16, Actual " + trimmed.StartIndex.ToString());
-            Assert.IsTrue(trimmed.EndIndex == 28, "Failed end index check. Expected 33, Actual " + trimmed.EndIndex.ToString());
+            Assert.True(trimmed.StartIndex == 11, "Failed start index check. Expected 16, Actual " + trimmed.StartIndex.ToString());
+            Assert.True(trimmed.EndIndex == 28, "Failed end index check. Expected 33, Actual " + trimmed.EndIndex.ToString());
         }
         [Spec]
         public void TokenShouldHaveTokenTypeOfString()
         {
             BuildTrimmed(TokenType.String);
-            Assert.IsTrue(trimmed.Type == TokenType.String);
+            Assert.True(trimmed.Type == TokenType.String);
         }
         [Spec]
         public void TokenShouldHaveTokenColorOfString()
         {
             BuildTrimmed(TokenType.String);
-            Assert.IsTrue(trimmed.Color == TokenColor.String);
+            Assert.True(trimmed.Color == TokenColor.String);
         }
 
         [Spec]
@@ -216,11 +211,11 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> parenTokens = new List<TokenInfo>(from i in tokens
                                                               where i.Type == TokenType.Delimiter
                                                               select i);
-            Assert.IsTrue(parenTokens.Count == 2);
-            Assert.IsTrue(parenTokens[0].StartIndex == 10, "LPAREN start Actual " + parenTokens[0].StartIndex);
-            Assert.IsTrue(parenTokens[0].EndIndex == 10, "LPAREN end Actual " + parenTokens[0].EndIndex);
-            Assert.IsTrue(parenTokens[1].StartIndex == 29, "LPAREN start Actual " + parenTokens[0].StartIndex);
-            Assert.IsTrue(parenTokens[1].EndIndex == 29, "LPAREN end Actual " + parenTokens[0].EndIndex);
+            Assert.True(parenTokens.Count == 2);
+            Assert.True(parenTokens[0].StartIndex == 10, "LPAREN start Actual " + parenTokens[0].StartIndex);
+            Assert.True(parenTokens[0].EndIndex == 10, "LPAREN end Actual " + parenTokens[0].EndIndex);
+            Assert.True(parenTokens[1].StartIndex == 29, "LPAREN start Actual " + parenTokens[0].StartIndex);
+            Assert.True(parenTokens[1].EndIndex == 29, "LPAREN end Actual " + parenTokens[0].EndIndex);
 
         }
 

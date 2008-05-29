@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
 using Microsoft.VisualStudio.Package;
 using System.IO;
-using Context = MbUnit.Framework.TestFixtureAttribute;
-using Spec = MbUnit.Framework.TestAttribute;
+using Xunit;
+using Spec = Xunit.FactAttribute;
 
 namespace Boo.BooLangStudioSpecs
 {
@@ -17,14 +16,14 @@ namespace Boo.BooLangStudioSpecs
     // I can't wait to switch back to writing tests
     // in boo
 
-    [Context]
+    
     public class WhenParsingCodeStringsWithDoubleWhackLineComments : LexingBaseFixture
     {
         TokenInfo lineCommentToken;
-        [SetUp]
-        public override void SetUp()
+        
+        public WhenParsingCodeStringsWithDoubleWhackLineComments() :
+            base()
         {
-            base.SetUp();
             //               0         1         2         3         4
             //               012345678901234567890123456789012345678901
             rawCodeString = "someMethodCall('a string') // line Comment";
@@ -32,21 +31,21 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> commentTokens = new List<TokenInfo>(from i in tokens
                                                     where i.Type == TokenType.Comment
                                                     select i);
-            Assert.IsTrue(commentTokens.Count == 1);
+            Assert.True(commentTokens.Count == 1);
             lineCommentToken = commentTokens[0];
         }
 
         [Spec]
         public void TheLineCommentTokenShouldStartAtTheProperPlaceAndEndAtEOL()
         {
-            Assert.IsTrue(lineCommentToken.StartIndex == 27, "Expected start at 27, actual " + lineCommentToken.StartIndex.ToString());
-            Assert.IsTrue(lineCommentToken.EndIndex == 41, "expected line comment to end at 41, actual " + lineCommentToken.EndIndex.ToString());
+            Assert.True(lineCommentToken.StartIndex == 27, "Expected start at 27, actual " + lineCommentToken.StartIndex.ToString());
+            Assert.True(lineCommentToken.EndIndex == 41, "expected line comment to end at 41, actual " + lineCommentToken.EndIndex.ToString());
         }
 
         [Spec]
         public void NoTokensShouldAppearAfterTheLineCommentTokenExceptEOF()
         {
-            Assert.IsTrue(tokens[tokens.Count - 1].Type == TokenType.WhiteSpace, "Not expected tokentype: " + tokens[tokens.Count - 1].Type.ToString());
+            Assert.True(tokens[tokens.Count - 1].Type == TokenType.WhiteSpace, "Not expected tokentype: " + tokens[tokens.Count - 1].Type.ToString());
             
         }
 
@@ -60,21 +59,21 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> commentTokens = new List<TokenInfo>(from i in tokens
                                                                 where i.Type == TokenType.Comment
                                                                 select i);
-            Assert.IsTrue(commentTokens.Count == 1, "Expected 1, actual: "+commentTokens.Count.ToString());
+            Assert.True(commentTokens.Count == 1, "Expected 1, actual: "+commentTokens.Count.ToString());
             //Assert.Fail("comment 1's start: "+commentTokens[0].StartIndex.ToString()+" comment 2's start: "+commentTokens[1].StartIndex.ToString());
             lineCommentToken = commentTokens[0];
         }
     }
 
 
-    [Context]
+    
     public class WhenParsingCodeStringsWithPoundSignLineComments : LexingBaseFixture
     {
         TokenInfo lineCommentToken;
-        [SetUp]
-        public override void SetUp()
+
+        public WhenParsingCodeStringsWithPoundSignLineComments()
+            : base()
         {
-            base.SetUp();
             //               0         1         2         3         4
             //               012345678901234567890123456789012345678901
             rawCodeString = "someMethodCall('a string') # line Comment";
@@ -82,21 +81,21 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> commentTokens = new List<TokenInfo>(from i in tokens
                                                                 where i.Type == TokenType.Comment
                                                                 select i);
-            Assert.IsTrue(commentTokens.Count == 1);
+            Assert.True(commentTokens.Count == 1);
             lineCommentToken = commentTokens[0];
         }
 
         [Spec]
         public void TheLineCommentTokenShouldStartAtTheProperPlaceAndEndAtEOL()
         {
-            Assert.IsTrue(lineCommentToken.StartIndex == 27, "Expected start at 27, actual " + lineCommentToken.StartIndex.ToString());
-            Assert.IsTrue(lineCommentToken.EndIndex == 40, "expected line comment to end at 41, actual " + lineCommentToken.EndIndex.ToString());
+            Assert.True(lineCommentToken.StartIndex == 27, "Expected start at 27, actual " + lineCommentToken.StartIndex.ToString());
+            Assert.True(lineCommentToken.EndIndex == 40, "expected line comment to end at 41, actual " + lineCommentToken.EndIndex.ToString());
         }
 
         [Spec]
         public void NoTokensShouldAppearAfterTheLineCommentTokenExceptEOF()
         {
-            Assert.IsTrue(tokens[tokens.Count - 1].Type == TokenType.WhiteSpace, "Not expected tokentype: " + tokens[tokens.Count - 1].Type.ToString());
+            Assert.True(tokens[tokens.Count - 1].Type == TokenType.WhiteSpace, "Not expected tokentype: " + tokens[tokens.Count - 1].Type.ToString());
 
         }
 
@@ -110,7 +109,7 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> commentTokens = new List<TokenInfo>(from i in tokens
                                                                 where i.Type == TokenType.Comment
                                                                 select i);
-            Assert.IsTrue(commentTokens.Count == 1, "Expected 1, actual: " + commentTokens.Count.ToString());
+            Assert.True(commentTokens.Count == 1, "Expected 1, actual: " + commentTokens.Count.ToString());
             //Assert.Fail("comment 1's start: "+commentTokens[0].StartIndex.ToString()+" comment 2's start: "+commentTokens[1].StartIndex.ToString());
             lineCommentToken = commentTokens[0];
         }
