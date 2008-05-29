@@ -26,7 +26,7 @@ namespace Boo.BooLangStudioSpecs
             //               0         1         2         3         4
             //               012345678901234567890123456789012345678901
             rawCodeString = "print 'hello this should be a string token";
-            Helper(rawCodeString, 6, 42);
+            Helper(rawCodeString, 6, 41);
             
         }
 
@@ -38,12 +38,12 @@ namespace Boo.BooLangStudioSpecs
             rawCodeString = "print \"hello this should be a string token";
             // should be 41.. but the BooScanner.ResolveTokenStartAndEndIndex() puts
             // an extra num in because its expecting the closing quote.. harmless.
-            Helper(rawCodeString, 6, 42);
+            Helper(rawCodeString, 6, 41);
 
         }
 
         [Spec]
-        public void MalformedDoubleQuoteTokenShouldBeTreatedAsAStringToken2()
+        public void WellFormedDoubleQuoteTokenShouldBeTreatedAsAStringToken()
         {
             //               0         1         2         3         4
             //               0123456678901234567890123456789012345678901

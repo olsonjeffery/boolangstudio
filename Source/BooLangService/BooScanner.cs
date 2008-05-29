@@ -92,6 +92,8 @@ namespace Boo.BooLangService
 
                         _reusableToken.setText(_currentLine.Substring(InternalCurrentLinePosition+1));
                         _reusableToken.setColumn(_internalCurrentLinePosition + 1);
+                        // also a hint to the start and end index setting down the way...
+                        _reusableToken.setLine(-10);
                         
                     }
                 }

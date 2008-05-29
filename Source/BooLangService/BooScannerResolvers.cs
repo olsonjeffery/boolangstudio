@@ -24,6 +24,9 @@ namespace Boo.BooLangService
             {
                 tokenInfo.StartIndex = oneCharBack;
                 tokenInfo.EndIndex = oneCharAfterToken;
+                // for malformed (ie no closing quote) strings
+                if (token.getLine() == -10)
+                    tokenInfo.EndIndex -= 1;
             }
             else if (token.Type == BooLexer.TRIPLE_QUOTED_STRING)
             {
