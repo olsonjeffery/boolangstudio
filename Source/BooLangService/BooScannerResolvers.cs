@@ -15,10 +15,6 @@ namespace Boo.BooLangService
 
         public void ResolveBooTokenStartAndEndIndex(antlr.CommonToken token, TokenInfo tokenInfo)
         {
-            if (token == null)
-                throw new NotImplementedException(
-                    "\n               01234567890123456789012345678901234567890123456789\n" +
-                    "current line: '" + _currentLine + "' last internal pos: " + InternalCurrentLinePosition.ToString());
             int oneCharBack = token.getColumn() - 1;
             int lengthOfTokenText = token.getText() == null ? 0 : token.getText().Length;
             int oneCharAfterToken = token.getColumn() + lengthOfTokenText;

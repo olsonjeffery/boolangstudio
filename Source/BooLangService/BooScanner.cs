@@ -13,14 +13,14 @@ namespace Boo.BooLangService
     public partial class BooScanner : IScanner
     {
         #region properties and members
-        private antlr.TokenStream lexer;
+        private antlr.TokenStream _lexer;
 
         #endregion
 
         public BooScanner()
         {
             _currentLine = " ";
-            lexer = null;
+            _lexer = null;
         }
 
         public BooScanner(Microsoft.VisualStudio.TextManager.Interop.IVsTextLines buffer) 
@@ -61,11 +61,65 @@ namespace Boo.BooLangService
             }
         }
 
-        #endregion
+        public void SetInternalCurrentLinePosition(int val)
+        {
+            _internalCurrentLinePosition = val;
+        }
 
-        private antlr.CommonToken _reusableToken = null;
-        
-        public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
+
+        /// <summary>
+        /// Handles any neccesary lexer token mangling in the even that the lexer throws an exception (malformed string tokens, mostly)
+        /// </summary>
+        /// <param name="currentLine">current code line</param>
+        /// <param name="offset">integer offset.. from the ide</param>
+        /// <param name="internalCurrentLinePosition">internal parser (our) reckoning of where we are in the current line</param>
+        /// <param name="lexerToken">the token returned by the boo lexer</param>
+        public void DealWithLexerException(string currentLine, int offset, int internalCurrentLinePosition, antlr.CommonToken lexerToken)
+        {
+            // deal with the event of a trailing excl. point
+            if (currentLine[currentLine.Length - 1] == '!')
+            {
+                SetSource(currentLine.Substring(0, currentLine.Length - 1) + 'A', offset);
+            }
+            else if (currentLine[internalCurrentLinePosition] == ' ' || (currentLine[internalCurrentLinePosition] == '"' || currentLine[internalCurrentLinePosition] == '\''))
+            {
+                internalCurrentLinePosition += 1;
+                if (currentLine[internalCurrentLinePosition] == '"' || currentLine[internalCurrentLinePosition] == '\'')
+                {
+                    // if we're here, that means we're inside of a
+                    // malformed string token, most likely...
+                    if (currentLine[internalCurrentLinePosition] == '"')
+                    {
+                        lexerToken.setType(BooLexer.DOUBLE_QUOTED_STRING);
+
+                    }
+                    else if (currentLine[internalCurrentLinePosition] == '\'')
+                        lexerToken.setType(BooLexer.SINGLE_QUOTED_STRING);
+
+                    lexerToken.setText(currentLine.Substring(internalCurrentLinePosition + 1));
+                    lexerToken.setColumn(internalCurrentLinePosition + 1);
+                    // also a hint to the start and end index setting down the way...
+                    lexerToken.setLine(-10);
+
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// Does some "home-grown" lexing, in the event of the lexer returning a null token,
+        /// possibly in the case of a multiline comment
+        /// </summary>
+        /// <param name="currentLine"></param>
+        /// <param name="internalCurrentLinePosition"></param>
+        /// <returns></returns>
+        public antlr.CommonToken DealWithNullLexerToken(string currentLine, int internalCurrentLinePosition)
+        {
+            antlr.CommonToken lexerToken = new antlr.CommonToken();
+            throw new NotImplementedException();
+        }
+
+        public bool ScanTokenWrapper(TokenInfo tokenInfo, ref int state, antlr.TokenStream lexer, string currentLine, int offset)
         {
             try
             {
@@ -73,79 +127,41 @@ namespace Boo.BooLangService
             }
             catch (Exception e)
             {
-                // deal with the event of a trailing excl. point
-                if (_currentLine[_currentLine.Length - 1] == '!')
-                {
-                    SetSource(_currentLine.Substring(0, _currentLine.Length - 1) + 'A', _offset);
-                }
-                else if (_currentLine[InternalCurrentLinePosition] == ' ' || (_currentLine[InternalCurrentLinePosition] == '"' || _currentLine[InternalCurrentLinePosition] == '\''))
-                {
-                    ConsumeInternalLineChar();
-                    if (_currentLine[InternalCurrentLinePosition] == '"' || _currentLine[InternalCurrentLinePosition] == '\'')
-                    {
-                        // if we're here, that means we're inside of a
-                        // malformed string token, most likely...
-                        if (_currentLine[InternalCurrentLinePosition] == '"')
-                        {
-                            _reusableToken.setType(BooLexer.DOUBLE_QUOTED_STRING);
-                            
-                        }
-                        else if (_currentLine[InternalCurrentLinePosition] == '\'')
-                            _reusableToken.setType(BooLexer.SINGLE_QUOTED_STRING);
-
-                        _reusableToken.setText(_currentLine.Substring(InternalCurrentLinePosition+1));
-                        _reusableToken.setColumn(_internalCurrentLinePosition + 1);
-                        // also a hint to the start and end index setting down the way...
-                        _reusableToken.setLine(-10);
-                        
-                    }
-                    
-                }
-                    
+                DealWithLexerException(currentLine, offset, InternalCurrentLinePosition, _reusableToken);
             }
-            
+
+            // something here to deal with null _reusableTokens
+            if (_reusableToken == null)
+            {
+                _reusableToken = DealWithNullLexerToken(currentLine, InternalCurrentLinePosition);
+            }
+
             // resolve token start and stop positions. Need
             // to do this first.
             ResolveBooTokenStartAndEndIndex(_reusableToken, tokenInfo);
 
             // here is where we set the internal tracker stuff
-            _internalCurrentLinePosition = tokenInfo.EndIndex + 1;
+            SetInternalCurrentLinePosition(tokenInfo.EndIndex + 1);
 
-            // if our internal tracker tells us we're at the end,
-            // let's cut out all of that garbage crap the lexer
-            // keeps returning to us
-            // also we need to bail is we stumble upon some EOL's
+            // if we should happen upon a an EOF or EOL token, let's
+            // split
             if (_reusableToken.Type == 1 || _reusableToken.Type == 9)
             {
                 return false;
-            }
-            else if (state == 13)
-            {
-                _reusableToken.Type = BooLexer.ML_COMMENT;
-            }
-            if (_reusableToken.Type == BooLexer.ML_COMMENT)
-            {
-                state = 13;
-                // how to determine if we're "out" of the ML_COMMENT?
-                // if the token's getText() ends with "", then we
-                // should assume that we're ending an ML_COMMENT region..
-
-                if (_reusableToken.getFilename().Equals("LEAVINGML_COMMENT"))
-                {
-                    state = 0;
-                }
-                // handle an issue where we're hitting an endless loop
-                // in the parser
-                if (_reusableToken.Type == 120 && _reusableToken.getColumn() >= _currentLine.Length)
-                {
-                    tokenInfo.Type = TokenType.WhiteSpace;
-                    return false;
-                }
             }
 
             // set up token color and type
             ResolveBooTokenTypeAndColor(_reusableToken, tokenInfo);
             return true;
+        }
+
+        #endregion
+
+        private antlr.CommonToken _reusableToken = null;
+        
+        public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
+        {
+            return ScanTokenWrapper(tokenInfo, ref state, _lexer, _currentLine, _offset);
         }
 
         private string _currentLine;
@@ -162,11 +178,11 @@ namespace Boo.BooLangService
             _internalCurrentLinePosition = 0;
             if (_currentLine == string.Empty)
             {
-                lexer = BooParser.CreateBooLexer(1, "", new StringReader(" "));
+                _lexer = BooParser.CreateBooLexer(1, "", new StringReader(" "));
             }
             else
             {
-               lexer = BooParser.CreateBooLexer(1, "", new StringReader(_currentLine));
+               _lexer = BooParser.CreateBooLexer(1, "", new StringReader(_currentLine));
             }
         }
         #endregion

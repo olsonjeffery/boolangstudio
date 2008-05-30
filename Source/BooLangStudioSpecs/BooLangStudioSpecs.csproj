@@ -54,10 +54,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LineCommentLexing.cs" />
-    <Compile Include="MiscParseIssues.cs" />
-    <Compile Include="MultiLineCommentLexing.cs" />
-    <Compile Include="StringLexing.cs" />
+    <Compile Include="LineScanner\InternalParseTracker.cs" />
+    <Compile Include="LineScanner\LexingBaseFixture.cs" />
+    <Compile Include="LineScanner\LineCommentLexing.cs" />
+    <Compile Include="LineScanner\MalformedStrings.cs" />
+    <Compile Include="LineScanner\MultiLineCommentLexing.cs" />
+    <Compile Include="LineScanner\StringInterpolation.cs" />
+    <Compile Include="LineScanner\StringLexing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
