@@ -99,10 +99,11 @@ namespace Boo.BooLangService
                         _reusableToken.setLine(-10);
                         
                     }
+                    
                 }
                     
             }
-
+            
             // resolve token start and stop positions. Need
             // to do this first.
             ResolveBooTokenStartAndEndIndex(_reusableToken, tokenInfo);
@@ -158,6 +159,7 @@ namespace Boo.BooLangService
         {
             _offset = offset;
             _currentLine = source;
+            _internalCurrentLinePosition = 0;
             if (_currentLine == string.Empty)
             {
                 lexer = BooParser.CreateBooLexer(1, "", new StringReader(" "));

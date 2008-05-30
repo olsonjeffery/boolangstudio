@@ -44,6 +44,7 @@ namespace Boo.BooLangStudioSpecs
                 bool yetMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref _mlState );
                 tokens.Add(token);
                 moreTokens = yetMoreTokens;
+                Console.WriteLine("type: " + token.Type.ToString() + " start: " + token.StartIndex.ToString() + " end: " + token.EndIndex + "text: <empty for now>'");
             }
         }
     }

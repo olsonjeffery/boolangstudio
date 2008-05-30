@@ -74,19 +74,36 @@ namespace Boo.BooLangStudioSpecs
         {
         }
 
+        /// <summary>
+        /// Long-test is long.
+        /// </summary>
         [Spec]
         public void InternalParserPositionShouldTrackLexerTokenPositions()
         {
+            //                         1
+            //               01234567890
             rawCodeString = "foo = 'bar'";
             scanner.SetSource(rawCodeString,0);
             tokens.Clear();
             bool moreTokens = true;
+            bool lastToken = false;
             while (moreTokens)
             {
                 TokenInfo token = new TokenInfo();
                 moreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref _mlState);
-                Assert.True(scanner.InternalCurrentLinePosition == token.EndIndex + 1, "Internal track pos mismatch! Expected: "+(token.EndIndex+1).ToString()+" Actual: "+scanner.InternalCurrentLinePosition);
                 
+                if (lastToken == true)
+                {
+                    Assert.True(!moreTokens,"Last token flag set but moreTokens is true! Token Type: "+token.Type.ToString()+ " start: "+token.StartIndex.ToString()+ "end: "+token.EndIndex.ToString()+" line length: "+rawCodeString.Length.ToString());
+                    break;
+                }
+                
+
+                if (scanner.InternalCurrentLinePosition < rawCodeString.Length-1)
+                    Assert.True(scanner.InternalCurrentLinePosition == token.EndIndex + 1, "Internal track pos mismatch! Type: "+token.Type.ToString()+" Expected: "+(token.EndIndex+1).ToString()+" Actual: "+scanner.InternalCurrentLinePosition);
+                else
+                    lastToken = true;
+
                 int lengthCount = 0;
                 if ((token.EndIndex-token.StartIndex+1) >= rawCodeString.Length)
                     lengthCount = 1;
@@ -99,6 +116,18 @@ namespace Boo.BooLangStudioSpecs
                 }
             }
         }
+
+    }
+
+    public class WhenParsingStringsThatContainStringInterpolation : LexingBaseFixture
+    {
+
+        public WhenParsingStringsThatContainStringInterpolation()
+            : base()
+        {
+        }
+
+        // tests go here
 
     }
 }
