@@ -41,7 +41,7 @@ namespace Boo.BooLangService.Document
             foreach (IEntity entity in entites)
             {
                 if (entity is IType)
-                    importedNamespaces[node.Namespace].Add(new ClassTreeNode { Name = entity.Name });
+                    importedNamespaces[node.Namespace].Add(new ClassTreeNode { Name = entity.Name, FullName = entity.FullName });
                 else if (entity is INamespace)
                     importedNamespaces[node.Namespace].Add(new ImportedNamespaceTreeNode { Name = entity.Name });
             }
