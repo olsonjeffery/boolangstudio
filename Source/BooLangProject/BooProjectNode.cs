@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Package;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
-using EnvDTE;
 
 namespace Boo.BooLangProject
 {
@@ -24,6 +24,19 @@ namespace Boo.BooLangProject
                 this.ImageHandler.AddImage(img);
             }
 
+        }
+
+        private BooVSProject vsProject;
+
+        internal override object Object
+        {
+            get
+            {
+                if (vsProject == null)
+                    vsProject = new BooVSProject(this);
+
+                return vsProject;
+            }
         }
 
         /// <summary>
@@ -124,5 +137,9 @@ namespace Boo.BooLangProject
 
         }
 
+        public override object GetAutomationObject()
+        {
+            return new BooOAProject(this);
+        }
     }
 }

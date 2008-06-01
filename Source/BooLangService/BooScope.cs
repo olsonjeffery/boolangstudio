@@ -5,6 +5,7 @@ using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.VSInterop;
+using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -62,9 +63,8 @@ namespace BooLangService
             // get project references for the project that the current file is in
             ProjectHierarchy projects = new ProjectHierarchy(service);
             VSProject project = projects.GetContainingProject(fileName);
-            IList<ProjectReference> references = projects.GetReferences(project);
 
-            return new BooDeclarations(availableNamespaces.QueryNamespacesFromReferences(references, namespaceContinuation));
+            return new BooDeclarations(availableNamespaces.QueryNamespacesFromReferences(project.References, namespaceContinuation));
         }
 
         private Declarations GetScopedIntellisenseDeclarations(int lineNum)
