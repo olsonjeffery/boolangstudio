@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler.Ast;
 using Boo.Lang.Compiler.Steps;
@@ -8,11 +9,17 @@ namespace Boo.BooLangService.Document
     public class BooDocumentVisitor : AbstractTransformerCompilerStep
     {
         private readonly IBooParseTreeNode document = new DocumentTreeNode();
+        private readonly IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces = new Dictionary<string, IList<IBooParseTreeNode>>();
         private IBooParseTreeNode currentScope;
 
         public IBooParseTreeNode Document
         {
             get { return document; }
+        }
+
+        public IDictionary<string, IList<IBooParseTreeNode>> ImportedNamespaces
+        {
+            get { return importedNamespaces; }
         }
 
         public override void Run()
@@ -29,12 +36,14 @@ namespace Boo.BooLangService.Document
             INamespace ns = (INamespace)TypeSystemServices.GetEntity(node);
             IEntity[] entites = ns.GetMembers();
 
+            importedNamespaces[node.Namespace] = new List<IBooParseTreeNode>();
+
             foreach (IEntity entity in entites)
             {
                 if (entity is IType)
-                    PushAndPop(new ClassTreeNode(), entity.Name, 0); // line as 0 for now, because it exists outside of the file
+                    importedNamespaces[node.Namespace].Add(new ClassTreeNode { Name = entity.Name });
                 else if (entity is INamespace)
-                    PushAndPop(new ImportedNamespaceTreeNode(), entity.Name, 0);
+                    importedNamespaces[node.Namespace].Add(new ImportedNamespaceTreeNode { Name = entity.Name });
             }
 
             base.OnImport(node);

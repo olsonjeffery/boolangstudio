@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using Boo.BooLangService.Document;
 
 namespace Boo.BooLangService.Document
