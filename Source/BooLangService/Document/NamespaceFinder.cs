@@ -1,11 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Reflection.Emit;
 using Boo.BooLangService.Document.Nodes;
-using Boo.BooLangService.VSInterop;
-using BooLangService;
 using EnvDTE;
-using Microsoft.VisualStudio.Package;
 using VSLangProj;
 
 namespace Boo.BooLangService.Document
@@ -25,32 +23,82 @@ namespace Boo.BooLangService.Document
             foreach (Reference reference in references)
             {
                 if (reference.SourceProject != null)
-                    namespaces.AddRange(QueryNamespacesFromProjectReference(reference.SourceProject));
+                    namespaces.AddRange(QueryNamespacesFromProjectReference(reference.SourceProject, searchQuery));
+                else if (reference.Type == prjReferenceType.prjReferenceTypeAssembly)
+                    namespaces.AddRange(QueryNamespacesFromAssembly(reference.Path, searchQuery));
             }
 
             return namespaces;
         }
 
-        private IList<IBooParseTreeNode> QueryNamespacesFromProjectReference(Project project)
+        private IList<IBooParseTreeNode> QueryNamespacesFromProjectReference(Project project, string searchQuery)
         {
             var namespaces = new List<IBooParseTreeNode>();
 
-            foreach (CodeElement element in project.CodeModel.CodeElements)
+            foreach (var ns in GetNamespacesFromCodeElements(project.CodeModel.CodeElements))
+            {
+                if (!ns.StartsWith(searchQuery)) continue;
+
+                var scopedNamespace = ns.Remove(0, searchQuery.Length);
+
+                if (scopedNamespace.Contains("."))
+                    scopedNamespace = scopedNamespace.Substring(0, scopedNamespace.IndexOf("."));
+
+                namespaces.Add(new ImportedNamespaceTreeNode { Name = scopedNamespace });
+            }
+
+            return namespaces;
+        }
+
+        private IEnumerable<string> GetNamespacesFromCodeElements(CodeElements codeElements)
+        {
+            var namespaces = new List<string>();
+
+            foreach (CodeElement element in codeElements)
             {
                 var codeNamespace = element as CodeNamespace;
 
-                if (codeNamespace != null)
+                if (codeNamespace == null) continue;
+
+                namespaces.AddRange(GetNamespacesFromCodeElements(codeNamespace.Members));
+
+                bool isInternal = false;
+
+                foreach (CodeElement member in codeNamespace.Members)
                 {
-                    bool isInternal = false;
+                    if (member.InfoLocation == vsCMInfoLocation.vsCMInfoLocationProject)
+                        isInternal = true;
+                }
 
-                    foreach (CodeElement member in codeNamespace.Members)
+                if (isInternal)
+                    namespaces.Add(codeNamespace.FullName);
+            }
+
+            return namespaces;
+        }
+
+        private IList<IBooParseTreeNode> QueryNamespacesFromAssembly(string path, string searchQuery)
+        {
+            var namespaces = new List<IBooParseTreeNode>();
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly is AssemblyBuilder) continue;
+                if (assembly.CodeBase != new Uri(path).ToString()) continue;
+
+                foreach (var type in assembly.GetExportedTypes())
+                {
+                    if (type.Namespace.StartsWith(searchQuery))
                     {
-                        if (member.InfoLocation == vsCMInfoLocation.vsCMInfoLocationProject)
-                            isInternal = true;
-                    }
+                        string ns = type.Namespace;
 
-                    if (isInternal)
-                        namespaces.Add(new ImportedNamespaceTreeNode {Name = codeNamespace.FullName});
+                        ns = ns.Remove(0, searchQuery.Length);
+
+                        if (ns.Contains("."))
+                            ns = ns.Substring(0, ns.IndexOf('.'));
+
+                        namespaces.Add(new ImportedNamespaceTreeNode {Name = ns});
+                    }
                 }
             }
 
