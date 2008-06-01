@@ -67,7 +67,7 @@ namespace Boo.BooLangService.Document
 
         public override bool EnterMethod(Method node)
         {
-            Push(new MethodTreeNode(), node.Name, node.LexicalInfo.Line);
+            Push(new MethodTreeNode { ReturnType = node.ReturnType.ToString() }, node.Name, node.LexicalInfo.Line);
 
             return base.EnterMethod(node);
         }
@@ -88,7 +88,9 @@ namespace Boo.BooLangService.Document
 
         public override void OnLocal(Local node)
         {
-            Push(new LocalTreeNode(), node.Name, node.LexicalInfo.Line);
+            ITypedEntity local = (ITypedEntity)TypeSystemServices.GetEntity(node);
+
+            Push(new LocalTreeNode { ReturnType = local.Type.ToString() }, node.Name, node.LexicalInfo.Line);
 
             base.OnLocal(node);
 
