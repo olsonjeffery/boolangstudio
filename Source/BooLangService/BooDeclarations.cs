@@ -25,12 +25,29 @@ namespace Boo.BooLangService
         public override string GetDescription(int index)
         {
             IBooParseTreeNode node = members[index];
-            ClassTreeNode classNode = node as ClassTreeNode;
+            string description = "";
 
-            if (classNode != null)
-                return classNode.FullName;
+            description += GetNodeType(node);
+            description += " ";
+            description += GetNodeName(node);
 
-            return node.Name;
+            return description;
+        }
+
+        private string GetNodeName(IBooParseTreeNode node)
+        {
+            var classNode = node as ClassTreeNode;
+
+            return (classNode == null) ? node.Name : classNode.FullName ?? node.Name;
+        }
+
+        private string GetNodeType(IBooParseTreeNode node)
+        {
+            if (node is ClassTreeNode) return "class";
+
+            var returnableNode = node as IReturnableNode;
+
+            return (returnableNode == null) ? "" : returnableNode.ReturnType;
         }
 
         public override string GetDisplayText(int index)

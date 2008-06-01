@@ -86,6 +86,7 @@
     <Compile Include="Document\CompiledDocument.cs" />
     <Compile Include="Document\BooParseTreeNodeFlatterner.cs" />
     <Compile Include="Document\Nodes\DocumentTreeNode.cs" />
+    <Compile Include="Document\Nodes\IReturnableNode.cs" />
     <Compile Include="Intellisense\IntellisenseVisibleAttribute.cs" />
     <Compile Include="Intellisense\IntellisenseNodeList.cs" />
     <Compile Include="Document\Nodes\TryTreeNode.cs" />
