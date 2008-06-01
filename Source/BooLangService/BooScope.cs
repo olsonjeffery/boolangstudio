@@ -63,21 +63,59 @@ namespace BooLangService
             // get project references for the project that the current file is in
             ProjectHierarchy projects = new ProjectHierarchy(service);
             VSProject project = projects.GetContainingProject(fileName);
+            var declarations = new BooDeclarations();
 
-            return new BooDeclarations(availableNamespaces.QueryNamespacesFromReferences(project.References, namespaceContinuation));
+            declarations.Add(availableNamespaces.QueryNamespacesFromReferences(project.References, namespaceContinuation));
+
+            return declarations;
         }
 
         private Declarations GetScopedIntellisenseDeclarations(int lineNum)
         {
             // get the node that the caret is in
-            Keywords keywords = new Keywords();
-            BooParseTreeNodeFlatterner flattener = new BooParseTreeNodeFlatterner();
+            var scopedParseTree = compiledDocument.GetScopeByLine(lineNum);
+            var declarations = new BooDeclarations();
 
-            IBooParseTreeNode scope = compiledDocument.GetScopeByLine(lineNum);
+            AddMembersFromScopeTree(declarations, scopedParseTree);
+            AddKeywords(declarations, scopedParseTree);
+            AddImports(declarations);
 
-            keywords.InjectIntoScope(scope);
+            return declarations;
+        }
 
-            return new BooDeclarations(flattener.FlattenFrom(scope));
+        /// <summary>
+        /// Adds members from the current scope (flattened, so all containing scopes are included) to
+        /// the declarations.
+        /// </summary>
+        private void AddMembersFromScopeTree(BooDeclarations declarations, IBooParseTreeNode scopedParseTree)
+        {
+            var parseTreeFlattener = new BooParseTreeNodeFlatterner();
+
+            declarations.Add(parseTreeFlattener.FlattenFrom(scopedParseTree));
+        }
+
+        /// <summary>
+        /// Adds keywords based on the current scope to the declarations.
+        /// </summary>
+        private void AddKeywords(BooDeclarations declarations, IBooParseTreeNode scopedParseTree)
+        {
+            var keywords = new TypeKeywordResolver();
+
+            declarations.Add(keywords.GetForScope(scopedParseTree));
+        }
+
+        /// <summary>
+        /// Adds any types and namespaces, imported at the start of the document, to the declarations.
+        /// </summary>
+        private void AddImports(BooDeclarations declarations)
+        {
+            // add imports to declarations
+            foreach (var importNamespace in compiledDocument.Imports.Keys)
+            {
+                var importedNodes = compiledDocument.Imports[importNamespace];
+
+                declarations.Add(importedNodes);
+            }
         }
 
         public override Methods GetMethods(int line, int col, string name)

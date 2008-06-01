@@ -109,7 +109,6 @@
     <Compile Include="Document\Nodes\ParseTreeNodeSet.cs" />
     <Compile Include="Intellisense\IntellisenseIcon.cs" />
     <Compile Include="Intellisense\IntellisenseIconResolver.cs" />
-    <Compile Include="Intellisense\Keywords.cs" />
     <Compile Include="LineIndenter.cs" />
     <Compile Include="VSInterop\ProjectHierarchy.cs" />
     <Compile Include="VSInterop\ProjectReference.cs" />

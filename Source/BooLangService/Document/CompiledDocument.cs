@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
 
 namespace Boo.BooLangService.Document
@@ -6,16 +9,23 @@ namespace Boo.BooLangService.Document
     {
         private readonly IBooParseTreeNode root;
         private readonly string content;
+        private readonly IDictionary<string, IList<IBooParseTreeNode>> imports;
 
-        public CompiledDocument(IBooParseTreeNode root, string content)
+        public CompiledDocument(IBooParseTreeNode root, IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces, string content)
         {
             this.root = root;
             this.content = content;
+            this.imports = importedNamespaces;
         }
 
         public string Content
         {
             get { return content; }
+        }
+
+        public IDictionary<string, IList<IBooParseTreeNode>> Imports
+        {
+            get { return imports; }
         }
 
         public IBooParseTreeNode GetScopeByLine(int line)
