@@ -4,7 +4,9 @@ using System.Reflection;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.VSInterop;
 using BooLangService;
+using EnvDTE;
 using Microsoft.VisualStudio.Package;
+using VSLangProj;
 
 namespace Boo.BooLangService.Document
 {
@@ -16,35 +18,39 @@ namespace Boo.BooLangService.Document
         /// <param name="references">Project references to include in the search</param>
         /// <param name="searchQuery">Start of the namespace to resolve from. If blank gets all namespaces.</param>
         /// <returns>List of available namespaces</returns>
-        public BooParseTreeNodeList QueryNamespacesFromReferences(IList<ProjectReference> references, string searchQuery)
+        public BooParseTreeNodeList QueryNamespacesFromReferences(References references, string searchQuery)
         {
-            BooParseTreeNodeList namespaces = new BooParseTreeNodeList();
+            var namespaces = new BooParseTreeNodeList();
 
-            foreach (ProjectReference reference in references)
+            foreach (Reference reference in references)
             {
-                if (reference.IsAssembly)
-                {
-                    Assembly asm = Assembly.LoadFrom(reference.Target);
+                if (reference.SourceProject != null)
+                    namespaces.AddRange(QueryNamespacesFromProjectReference(reference.SourceProject));
+            }
 
-                    foreach (Type type in asm.GetExportedTypes())
+            return namespaces;
+        }
+
+        private IList<IBooParseTreeNode> QueryNamespacesFromProjectReference(Project project)
+        {
+            var namespaces = new List<IBooParseTreeNode>();
+
+            foreach (CodeElement element in project.CodeModel.CodeElements)
+            {
+                var codeNamespace = element as CodeNamespace;
+
+                if (codeNamespace != null)
+                {
+                    bool isInternal = false;
+
+                    foreach (CodeElement member in codeNamespace.Members)
                     {
-                        string ns = type.Namespace;
-
-                        if (!ns.StartsWith(searchQuery)) continue;
-
-                        ns = ns.Remove(0, searchQuery.Length);
-                        ns = ns.Contains(".") ? ns.Substring(0, ns.IndexOf(".")) : ns;
-
-                        IBooParseTreeNode treeNode = new ImportedNamespaceTreeNode();
-
-                        treeNode.Name = ns;
-
-                        namespaces.Add(treeNode);
+                        if (member.InfoLocation == vsCMInfoLocation.vsCMInfoLocationProject)
+                            isInternal = true;
                     }
-                }
-                else
-                {
-                    // project reference - not supported yet
+
+                    if (isInternal)
+                        namespaces.Add(new ImportedNamespaceTreeNode {Name = codeNamespace.FullName});
                 }
             }
 
