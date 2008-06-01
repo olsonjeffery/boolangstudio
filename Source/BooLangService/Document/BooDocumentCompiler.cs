@@ -26,7 +26,7 @@ namespace Boo.BooLangService.Document
             
             compiler.Run();
 
-            return new CompiledDocument(visitor.Document);
+            return new CompiledDocument(visitor.Document, source);
         }
     }
 }

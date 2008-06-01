@@ -5,10 +5,17 @@ namespace Boo.BooLangService.Document
     public class CompiledDocument
     {
         private readonly IBooParseTreeNode root;
+        private readonly string content;
 
-        public CompiledDocument(IBooParseTreeNode root)
+        public CompiledDocument(IBooParseTreeNode root, string content)
         {
             this.root = root;
+            this.content = content;
+        }
+
+        public string Content
+        {
+            get { return content; }
         }
 
         public IBooParseTreeNode GetScopeByLine(int line)
