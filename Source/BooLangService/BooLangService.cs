@@ -80,8 +80,7 @@ namespace Boo.BooLangService
         /// <returns></returns>
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            BooDocumentCompiler compiler = new BooDocumentCompiler();
-            CompiledDocument document = compiler.Compile(req.FileName, req.Text);
+            CompiledDocument document = compiledDocuments.Get(req.FileName, req.Text);
 
             return new BooScope(this, document, GetSource(req.View), req.FileName);
         }
@@ -92,6 +91,8 @@ namespace Boo.BooLangService
 
         private Dictionary<int,Microsoft.VisualStudio.TextManager.Interop.IVsColorableItem> _colorableItems = 
             new Dictionary<int,Microsoft.VisualStudio.TextManager.Interop.IVsColorableItem>();
+
+        private readonly CompiledDocumentCache compiledDocuments = new CompiledDocumentCache();
 
         public override int GetItemCount(out int count)
         {

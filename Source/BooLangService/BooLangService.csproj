@@ -82,6 +82,7 @@
     <Reference Include="VsLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Document\CompiledDocumentCache.cs" />
     <Compile Include="Document\CompiledDocument.cs" />
     <Compile Include="Document\BooParseTreeNodeFlatterner.cs" />
     <Compile Include="Document\Nodes\DocumentTreeNode.cs" />
