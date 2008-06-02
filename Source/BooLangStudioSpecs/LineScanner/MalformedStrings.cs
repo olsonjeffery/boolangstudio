@@ -67,10 +67,10 @@ namespace Boo.BooLangStudioSpecs
         [Spec]
         public void MalformedStringWithNoWhiteSpacePaddingBeforeBeginningShouldStillParseAsStringToken()
         {
-            //               0          1         2         3         4
-            //               0123456678901234567890123456789012345678901
+            //               0         1         2         3         4
+            //               012345678901234567890123456789012345678901
             rawCodeString = "foo = bar +'malformed string";
-            Helper(rawCodeString, 10, 25);
+            Helper(rawCodeString, 11, 27);
         }
 
     }

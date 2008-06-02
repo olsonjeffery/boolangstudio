@@ -77,33 +77,41 @@ namespace Boo.BooLangService
         public void DealWithLexerException(string currentLine, int offset, int internalCurrentLinePosition, antlr.CommonToken lexerToken)
         {
             // deal with the event of a trailing excl. point
-            if (currentLine[currentLine.Length - 1] == '!')
+            if (currentLine[internalCurrentLinePosition] == '!')
             {
                 SetSource(currentLine.Substring(0, currentLine.Length - 1) + 'A', offset);
             }
-            else if (currentLine[internalCurrentLinePosition] == ' ' || (currentLine[internalCurrentLinePosition] == '"' || currentLine[internalCurrentLinePosition] == '\''))
+            else if (currentLine[internalCurrentLinePosition] == ' ')
             {
                 internalCurrentLinePosition += 1;
                 if (currentLine[internalCurrentLinePosition] == '"' || currentLine[internalCurrentLinePosition] == '\'')
                 {
-                    // if we're here, that means we're inside of a
-                    // malformed string token, most likely...
-                    if (currentLine[internalCurrentLinePosition] == '"')
-                    {
-                        lexerToken.setType(BooLexer.DOUBLE_QUOTED_STRING);
-
-                    }
-                    else if (currentLine[internalCurrentLinePosition] == '\'')
-                        lexerToken.setType(BooLexer.SINGLE_QUOTED_STRING);
-
-                    lexerToken.setText(currentLine.Substring(internalCurrentLinePosition + 1));
-                    lexerToken.setColumn(internalCurrentLinePosition + 1);
-                    // also a hint to the start and end index setting down the way...
-                    lexerToken.setLine(-10);
-
+                    DealWithMalformedStringTokens(lexerToken, currentLine, internalCurrentLinePosition);
                 }
 
             }
+            else if (currentLine[internalCurrentLinePosition] == '"' || currentLine[internalCurrentLinePosition] == '\'')
+            {
+                DealWithMalformedStringTokens(lexerToken, currentLine, internalCurrentLinePosition);
+            }
+        }
+
+        public void DealWithMalformedStringTokens(antlr.CommonToken lexerToken, string currentLine, int internalCurrentLinePosition)
+        {
+            // if we're here, that means we're inside of a
+            // malformed string token, most likely...
+            if (currentLine[internalCurrentLinePosition] == '"')
+            {
+                lexerToken.setType(BooLexer.DOUBLE_QUOTED_STRING);
+
+            }
+            else if (currentLine[internalCurrentLinePosition] == '\'')
+                lexerToken.setType(BooLexer.SINGLE_QUOTED_STRING);
+
+            lexerToken.setText(currentLine.Substring(internalCurrentLinePosition + 1));
+            lexerToken.setColumn(internalCurrentLinePosition + 1);
+            // also a hint to the start and end index setting down the way...
+            lexerToken.setLine(-10);
         }
 
         /// <summary>
