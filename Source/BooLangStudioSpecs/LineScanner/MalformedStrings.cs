@@ -64,6 +64,15 @@ namespace Boo.BooLangStudioSpecs
             Assert.True(stringTokens[0].EndIndex == end, "string token end index mismatch! Expected "+end.ToString()+", Actual: " + stringTokens[0].EndIndex.ToString());
         }
 
+        [Spec]
+        public void MalformedStringWithNoWhiteSpacePaddingBeforeBeginningShouldStillParseAsStringToken()
+        {
+            //               0          1         2         3         4
+            //               0123456678901234567890123456789012345678901
+            rawCodeString = "foo = bar +'malformed string";
+            Helper(rawCodeString, 10, 25);
+        }
+
     }
 
 }

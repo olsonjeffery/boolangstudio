@@ -10,7 +10,7 @@ using Spec = Xunit.FactAttribute;
 namespace Boo.BooLangStudioSpecs
 {
 
-    public abstract class LexingBaseFixture
+    public abstract class LexingBaseFixture : AutoMockingTestFixture
     {
         protected antlr.TokenStream lexer;
         protected List<TokenInfo> tokens;
@@ -18,6 +18,7 @@ namespace Boo.BooLangStudioSpecs
         protected string rawCodeString = " ";
 
         public LexingBaseFixture()
+            : base()
         {
             lexer = GetLexer(rawCodeString);
             tokens = new List<TokenInfo>();
