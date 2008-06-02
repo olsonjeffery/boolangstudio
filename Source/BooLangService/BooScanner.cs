@@ -148,6 +148,28 @@ namespace Boo.BooLangService
             // to do this first.
             ResolveBooTokenStartAndEndIndex(_reusableToken, tokenInfo);
 
+            // here is where we check for single line comments
+            // don't check if we're in a string token...
+            /*
+            if ((_reusableToken.Type != BooLexer.SINGLE_QUOTED_STRING || _reusableToken.Type != BooLexer.DOUBLE_QUOTED_STRING)&&currentLine.Length > 0)
+            {
+                while (currentLine[InternalCurrentLinePosition] == ' ' || currentLine[InternalCurrentLinePosition] == '\t')
+                    _internalCurrentLinePosition += 1;
+
+                if (currentLine[InternalCurrentLinePosition] == '/' && currentLine[InternalCurrentLinePosition + 1] == '/')
+                {
+                    DealWithLineComment(InternalCurrentLinePosition,currentLine.Length - 1, tokenInfo);
+                    return false;
+                }
+                else if (currentLine[InternalCurrentLinePosition] == '#')
+                {
+                    throw new NotImplementedException("barf on hash comment!");
+                    return false;
+                }
+                
+            }
+            */
+
             // here is where we set the internal tracker stuff
             SetInternalCurrentLinePosition(tokenInfo.EndIndex + 1);
 
@@ -161,6 +183,14 @@ namespace Boo.BooLangService
             // set up token color and type
             ResolveBooTokenTypeAndColor(_reusableToken, tokenInfo);
             return true;
+        }
+
+        public void DealWithLineComment(int start, int end, TokenInfo tokenInfo)
+        {
+            tokenInfo.StartIndex = start;
+            tokenInfo.EndIndex = end;
+            tokenInfo.Color = TokenColor.Comment;
+            tokenInfo.Type = TokenType.Comment;
         }
 
         #endregion
