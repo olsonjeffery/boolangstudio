@@ -17,10 +17,13 @@ namespace Boo.BooLangService
     [Guid(GuidList.guidBooLangServiceClassString)]
     public class BooLangService : LanguageService
     {
+        private readonly CompiledDocumentCache compiledDocuments;
+
         #region ctor
         public BooLangService()
             : base()
         {
+            compiledDocuments = new CompiledDocumentCache(this);
             DefineColorableItems();
         }
         #endregion
@@ -83,7 +86,7 @@ namespace Boo.BooLangService
         {
             CompiledDocument document = compiledDocuments.Get(req.FileName, req.Text);
 
-            return new BooScope(this, document, GetSource(req.View), req.FileName);
+            return new BooScope(this, document, (BooSource)GetSource(req.View), req.FileName);
         }
 
         #endregion
@@ -92,8 +95,6 @@ namespace Boo.BooLangService
 
         private Dictionary<int,Microsoft.VisualStudio.TextManager.Interop.IVsColorableItem> _colorableItems = 
             new Dictionary<int,Microsoft.VisualStudio.TextManager.Interop.IVsColorableItem>();
-
-        private readonly CompiledDocumentCache compiledDocuments = new CompiledDocumentCache();
 
         public override int GetItemCount(out int count)
         {

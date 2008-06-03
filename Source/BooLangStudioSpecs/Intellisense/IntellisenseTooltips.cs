@@ -5,7 +5,7 @@ using MbUnit.Framework;
 using Context = MbUnit.Framework.TestFixtureAttribute;
 using Spec = MbUnit.Framework.TestAttribute;
 
-namespace Boo.BooLangStudioSpecs
+namespace Boo.BooLangStudioSpecs.Intellisense
 {
     [Context]
     public class WhenDisplayingDescriptionsForIntellisense

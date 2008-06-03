@@ -22,30 +22,5 @@ namespace Boo.BooLangService.VSInterop
 
             return proj;
         }
-
-        public IList<ProjectReference> GetReferences(VSProject project)
-        {
-            List<ProjectReference> references = new List<ProjectReference>();
-
-            foreach (Reference reference in project.References)
-            {
-                ProjectReference projRef = new ProjectReference();
-
-                if (reference.SourceProject == null)
-                {
-                    projRef.Target = reference.Path;
-                    projRef.IsAssembly = true;
-                }
-                else
-                {
-                    projRef.Target = reference.SourceProject.Name;
-                    projRef.IsAssembly = true;
-                }
-
-                references.Add(projRef);
-            }
-
-            return references;
-        }
     }
 }
