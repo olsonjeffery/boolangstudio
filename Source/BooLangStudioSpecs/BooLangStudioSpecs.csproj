@@ -124,6 +124,8 @@
     <Compile Include="PegLexer\WhenAttemptingToGetATokenFromThePegLexer.cs" />
     <Compile Include="PegLexer\WhenProcessingALineWithBooScanner.cs" />
     <Compile Include="PegLexer\WhenTranslatingTokens.cs" />
+    <Compile Include="IntellisenseCodeParsing.cs" />
+    <Compile Include="IntellisenseTooltips.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
