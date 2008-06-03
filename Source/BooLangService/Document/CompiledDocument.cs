@@ -28,6 +28,11 @@ namespace Boo.BooLangService.Document
             get { return imports; }
         }
 
+        public IBooParseTreeNode ParseTree
+        {
+            get { return root; }
+        }
+
         public IBooParseTreeNode GetScopeByLine(int line)
         {
             return GetScopeByLine(root, line);

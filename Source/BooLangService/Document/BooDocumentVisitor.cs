@@ -49,6 +49,20 @@ namespace Boo.BooLangService.Document
             base.OnImport(node);
         }
 
+        public override bool EnterInterfaceDefinition(InterfaceDefinition node)
+        {
+            Push(new InterfaceTreeNode(), node.Name, node.LexicalInfo.Line);
+
+            return base.EnterInterfaceDefinition(node);
+        }
+
+        public override void LeaveInterfaceDefinition(InterfaceDefinition node)
+        {
+            base.LeaveInterfaceDefinition(node);
+
+            Pop(node.EndSourceLocation.Line);
+        }
+
         public override bool EnterClassDefinition(ClassDefinition node)
         {
             Push(new ClassTreeNode(), node.Name, node.LexicalInfo.Line);

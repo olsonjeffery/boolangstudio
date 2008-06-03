@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IntellisenseCodeParsing.cs" />
+    <Compile Include="IntellisenseTooltips.cs" />
     <Compile Include="LineCommentLexing.cs" />
     <Compile Include="MiscParseIssues.cs" />
     <Compile Include="MultiLineCommentLexing.cs" />
