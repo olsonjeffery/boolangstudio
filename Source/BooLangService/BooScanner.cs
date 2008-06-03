@@ -127,8 +127,17 @@ namespace Boo.BooLangService
             throw new NotImplementedException();
         }
 
+        private bool doLineParseBailOut = false;
         public bool ScanTokenWrapper(TokenInfo tokenInfo, ref int state, antlr.TokenStream lexer, string currentLine, int offset)
         {
+            // this is to short circuit the line parsing process.
+            if (doLineParseBailOut)
+            {
+                doLineParseBailOut = false;
+                tokenInfo.Type = TokenType.WhiteSpace;
+                return false;
+            }
+                
             try
             {
                 _reusableToken = lexer.nextToken() as antlr.CommonToken;
@@ -150,25 +159,24 @@ namespace Boo.BooLangService
 
             // here is where we check for single line comments
             // don't check if we're in a string token...
-            /*
             if ((_reusableToken.Type != BooLexer.SINGLE_QUOTED_STRING || _reusableToken.Type != BooLexer.DOUBLE_QUOTED_STRING)&&currentLine.Length > 0)
             {
                 while (currentLine[InternalCurrentLinePosition] == ' ' || currentLine[InternalCurrentLinePosition] == '\t')
+                {
                     _internalCurrentLinePosition += 1;
-
-                if (currentLine[InternalCurrentLinePosition] == '/' && currentLine[InternalCurrentLinePosition + 1] == '/')
-                {
-                    DealWithLineComment(InternalCurrentLinePosition,currentLine.Length - 1, tokenInfo);
-                    return false;
+                    if (_internalCurrentLinePosition > currentLine.Length)
+                        break;
                 }
-                else if (currentLine[InternalCurrentLinePosition] == '#')
+                // catching line comments
+                if ((currentLine[InternalCurrentLinePosition] == '/' && currentLine[InternalCurrentLinePosition + 1] == '/')||currentLine[InternalCurrentLinePosition] == '#')
                 {
-                    throw new NotImplementedException("barf on hash comment!");
-                    return false;
+                    DealWithComment(InternalCurrentLinePosition,currentLine.Length - 1, tokenInfo);
+                    doLineParseBailOut = true;
+                    return true;
                 }
                 
             }
-            */
+            
 
             // here is where we set the internal tracker stuff
             SetInternalCurrentLinePosition(tokenInfo.EndIndex + 1);
@@ -185,7 +193,7 @@ namespace Boo.BooLangService
             return true;
         }
 
-        public void DealWithLineComment(int start, int end, TokenInfo tokenInfo)
+        public void DealWithComment(int start, int end, TokenInfo tokenInfo)
         {
             tokenInfo.StartIndex = start;
             tokenInfo.EndIndex = end;
