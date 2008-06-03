@@ -39,7 +39,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\MbUnit\MbUnit.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.Package.LanguageService.9.0, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -54,8 +58,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntellisenseCodeParsing.cs" />
-    <Compile Include="IntellisenseTooltips.cs" />
+    <Compile Include="Intellisense\BaseCompilerContext.cs" />
+    <Compile Include="Intellisense\BaseDisplayIntellisenseContext.cs" />
+    <Compile Include="Intellisense\IntellisenseCodeParsing.cs" />
+    <Compile Include="Intellisense\IntellisenseTooltips.cs" />
+    <Compile Include="Intellisense\Stubs\SimpleStubProjectReferenceLookup.cs" />
+    <Compile Include="Intellisense\Stubs\SimpleStubLineView.cs" />
     <Compile Include="LineCommentLexing.cs" />
     <Compile Include="MiscParseIssues.cs" />
     <Compile Include="MultiLineCommentLexing.cs" />

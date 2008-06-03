@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Boo.BooLangService.Intellisense;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace BooLangService
 {
-    public class BooSource : Source
+    public class BooSource : Source, ILineView
     {
         public BooSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)
             : base(service, textLines, colorizer)
@@ -41,7 +42,7 @@ namespace BooLangService
         /// <param name="line"></param>
         /// <param name="col"></param>
         /// <returns></returns>
-        public string GetLineUptoPosition(int line, int col)
+        public string GetTextUptoPosition(int line, int col)
         {
             TextSpan span = new TextSpan();
 

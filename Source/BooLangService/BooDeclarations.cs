@@ -43,7 +43,7 @@ namespace Boo.BooLangService
 
         private string GetNodeType(IBooParseTreeNode node)
         {
-            if (node is ClassTreeNode) return "class";
+            if (node is ClassTreeNode) return "Class";
 
             var returnableNode = node as IReturnableNode;
 
