@@ -73,6 +73,40 @@ namespace Boo.BooLangStudioSpecs
             Helper(rawCodeString, 11, 27);
         }
 
+        [Spec]
+        public void MalformedStringWithExtraWhitespacePaddingBeforeBeginningShouldStillParseAsStringToken()
+        {
+            //               0         1         2         3         4
+            //               012345678901234567890123456789012345678901
+            rawCodeString = "print  'malformed string";
+            Helper(rawCodeString, 7, 23);
+        }
+    }
+
+    public class WhenParsingMalformedStringTokensStartingBeforeAnExistingLineComment : LexingBaseFixture
+    {
+
+        public WhenParsingMalformedStringTokensStartingBeforeAnExistingLineComment()
+            : base()
+        {
+
+        }
+
+        [Fact]
+        public void ShouldParseMalformedStringTokenWithLineCommentAsStringToken()
+        {
+
+            //               0           1         2         3         4
+            //               001123456789012345678901234567890123456789012
+            rawCodeString = "\t\tprint 'hello malformation // line comment";
+            BuildTokens(rawCodeString);
+            TokenInfo stringToken = new List<TokenInfo>(from i in tokens
+                                                            where i.Type == TokenType.String
+                                                            select i)[0];
+            Assert.True(stringToken.StartIndex == 8, "Start index failure! Expected 8, actual " + stringToken.StartIndex.ToString());
+            Assert.True(stringToken.EndIndex == 42, "End index failure! Expected 42, actual " + stringToken.EndIndex.ToString());
+        }
+
     }
 
 }

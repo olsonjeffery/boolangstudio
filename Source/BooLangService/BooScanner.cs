@@ -83,7 +83,9 @@ namespace Boo.BooLangService
             }
             else if (currentLine[internalCurrentLinePosition] == ' ')
             {
-                internalCurrentLinePosition += 1;
+                // chomp up the whitespace
+                while (currentLine[internalCurrentLinePosition] == ' ' && internalCurrentLinePosition < currentLine.Length)
+                    internalCurrentLinePosition += 1;
                 if (currentLine[internalCurrentLinePosition] == '"' || currentLine[internalCurrentLinePosition] == '\'')
                 {
                     DealWithMalformedStringTokens(lexerToken, currentLine, internalCurrentLinePosition);
@@ -161,20 +163,20 @@ namespace Boo.BooLangService
             // don't check if we're in a string token...
             if ((_reusableToken.Type != BooLexer.SINGLE_QUOTED_STRING || _reusableToken.Type != BooLexer.DOUBLE_QUOTED_STRING)&&currentLine.Length > 0)
             {
-                while (currentLine[InternalCurrentLinePosition] == ' ' || currentLine[InternalCurrentLinePosition] == '\t')
-                {
+                while ((currentLine[InternalCurrentLinePosition] == ' ' || currentLine[InternalCurrentLinePosition] == '\t')&&_internalCurrentLinePosition < currentLine.Length)
                     _internalCurrentLinePosition += 1;
-                    if (_internalCurrentLinePosition > currentLine.Length)
-                        break;
-                }
-                // catching line comments
-                if ((currentLine[InternalCurrentLinePosition] == '/' && currentLine[InternalCurrentLinePosition + 1] == '/')||currentLine[InternalCurrentLinePosition] == '#')
+                // making sure we aren't at the last position in the line because,
+                // if so, the next check will barf with an array out of bounds exception
+                if (InternalCurrentLinePosition < currentLine.Length - 1)
                 {
-                    DealWithComment(InternalCurrentLinePosition,currentLine.Length - 1, tokenInfo);
-                    doLineParseBailOut = true;
-                    return true;
+                    // catching line comments
+                    if ((currentLine[InternalCurrentLinePosition] == '/' && currentLine[InternalCurrentLinePosition + 1] == '/') || currentLine[InternalCurrentLinePosition] == '#')
+                    {
+                        DealWithComment(InternalCurrentLinePosition, currentLine.Length - 1, tokenInfo);
+                        doLineParseBailOut = true;
+                        return true;
+                    }
                 }
-                
             }
             
 

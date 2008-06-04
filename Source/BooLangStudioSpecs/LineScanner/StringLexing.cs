@@ -182,4 +182,31 @@ namespace Boo.BooLangStudioSpecs
 
     }
 
+    public class WhenParsingEmptyLinesConsistingOfOnlyWhitespace : LexingBaseFixture
+    {
+        public WhenParsingEmptyLinesConsistingOfOnlyWhitespace()
+            : base()
+        {
+
+        }
+
+        [Fact]
+        public void ShouldNotBarfOnLineOfOnlyTabs()
+        {
+            rawCodeString = "\t\t\t";
+            BuildTokens(rawCodeString);
+            Assert.True(tokens.Count == 1, "Token count mismatch.. expected 1, actual: " + tokens.Count.ToString());
+        }
+
+        [Fact]
+        public void ShouldNotBarfOnLineOfOnlySpaces()
+        {
+            rawCodeString = "    ";
+            BuildTokens(rawCodeString);
+            Assert.True(tokens.Count == 1, "Token count mismatch.. expected 1, actual: " + tokens.Count.ToString());
+        }
+
+
+    }
+
 }
