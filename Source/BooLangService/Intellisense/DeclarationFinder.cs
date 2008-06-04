@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Boo.BooLangService;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.VSInterop;
+using Boo.Lang.Compiler.TypeSystem;
 using BooLangService;
 using Boo.BooLangService.VSInterop;
 using Microsoft.VisualStudio.Package;
@@ -51,7 +53,7 @@ namespace Boo.BooLangService.Intellisense
                 // reported as a complete word because of the shortcut used.
                 // So it's easier just to say any lines ending in "." are member lookups, and everything
                 // else is complete word.
-                return GetMemberLookupIntellisenseDeclarations(line);
+                return GetMemberLookupIntellisenseDeclarations(lineNum, colNum);
             }
 
             // Everything else (complete word)
@@ -69,12 +71,31 @@ namespace Boo.BooLangService.Intellisense
             return declarations;
         }
 
-        private BooDeclarations GetMemberLookupIntellisenseDeclarations(string line)
+        private BooDeclarations GetMemberLookupIntellisenseDeclarations(int line, int column)
         {
-            string intellisenseTarget = GetIntellisenseTarget(line);
             var declarations = new BooDeclarations();
 
+            IEntity entity = compiledDocument.GetReferencePoint(line, column);
+            INamespace namespaceEntity = entity as INamespace;
+            bool instance = false;
 
+            if (namespaceEntity == null && entity is InternalLocal)
+            {
+                namespaceEntity = ((InternalLocal)entity).Type;
+                instance = true;
+            }
+
+            var members = new List<IEntity>(TypeSystemServices.GetAllMembers(namespaceEntity));
+
+            // remove any static members for instances, and any instance members for types
+            members.RemoveAll(e => {
+                var member = (IMember)e;
+
+                if (!member.IsPublic) return true;
+                return (instance && member.IsStatic) || (!instance && !member.IsStatic);
+            });
+
+            declarations.Add(members);
 
             return declarations;
         }
