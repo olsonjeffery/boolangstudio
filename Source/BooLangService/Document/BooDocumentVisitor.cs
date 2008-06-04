@@ -11,6 +11,12 @@ namespace Boo.BooLangService.Document
         private readonly IBooParseTreeNode document = new DocumentTreeNode();
         private readonly IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces = new Dictionary<string, IList<IBooParseTreeNode>>();
         private IBooParseTreeNode currentScope;
+        private readonly IList<ReferencePoint> referencePoints = new List<ReferencePoint>();
+
+        public IList<ReferencePoint> ReferencePoints
+        {
+            get { return referencePoints; }
+        }
 
         public IBooParseTreeNode Document
         {
@@ -109,6 +115,19 @@ namespace Boo.BooLangService.Document
             base.OnLocal(node);
 
             Pop(node.LexicalInfo.Line);
+        }
+
+        public override void OnReferenceExpression(ReferenceExpression node)
+        {
+            base.OnReferenceExpression(node);
+
+            IEntity entity = TypeSystemServices.GetEntity(node);
+
+            referencePoints.Add(new ReferencePoint {
+                Entity = entity,
+                Line = node.LexicalInfo.Line,
+                Column = node.LexicalInfo.Column
+            });
         }
 
         public override void LeaveMethod(Method node)

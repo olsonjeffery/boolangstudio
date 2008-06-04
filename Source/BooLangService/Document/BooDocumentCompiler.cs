@@ -16,7 +16,12 @@ namespace Boo.BooLangService.Document
         {
             BooDocumentVisitor visitor = CompileDocument(filename, source);
 
-            return new CompiledDocument(visitor.Document, visitor.ImportedNamespaces, source);
+            return new CompiledDocument(
+                visitor.Document,
+                visitor.ImportedNamespaces,
+                visitor.ReferencePoints,
+                source
+            );
         }
 
         private BooDocumentVisitor CompileDocument(string filename, string source)

@@ -34,6 +34,10 @@
     <StartAction>Project</StartAction>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Boo.Lang.Compiler, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\boo\bin\Boo.Lang.Compiler.dll</HintPath>
+    </Reference>
     <Reference Include="Boo.Lang.Parser, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\boo\build\Boo.Lang.Parser.dll</HintPath>
@@ -130,10 +134,13 @@
     <Compile Include="IntellisenseTooltips.cs" />
     <Compile Include="Intellisense\BaseCompilerContext.cs" />
     <Compile Include="Intellisense\BaseDisplayIntellisenseContext.cs" />
-    <Compile Include="Intellisense\IntellisenseCodeParsing.cs" />
     <Compile Include="Intellisense\IntellisenseTooltips.cs" />
     <Compile Include="Intellisense\Stubs\SimpleStubProjectReferenceLookup.cs" />
     <Compile Include="Intellisense\Stubs\SimpleStubLineView.cs" />
+    <Compile Include="Intellisense\WhenParsingCodeForIntellisense.cs" />
+    <Compile Include="Intellisense\WhenShowingIntellisenseAtImportStatement.cs" />
+    <Compile Include="Intellisense\WhenShowingIntellisenseForMemberSuggestion.cs" />
+    <Compile Include="Intellisense\WhenShowingIntellisenseInMethodBody.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

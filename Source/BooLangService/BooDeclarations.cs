@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Intellisense;
+using Boo.Lang.Compiler.TypeSystem;
 using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangService
@@ -77,6 +78,16 @@ namespace Boo.BooLangService
             members.Sort();
         }
 
+        public void Add(IList<IEntity> list)
+        {
+            foreach (var member in list)
+            {
+                Add(new MethodTreeNode { Name = member.Name });
+            }
+
+            members.Sort();
+        }
+
         public void Add(string[] keywords)
         {
             // still a bit hacky
@@ -88,7 +99,7 @@ namespace Boo.BooLangService
             members.Sort();
         }
 
-        private void Add(IBooParseTreeNode node)
+        public void Add(IBooParseTreeNode node)
         {
             members.Add(node);
         }

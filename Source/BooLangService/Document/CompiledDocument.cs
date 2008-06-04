@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
+using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document
 {
@@ -10,12 +11,14 @@ namespace Boo.BooLangService.Document
         private readonly IBooParseTreeNode root;
         private readonly string content;
         private readonly IDictionary<string, IList<IBooParseTreeNode>> imports;
+        private IList<ReferencePoint> referencePoints;
 
-        public CompiledDocument(IBooParseTreeNode root, IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces, string content)
+        public CompiledDocument(IBooParseTreeNode root, IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces, IList<ReferencePoint> referencePoints, string content)
         {
             this.root = root;
             this.content = content;
             this.imports = importedNamespaces;
+            this.referencePoints = referencePoints;
         }
 
         public string Content
@@ -31,6 +34,17 @@ namespace Boo.BooLangService.Document
         public IBooParseTreeNode ParseTree
         {
             get { return root; }
+        }
+
+        public IEntity GetReferencePoint(int line, int column)
+        {
+            foreach (var referencePoint in referencePoints)
+            {
+                if (referencePoint.WithinBounds(line, column))
+                    return referencePoint.Entity;
+            }
+
+            return null;
         }
 
         public IBooParseTreeNode GetScopeByLine(int line)
