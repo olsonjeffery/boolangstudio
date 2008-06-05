@@ -84,7 +84,7 @@ namespace Boo.BooLangService
             else if (currentLine[internalCurrentLinePosition] == ' ')
             {
                 // chomp up the whitespace
-                while (currentLine[internalCurrentLinePosition] == ' ' && internalCurrentLinePosition < currentLine.Length)
+                while (currentLine[internalCurrentLinePosition] == ' ' && internalCurrentLinePosition < currentLine.Length-1)
                     internalCurrentLinePosition += 1;
                 if (currentLine[internalCurrentLinePosition] == '"' || currentLine[internalCurrentLinePosition] == '\'')
                 {
@@ -163,7 +163,7 @@ namespace Boo.BooLangService
             // don't check if we're in a string token...
             if ((_reusableToken.Type != BooLexer.SINGLE_QUOTED_STRING || _reusableToken.Type != BooLexer.DOUBLE_QUOTED_STRING)&&currentLine.Length > 0)
             {
-                while ((currentLine[InternalCurrentLinePosition] == ' ' || currentLine[InternalCurrentLinePosition] == '\t')&&_internalCurrentLinePosition < currentLine.Length)
+                while ((currentLine[InternalCurrentLinePosition] == ' ' || currentLine[InternalCurrentLinePosition] == '\t')&&_internalCurrentLinePosition < currentLine.Length-1)
                     _internalCurrentLinePosition += 1;
                 // making sure we aren't at the last position in the line because,
                 // if so, the next check will barf with an array out of bounds exception
