@@ -17,9 +17,9 @@ namespace Boo.BooLangStudioSpecs
         public WhenParsingStringsThatContainStringInterpolation()
             : base()
         {
-            //                         1         2
-            //               012345678901234567890123456789
-            rawCodeString = "val = 'blah ${foo} yay'";
+            //                          1         2
+            //               01234566789012345678901223456789
+            rawCodeString = "val = \"blah ${foo} yay\"";
             BuildTokens(rawCodeString);
 
             List<TokenInfo> stringTokens = new List<TokenInfo>(from i in tokens
@@ -31,18 +31,8 @@ namespace Boo.BooLangStudioSpecs
         }
         
         [Fact]
-        public void StringTokenStartsAndEndsInProperPlaceWithSingleQuotes()
-        {
-            Assert.True(stringToken.StartIndex == 6,"Start index mismatch, expected 6, actual " + stringToken.StartIndex.ToString());
-            Assert.True(stringToken.EndIndex == 22, "End index mismatch, expected 22, actual " + stringToken.EndIndex.ToString());
-        }
-
-        [Fact]
         public void StringTokenStartsAndEndsInProperPlaceWithDoubleQuotes()
         {
-            rawCodeString = "val = \"blah ${foo} yay\"";
-            BuildTokens(rawCodeString);
-
             Assert.True(stringToken.StartIndex == 6, "Start index mismatch, expected 6, actual " + stringToken.StartIndex.ToString());
             Assert.True(stringToken.EndIndex == 22, "End index mismatch, expected 22, actual " + stringToken.EndIndex.ToString());
         }
