@@ -31,9 +31,19 @@ namespace Boo.BooLangStudioSpecs
         }
         
         [Fact]
-        public void StringTokenStartsAndEndsInProperPlace()
+        public void StringTokenStartsAndEndsInProperPlaceWithSingleQuotes()
         {
             Assert.True(stringToken.StartIndex == 6,"Start index mismatch, expected 6, actual " + stringToken.StartIndex.ToString());
+            Assert.True(stringToken.EndIndex == 22, "End index mismatch, expected 22, actual " + stringToken.EndIndex.ToString());
+        }
+
+        [Fact]
+        public void StringTokenStartsAndEndsInProperPlaceWithDoubleQuotes()
+        {
+            rawCodeString = "val = \"blah ${foo} yay\"";
+            BuildTokens(rawCodeString);
+
+            Assert.True(stringToken.StartIndex == 6, "Start index mismatch, expected 6, actual " + stringToken.StartIndex.ToString());
             Assert.True(stringToken.EndIndex == 22, "End index mismatch, expected 22, actual " + stringToken.EndIndex.ToString());
         }
 
