@@ -1,0 +1,56 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4e326f12-116a-4a83-96e5-6433540e13a1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>BooPegLexer</RootNamespace>
+    <AssemblyName>BooPegLexer</AssemblyName>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <Name>BooPegLexer</Name>
+    <BooBinPath>dummy2</BooBinPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Boo.Pegs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Name>Boo.Pegs</Name>
+      <AssemblyName>Boo.Pegs.dll</AssemblyName>
+      <HintPath>..\..\Dependencies\boo-extensions\bin\Boo.Pegs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Package.LanguageService.9.0, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>Microsoft.VisualStudio.Package.LanguageService.9.0</Name>
+      <AssemblyName>Microsoft.VisualStudio.Package.LanguageService.9.0.dll</AssemblyName>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Boo.Lang">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BooBinPath)\Boo.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang.Useful">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BooBinPath)\Boo.Lang.Useful.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BooPegLexer.boo">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.boo">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(BooBinPath)\Boo.Microsoft.Build.targets" />
+</Project>
