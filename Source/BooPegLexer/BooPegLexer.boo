@@ -4,6 +4,8 @@ import System
 import System.Collections.Generic
 import Microsoft.VisualStudio.Package
 import Boo.Pegs
+import Boo.Lang.Compiler
+import Boo.Lang.Compiler.MetaProgramming
 
 public class BooPegLexer:
   
@@ -59,9 +61,53 @@ public class BooPegLexer:
     
   #region PEG-related members and fields
   
+  # identifiers and keywords
+  private Keyword as PegContext
+  private Identifier as PegContext
   
+  # string literals
+  private SingleQuotedString as PegContext
+  private DoubleQuotedString as PegContext
+  private TrippleQuotedString as PegContext
+  private InterpolatedString as PegContext
   
-  public def BindPeg(keywords as (string), macros as (string)):
-    pass
+  # comment realted
+  private DoubleWhackLineComment as PegContext
+  private NumberSymbolLineComment as PegContext
+  
+  # delimiters
+  private LeftParen as PegContext
+  private RightParen as PegContext
+  private OpenQq as PegContext
+  private CloseQq as PegContext
+  private Comma as PegContext
+  private Colon as PegContext
+  
+  # numeric literals
+  private IntegerNumber as PegContext
+  private DecimalNumber as PegContext
+  
+  # misc
+  private InlineRegex as PegContext
+  
+  # whitespace
+  private Whitespace as PegContext
+  private NewLine as PegContext
+  private Space as PegContext
+  private Tab as PegContext
+  private EndOfFile as PegContext
+  
+  IsKeyword = FunctionExpression() do (ctx as PegContext):
+    identifier = text(ctx)
+    return identifier in Keywords.Keys
+    
+  IsNotKeyword = FunctionExpression() do (ctx as PegContext):
+    identifier = text(ctx)
+    return identifier not in Keywords.Keys
+  
+  # meant to be ran once on class setup...?
+  public def InitializeAndBindPegs(keywords as (string), macros as (string)):
+    peg:
+      Keyword = ++[a-z],IsKeyword
   
   #endregion
