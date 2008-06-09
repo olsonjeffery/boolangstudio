@@ -1,4 +1,4 @@
-﻿using System;
+﻿                                        using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Boo.BooLangService.Document;
@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
 using VSLangProj;
+using BooPegLexer;
 
 namespace Boo.BooLangService
 {

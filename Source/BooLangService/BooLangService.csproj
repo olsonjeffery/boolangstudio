@@ -121,6 +121,12 @@
     <Compile Include="ColorableItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BooPegLexer\BooPegLexer.booproj">
+      <Project>{4E326F12-116A-4A83-96E5-6433540E13A1}</Project>
+      <Name>BooPegLexer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

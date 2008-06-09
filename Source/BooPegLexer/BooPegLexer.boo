@@ -10,56 +10,67 @@ import Boo.Lang.Compiler.MetaProgramming
 public class BooPegLexer:
   
   #region properties
-  private _line = ''
-  public Line:
-    get:
-      return _line
-    
-  private _offset = 0
-  public Offset:
-    get:
-      return _offset
-  
-  private _keywords = Dictionary [of string, bool]()
+  private _keywords = List of string()
   public Keywords:  
     get:
       return _keywords
   
-  private _macros = Dictionary [of string, bool]()
+  private _macros = List of string()
   public Macros:
     get:
       return _macros
-  
-  private _currentIndex = 0
-  private _lastIndex = 0
   #endregion
   
   #region ctors
   public def constructor():
-    pass
-   
-  public def constructor(line as string, offset as int):
-    _line = line
-    _offset = offset
-  
+    pass  
   #endregion
   
-  #region Common public interface
-  public def SetSource(line as string, offset as int):
-    _line = line
-    _offset = offset
-    _currentIndex = offset
-    _lastIndex = offset
-  	
-  public def NextToken(token as TokenInfo, ref state as int) as bool:
+  #region Common public interface  	
+  public def NextToken(token as TokenInfo, line as string, ref state as int) as bool:
     
     # logic goes here
+    token.Type = TokenType.Unknown
+    token.Color = TokenColor.Text
+    token.StartIndex = 0
+    token.EndIndex = 0
     
-    return true
+    # try and guess what the next token type is..
+    if (state == 13):
+      # we're in a multi-line comment zone, the only hope
+      # is to match it against a ML-comment, otherwise
+      # we return the entire line as a ml-comment token
+      self.InMultiLineComment()
+    elif (state == 14):
+      # we're in a tripple-quote zone, ditto as above
+      self.InTrippleQuoteString(token,line,state)
+    else:
+      # otherwise, try and figure out what the next token
+      # is gonna be
+      self.GeneralLexingCase(token,line,state)
+    
+    # turn the appropriate peg context loose on it..
+    
+    # set the tokenInfo
+    
+    return false
     
   #endregion
-    
-  #region PEG-related members and fields
+  
+  #region Logic related..
+  
+  public virtual def InMultiLineComment() as bool:
+  	return false
+  
+  public virtual def InTrippleQuoteString(tokenInfo as TokenInfo, line as string, ref state as int):
+  	return false
+  
+  public virtual def GeneralLexingCase(tokenInfo as TokenInfo, line as string, ref state as int):
+  	return false
+  
+  #endregion
+  
+  #region PEG related members and fields
   
   # identifiers and keywords
   private Keyword as PegContext
@@ -94,16 +105,16 @@ public class BooPegLexer:
   private Whitespace as PegContext
   private NewLine as PegContext
   private Space as PegContext
-  private Tab as PegContext
-  private EndOfFile as PegContext
+  private Tab as PegExpression
+  private EndOfFile as PegExpression
   
   IsKeyword = FunctionExpression() do (ctx as PegContext):
     identifier = text(ctx)
-    return identifier in Keywords.Keys
-    
-  IsNotKeyword = FunctionExpression() do (ctx as PegContext):
+    return identifier in Keywords
+  
+  IsMacro = FunctionExpression() do (ctx as PegContext):
     identifier = text(ctx)
-    return identifier not in Keywords.Keys
+    return identifier in Macros
   
   # meant to be ran once on class setup...?
   public def InitializeAndBindPegs(keywords as (string), macros as (string)):
@@ -111,3 +122,4 @@ public class BooPegLexer:
       Keyword = ++[a-z],IsKeyword
   
   #endregion
+  

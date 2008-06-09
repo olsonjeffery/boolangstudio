@@ -5,7 +5,6 @@ using System.Text;
 using Xunit;
 using Microsoft.VisualStudio.Package;
 using System.IO;
-using Xunit;
 using Spec = Xunit.FactAttribute;
 
 namespace Boo.BooLangStudioSpecs

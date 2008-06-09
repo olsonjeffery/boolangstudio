@@ -79,13 +79,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTestFixture.cs" />
-    <Compile Include="LineScanner\InternalParseTracker.cs" />
     <Compile Include="LineScanner\LexingBaseFixture.cs" />
     <Compile Include="LineScanner\LineCommentLexing.cs" />
     <Compile Include="LineScanner\MalformedStrings.cs" />
     <Compile Include="LineScanner\MultiLineCommentLexing.cs" />
     <Compile Include="LineScanner\StringInterpolation.cs" />
     <Compile Include="LineScanner\StringLexing.cs" />
+    <Compile Include="PegLexer\WhenAttemptingToGetATokenFromThePegLexer.cs" />
+    <Compile Include="PegLexer\WhenSettingTheSourceInBooScanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +94,11 @@
       <Project>{947EAB0F-FEAE-4D39-B08B-55CC0C84BE07}</Project>
       <Name>BooLangService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BooPegLexer\BooPegLexer.booproj">
+      <Project>{4E326F12-116A-4A83-96E5-6433540E13A1}</Project>
+      <Name>BooPegLexer</Name>
+    </ProjectReference>
+    <Folder Include="PegLexer" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
