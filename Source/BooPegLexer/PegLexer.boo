@@ -104,6 +104,8 @@ public class PegLexer:
   
   # meant to be ran once on class setup...?
   public def InitializeAndBindPegs(keywords as (string), macros as (string)):
+    Keywords.AddRange(keywords)
+    Macros.AddRange(macros)
     peg:
       Keyword = ++[a-z],IsKeyword
   

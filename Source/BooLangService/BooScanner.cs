@@ -30,15 +30,18 @@ namespace Boo.BooLangService
         public BooScanner()
         {
         	_lexer = new PegLexer();
+        	_lexer.InitializeAndBindPegs(GetKeywords(),new string[] { });
         }
 		
         /// <summary>
-        /// ctor that takes a lexer as an argument
+        /// ctor that takes a lexer as an argument.. assume the lexer has
+        /// already had it's PEGs bound...
         /// </summary>
         /// <param name="buffer"></param>
         public BooScanner(PegLexer lexer)
         {
         	_lexer = lexer;
+        	_lexer.InitializeAndBindPegs(GetKeywords(), new string[] { });
         }
         
         public BooScanner(Microsoft.VisualStudio.TextManager.Interop.IVsTextLines buffer) 
@@ -62,6 +65,87 @@ namespace Boo.BooLangService
         {
         	_lexer.SetSource(source.Substring(offset));
         }
+        
+
+	
+        protected string[] GetKeywords()
+       {
+	       	return new string[] {
+	       		// declarations
+	       		"def",
+	       		"class",
+	       		"interface",
+	       		"get",
+	       		"set",
+	       		"namespace",
+	       		// modifiers
+	       		"public",
+	       		"private",
+	       		"protected",
+	       		"internal",
+	       		"virtual",
+	       		"override",
+	       		"abstract",
+	       		"static",
+	       		"final",
+	       		"partial",
+	       		"transient",
+	       		// conditionals
+	       		"if",
+	       		"elif",
+	       		"else",
+	       		// exception stuff
+	       		"raise",
+	       		"except",
+	       		"ensure",
+	       		"try",
+	       		// loops
+	       		"for",
+	       		"while",
+	       		// literals
+	       		"null",
+	       		"true",
+	       		"false",
+	       		// logical operators
+	       		"and",
+	       		"or",
+	       		"is",
+	       		"isa",
+	       		"not",
+	       		"in",
+	       		// misc
+	       		"as",
+	       		"do",
+	       		"break",
+	       		"continue",
+	       		"cast",
+	       		"import",
+	       		"from",
+	       		"goto",
+	       		"of",
+	       		"ref",
+	       		"self",
+	       		"super",
+	       		"typeof",
+	       		// return-type-stuff
+	       		"yield",       	
+	       		"pass",
+	       		"return",
+	       		// primitives
+	       		"char",
+	       		"string",
+	       		"int",
+	       		"callable",
+	       		"enum",
+	       		"struct",
+	       		"event",
+	       		// special methods
+	       		"constructor",
+	       		"destructor"
+	       		
+	       	};
+       }
+        
         #endregion
 
     }

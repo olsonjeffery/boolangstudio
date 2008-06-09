@@ -31,7 +31,8 @@ namespace Boo.BooLangStudioSpecs
 		{
 			lexer = Mocks.PartialMock<PegLexer>();
 			scanner = new BooScanner(lexer);
-			scanner.SetSource(line,offset);     
+			
+			scanner.SetSource(line,offset);
 
 		}
 	}
