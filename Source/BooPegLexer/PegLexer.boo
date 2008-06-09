@@ -7,7 +7,7 @@ import Boo.Pegs
 import Boo.Lang.Compiler
 import Boo.Lang.Compiler.MetaProgramming
 
-public class BooPegLexer:
+public class PegLexer:
   
   #region properties
   private _keywords = List of string()
@@ -19,6 +19,18 @@ public class BooPegLexer:
   public Macros:
     get:
       return _macros
+      
+  private _line as string = string.Empty
+  public EntireLine as string:
+  	get:
+  		return _line
+  
+  private _currentIndex as int = 0
+  
+  public RemainingLine as string:
+  	get:
+  		return _line.Substring(_currentIndex)
+  
   #endregion
   
   #region ctors
@@ -27,13 +39,17 @@ public class BooPegLexer:
   #endregion
   
   #region Common public interface  	
-  public def NextToken(token as TokenInfo, line as string, ref state as int) as bool:
+  public def SetSource(line as string):
+  	_line = line
+  	_currentPos = 0
+  
+  public def NextToken(ideToken as TokenInfo, pegToken as PegToken, ref state as int) as bool:
     
     # logic goes here
-    token.Type = TokenType.Unknown
-    token.Color = TokenColor.Text
-    token.StartIndex = 0
-    token.EndIndex = 0
+    ideToken.Type = TokenType.Unknown
+    ideToken.Color = TokenColor.Text
+    ideToken.StartIndex = 0
+    ideToken.EndIndex = 0
     
     result = false
     # try and guess what the next token type is..
@@ -41,14 +57,14 @@ public class BooPegLexer:
       # we're in a multi-line comment zone, the only hope
       # is to match it against a ML-comment, otherwise
       # we return the entire line as a ml-comment token
-      result = self.InMultiLineComment(token,line,state)
+      result = self.InMultiLineComment(ideToken,pegToken,state)
     elif (state == 14):
       # we're in a tripple-quote zone, ditto as above
-      result = self.InTrippleQuoteString(token,line,state)
+      result = self.InTrippleQuoteString(ideToken,pegToken,state)
     else:
       # otherwise, try and figure out what the next token
       # is gonna be
-      result = self.InGeneralLexingCase(token,line,state)
+      result = self.InGeneralLexingCase(ideToken,pegToken,state)
     
     # what to do with a false result?
     
@@ -62,13 +78,13 @@ public class BooPegLexer:
   
   #region Logic related..
   
-  public virtual def InMultiLineComment(tokenInfo as TokenInfo, line as string, ref state as int):
+  public virtual def InMultiLineComment(tokenInfo as TokenInfo, pegToken as PegToken, ref state as int):
   	return false
   
-  public virtual def InTrippleQuoteString(tokenInfo as TokenInfo, line as string, ref state as int):
+  public virtual def InTrippleQuoteString(tokenInfo as TokenInfo, pegToken as PegToken, ref state as int):
   	return false
   
-  public virtual def InGeneralLexingCase(tokenInfo as TokenInfo, line as string, ref state as int):
+  public virtual def InGeneralLexingCase(tokenInfo as TokenInfo, pegToken as PegToken, ref state as int):
   	return false
   
   #endregion

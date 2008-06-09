@@ -42,12 +42,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BooPegLexer.boo">
+    <Compile Include="PegLexer.boo">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AssemblyInfo.boo">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PegToken.boo" />
+    <Compile Include="PegTokenType.boo" />
   </ItemGroup>
   <Import Project="$(BooBinPath)\Boo.Microsoft.Build.targets" />
 </Project>

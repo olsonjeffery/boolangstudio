@@ -12,6 +12,7 @@ using System.IO;
 using Xunit;
 using Boo.BooLangService;
 using Microsoft.VisualStudio.Package;
+using BooPegLexer;
 
 namespace Boo.BooLangStudioSpecs
 {
@@ -21,51 +22,21 @@ namespace Boo.BooLangStudioSpecs
 	public abstract class WhenSettingTheSourceInBooScanner : AutoMockingTestFixture
 	{
 		protected BooScanner scanner;
+		protected string line = "\t\tprint 'hello'";
+		protected int offset = 0;
+		protected PegLexer lexer;
+		
 		public WhenSettingTheSourceInBooScanner()
 			: base()
 		{
-			scanner = new BooScanner();
+			lexer = Mocks.PartialMock<PegLexer>();
+			scanner = new BooScanner(lexer);
+			scanner.SetSource(line,offset);     
+
 		}
 	}
 	
-	public class AndWhenTheOffsetIsZero : WhenSettingTheSourceInBooScanner
-	{
-		protected string line = "\t\tprint 'hello'";
-		protected int offset = 0;
-		
-		public AndWhenTheOffsetIsZero()
-			: base()
-		{
-			
-			scanner.SetSource(line,offset);                  
-		}
-		
-		[Fact]
-		public void OffsetShouldBeZero()
-		{
-			Assert.True(scanner.Offset == offset, "Actual: "+scanner.Offset);
-		}
-		
-		[Fact]
-		public void LinePropertyShouldReturnEntireLine()
-		{
-			Assert.True(scanner.Line == line, "Actual: "+scanner.Line);
-		}
-		
-		[Fact]
-		public void RawLinePropertyShouldReturnEntireLine()
-		{
-			Assert.True(scanner.RawLine == line, "Actual: "+scanner.RawLine);
-		}
-		
-		[Fact]
-		public void LexerPositionShouldBeZero()
-		{
-			Assert.True(scanner.LexerIndex == 0, "Actual: "+scanner.LexerIndex.ToString());
-		}
-	}
-	
-	public class AndWhenTheLexerHasConsumedOneToken : AndWhenTheOffsetIsZero
+	public class AndWhenTheScannerHasProcessedOneToken : WhenSettingTheSourceInBooScanner
 	{
 		protected int lexerPos = 2;
 		protected bool isMoreTokens = false;
@@ -73,7 +44,7 @@ namespace Boo.BooLangStudioSpecs
 		protected int state = 0;
 		protected string remainingLine = string.Empty;
 		
-		public AndWhenTheLexerHasConsumedOneToken()
+		public AndWhenTheScannerHasProcessedOneToken()
 			: base()
 		{
 			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token,ref state);
@@ -84,12 +55,6 @@ namespace Boo.BooLangStudioSpecs
 		public void StateShouldBeZero()
 		{
 			Assert.True(state == 0, "Actual: "+state.ToString());
-		}
-		
-		[Fact]
-		public void LexerIndexShouldBeTwo()
-		{
-			Assert.True(scanner.LexerIndex == lexerPos,"Actual: "+scanner.LexerIndex.ToString());
 		}
 		
 		[Fact]
@@ -114,12 +79,6 @@ namespace Boo.BooLangStudioSpecs
 		public void TokenEndIndexShouldBeOne()
 		{
 			Assert.True(token.EndIndex == 1, "Actual: "+token.EndIndex.ToString());
-		}
-		
-		[Fact]
-		public void RemainingLinePropertyShouldBeProper()
-		{
-			Assert.True(scanner.RemainingLine == remainingLine, "Expected: '"+remainingLine+"', Actual: '"+scanner.RemainingLine+"'");
 		}
 		
 		[Fact]
