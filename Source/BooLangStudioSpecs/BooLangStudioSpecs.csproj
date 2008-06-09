@@ -30,6 +30,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Boo.Lang.Parser, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,6 +88,7 @@
     <Compile Include="LineScanner\MultiLineCommentLexing.cs" />
     <Compile Include="LineScanner\StringInterpolation.cs" />
     <Compile Include="LineScanner\StringLexing.cs" />
+    <Compile Include="PegLexer\AndPassingInDifferentStates.cs" />
     <Compile Include="PegLexer\WhenAttemptingToGetATokenFromThePegLexer.cs" />
     <Compile Include="PegLexer\WhenSettingTheSourceInBooScanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

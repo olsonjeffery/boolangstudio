@@ -28,50 +28,11 @@ namespace Boo.BooLangStudioSpecs
 		public WhenAttemptingToGetATokenFromThePegLexer()
 			: base()
 		{
-			lexer = Create<BooPegLexer.BooPegLexer>();
+			lexer = Mocks.PartialMock<BooPegLexer.BooPegLexer>();
 			token = new TokenInfo();
 		}
 	}
 	
-	public abstract class AndPassingInDifferentStates : WhenAttemptingToGetATokenFromThePegLexer
-	{
-		protected int startIndex = 0;
-		protected int endIndex = 0;
-		
-		public AndPassingInDifferentStates()
-			: base()
-		{
-			line = "doesn't matter because it's in the ml_comment zone";
-			endIndex = line.Length-1;
-		}
-		
-
-	}
 	
-	public class AndStateIsThirteen : AndPassingInDifferentStates
-	{
-		public AndStateIsThirteen()
-			: base()
-		{
-			state = 13;
-		}
-		
-		[Fact]
-		public void InMultiLineCommentMethodShouldBeInvoked()
-		{
-			
-			using (Mocks.Record())
-			{
-				Expect
-					//.Call(Mock<BooPegLexer.BooPegLexer>().InMultiLineComment(token,line,ref state))
-					.Call(Mock<BooPegLexer.BooPegLexer>().InMultiLineComment())
-					.Return(false);
-			}
-			using (Mocks.Playback())
-			{
-				lexer.NextToken(token,line,ref state);
-			}
-		}
-	}
 	
 }

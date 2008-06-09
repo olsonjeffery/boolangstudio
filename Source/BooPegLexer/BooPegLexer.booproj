@@ -21,11 +21,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Boo.Pegs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Name>Boo.Pegs</Name>
-      <AssemblyName>Boo.Pegs.dll</AssemblyName>
-      <HintPath>..\..\Dependencies\boo-extensions\bin\Boo.Pegs.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Boo.Pegs">
+      <HintPath>..\..\Dependencies\boo-extensions\build\Boo.Pegs.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Package.LanguageService.9.0, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Name>Microsoft.VisualStudio.Package.LanguageService.9.0</Name>

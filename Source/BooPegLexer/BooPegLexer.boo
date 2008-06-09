@@ -35,19 +35,22 @@ public class BooPegLexer:
     token.StartIndex = 0
     token.EndIndex = 0
     
+    result = false
     # try and guess what the next token type is..
     if (state == 13):
       # we're in a multi-line comment zone, the only hope
       # is to match it against a ML-comment, otherwise
       # we return the entire line as a ml-comment token
-      self.InMultiLineComment()
+      result = self.InMultiLineComment(token,line,state)
     elif (state == 14):
       # we're in a tripple-quote zone, ditto as above
-      self.InTrippleQuoteString(token,line,state)
+      result = self.InTrippleQuoteString(token,line,state)
     else:
       # otherwise, try and figure out what the next token
       # is gonna be
-      self.GeneralLexingCase(token,line,state)
+      result = self.InGeneralLexingCase(token,line,state)
+    
+    # what to do with a false result?
     
     # turn the appropriate peg context loose on it..
     
@@ -59,13 +62,13 @@ public class BooPegLexer:
   
   #region Logic related..
   
-  public virtual def InMultiLineComment() as bool:
+  public virtual def InMultiLineComment(tokenInfo as TokenInfo, line as string, ref state as int):
   	return false
   
   public virtual def InTrippleQuoteString(tokenInfo as TokenInfo, line as string, ref state as int):
   	return false
   
-  public virtual def GeneralLexingCase(tokenInfo as TokenInfo, line as string, ref state as int):
+  public virtual def InGeneralLexingCase(tokenInfo as TokenInfo, line as string, ref state as int):
   	return false
   
   #endregion
@@ -73,40 +76,7 @@ public class BooPegLexer:
   #region PEG related members and fields
   
   # identifiers and keywords
-  private Keyword as PegContext
-  private Identifier as PegContext
-  
-  # string literals
-  private SingleQuotedString as PegContext
-  private DoubleQuotedString as PegContext
-  private TrippleQuotedString as PegContext
-  private InterpolatedString as PegContext
-  
-  # comment realted
-  private DoubleWhackLineComment as PegContext
-  private NumberSymbolLineComment as PegContext
-  
-  # delimiters
-  private LeftParen as PegContext
-  private RightParen as PegContext
-  private OpenQq as PegContext
-  private CloseQq as PegContext
-  private Comma as PegContext
-  private Colon as PegContext
-  
-  # numeric literals
-  private IntegerNumber as PegContext
-  private DecimalNumber as PegContext
-  
-  # misc
-  private InlineRegex as PegContext
-  
-  # whitespace
-  private Whitespace as PegContext
-  private NewLine as PegContext
-  private Space as PegContext
-  private Tab as PegExpression
-  private EndOfFile as PegExpression
+  private Keyword
   
   IsKeyword = FunctionExpression() do (ctx as PegContext):
     identifier = text(ctx)
