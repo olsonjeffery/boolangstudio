@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LineCommentLexing.cs" />
+    <Compile Include="MiscParseIssues.cs" />
     <Compile Include="MultiLineCommentLexing.cs" />
     <Compile Include="StringLexing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

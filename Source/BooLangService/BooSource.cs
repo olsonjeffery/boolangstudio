@@ -1,29 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
-using Microsoft.VisualStudio;
 
 namespace BooLangService
 {
-    class BooSource : Source
+    public class BooSource : Source
     {
-
         public BooSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)
             : base(service, textLines, colorizer)
-        {
-        }
+        {}
 
-        public override void OnCommand(IVsTextView textView, Microsoft.VisualStudio.VSConstants.VSStd2KCmdID command, char ch)
+        /// <summary>
+        /// Occurs when the changes are committed to the document, typically on save, but more
+        /// importantly on enter.
+        /// </summary>
+        /// <param name="reason">Reason why the changes were committed, i.e. Save.</param>
+        /// <param name="changedArea">TextSpan of where the changes occurred.</param>
+        public override void OnChangesCommitted(uint reason, TextSpan[] changedArea)
         {
-            base.OnCommand(textView, command, ch);
+            base.OnChangesCommitted(reason, changedArea);
 
-            // need to handle a press of the enter key
-            // when the last non-whitespace/comment character
-            // on the line was a colon, so we can do indentation
-            
+            if (((ChangeCommitGestureFlags)reason & ChangeCommitGestureFlags.CCG_CARET_ON_NEW_BUFFER_LINE) == ChangeCommitGestureFlags.CCG_CARET_ON_NEW_BUFFER_LINE)
+            {
+                // there's been a newline put in by the user
+                if (changedArea.Length > 0)
+                {
+                    // and its actually changed the doc
+                    LineIndenter indenter = new LineIndenter(this);
+
+                    // change the indentation, if necessary
+                    indenter.ChangeIndentation(changedArea[0]);
+                }
+            }
         }
 
         /// <summary>

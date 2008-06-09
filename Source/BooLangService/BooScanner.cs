@@ -31,37 +31,91 @@ namespace Boo.BooLangService
 
         #region IScanner Members
 
+        #region internal parse tracker stuff
+        private int _internalCurrentLinePosition = 0;
+        public int InternalCurrentLinePosition
+        {
+            get
+            {
+                if (_internalCurrentLinePosition >= _currentLine.Length)
+                    return _currentLine.Length - 1;
+                else
+                    return _internalCurrentLinePosition;
+            }
+        }
+
+        public char ConsumeInternalLineChar()
+        {
+            _internalCurrentLinePosition += 1;
+            return _currentLine[_internalCurrentLinePosition - 1];
+        }
+
+        public string RemainingCurrentLine
+        {
+            get
+            {
+                if (_internalCurrentLinePosition < _currentLine.Length)
+                    return _currentLine.Substring(_internalCurrentLinePosition);
+                else
+                    return string.Empty;
+            }
+        }
+
+        #endregion
+
         private antlr.CommonToken _reusableToken = null;
+        
         public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
         {
             try
             {
                 _reusableToken = lexer.nextToken() as antlr.CommonToken;
             }
-            catch (antlr.TokenStreamRecognitionException e)
+            catch (Exception e)
             {
-                // supress that shiiet
+                // deal with the event of a trailing excl. point
+                if (_currentLine[_currentLine.Length - 1] == '!')
+                {
+                    SetSource(_currentLine.Substring(0, _currentLine.Length - 1) + 'A', _offset);
+                }
+                else if (_currentLine[InternalCurrentLinePosition] == ' ' || (_currentLine[InternalCurrentLinePosition] == '"' || _currentLine[InternalCurrentLinePosition] == '\''))
+                {
+                    ConsumeInternalLineChar();
+                    if (_currentLine[InternalCurrentLinePosition] == '"' || _currentLine[InternalCurrentLinePosition] == '\'')
+                    {
+                        // if we're here, that means we're inside of a
+                        // malformed string token, most likely...
+                        if (_currentLine[InternalCurrentLinePosition] == '"')
+                        {
+                            _reusableToken.setType(BooLexer.DOUBLE_QUOTED_STRING);
+                            
+                        }
+                        else if (_currentLine[InternalCurrentLinePosition] == '\'')
+                            _reusableToken.setType(BooLexer.SINGLE_QUOTED_STRING);
+
+                        _reusableToken.setText(_currentLine.Substring(InternalCurrentLinePosition+1));
+                        _reusableToken.setColumn(_internalCurrentLinePosition + 1);
+                        // also a hint to the start and end index setting down the way...
+                        _reusableToken.setLine(-10);
+                        
+                    }
+                }
+                    
             }
 
             // resolve token start and stop positions. Need
             // to do this first.
             ResolveBooTokenStartAndEndIndex(_reusableToken, tokenInfo);
 
-            // if we get an EOF token, we're done.
-            if (_reusableToken.Type == 1)
-            {
-                tokenInfo.Type = TokenType.WhiteSpace;
-                // if we're in a ML_COMMENT zone, let's
-                // just make sure that everything is
-                // parsed as a comment...
-                if (state == 13)
-                {
-                    tokenInfo.StartIndex = 0;
-                    tokenInfo.EndIndex = _currentLine.Length;
-                    tokenInfo.Type = TokenType.Comment;
-                    tokenInfo.Color = TokenColor.Comment;
-                }
+            // here is where we set the internal tracker stuff
+            _internalCurrentLinePosition = tokenInfo.EndIndex + 1;
 
+            // if our internal tracker tells us we're at the end,
+            // let's cut out all of that garbage crap the lexer
+            // keeps returning to us
+            // also we need to bail is we stumble upon some EOL's
+            if (_reusableToken.Type == 1 || _reusableToken.Type == 9)
+            {
                 return false;
             }
             else if (state == 13)
@@ -94,9 +148,15 @@ namespace Boo.BooLangService
         }
 
         private string _currentLine;
+        public string CurrentLine {
+            get {
+                return _currentLine;
+            }}
+        private int _offset;
 
         public  void SetSource(string source, int offset)
         {
+            _offset = offset;
             _currentLine = source;
             if (_currentLine == string.Empty)
             {

@@ -8,7 +8,7 @@ namespace Boo.BooLangService.Document.Nodes
         private readonly IList<IBooParseTreeNode> children;
         private string name;
         private int startLine;
-        private int endLine;
+        private int endLine = -1; // forces generated endline if not set
 
         public AbstractTreeNode()
         {

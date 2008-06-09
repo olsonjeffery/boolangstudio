@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="Document\CompiledDocument.cs" />
     <Compile Include="Document\BooParseTreeNodeFlatterner.cs" />
+    <Compile Include="Document\Nodes\DocumentTreeNode.cs" />
     <Compile Include="Intellisense\IntellisenseVisibleAttribute.cs" />
     <Compile Include="Intellisense\IntellisenseNodeList.cs" />
     <Compile Include="Document\Nodes\TryTreeNode.cs" />
@@ -105,14 +106,13 @@
     <Compile Include="Document\Nodes\MethodTreeNode.cs" />
     <Compile Include="Document\Nodes\NamespaceTreeNode.cs" />
     <Compile Include="Document\Nodes\ParseTreeNodeSet.cs" />
-    <Compile Include="Document\Nodes\RootTreeNode.cs" />
     <Compile Include="Intellisense\IntellisenseIcon.cs" />
     <Compile Include="Intellisense\IntellisenseIconResolver.cs" />
     <Compile Include="Intellisense\Keywords.cs" />
+    <Compile Include="LineIndenter.cs" />
     <Compile Include="VSInterop\ProjectHierarchy.cs" />
     <Compile Include="VSInterop\ProjectReference.cs" />
     <Compile Include="BooLangService.cs" />
-    <Compile Include="BooLanguageLineIndent.cs" />
     <Compile Include="BooScanner.cs" />
     <Compile Include="BooScannerResolvers.cs" />
     <Compile Include="BooScope.cs" />
