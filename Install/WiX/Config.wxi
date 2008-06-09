@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  
+  <?define BooVersion = 0.8.2 ?>  
+  <?define ProductName = BooLangStudio ?>  
+  <?define ProductVersion = 0.0.2 ?>  
+  <?define BOOCTOOLPATH_REGSAFE = . ?>  
+  <?define BLSBINSPATH_REGSAFE = . ?>
+  <?define VisualStudioFolder = Microsoft Visual Studio 9.0 ?>
+  
+</Include>

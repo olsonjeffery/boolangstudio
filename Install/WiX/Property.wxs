@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  <copyright company="BooLangStudio">
+  Copyright © 2008 BooLangStudio
+  </copyright>
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include Config.wxi ?>
+  
+  <Fragment>
+    
+    <!-- Do a per-machine installation-->
+    <Property Id="ALLUSERS" Secure="yes" Value="1" />
+        
+    <!-- When upgrading, gets populated with old products IDs. -->
+    <Property Id="EXISTINGPRODUCTS" Secure="yes" />
+    
+    <!-- Prompt for the missing install source. -->
+    <Property Id="DiskPrompt" Value="$(var.ProductName)" />
+    
+    <!-- Set to disable the generation the specific shortcuts that support installation-on-demand. -->
+    <Property Id="DISABLEADVTSHORTCUTS" Secure="yes">1</Property>
+    
+    <!-- Instructs the WiX UI on which installdir to chose. -->
+    <!-- TODO: when UI is finalized, check if it's still needed. -->
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" Secure="yes" />
+    
+    <!-- Set this property if you'd like to prevent the installation from uninstalling any other versions of the product. -->
+    <Property Id="NOUPGRADE" Secure="yes" />
+    
+    <!---->
+    <!---->
+    <!-- AddRemovePrograms props. -->
+    <!---->
+    <!-- Provides Comments for the Add or Remove Programs in Control Panel. -->
+    <Property Id="ARPCOMMENTS">$(var.ProductName) v$(var.ProductVersion), for Boo v$(var.BooVersion).</Property>
+    
+    <!-- Provides Contact for the Add or Remove Programs in Control Panel. -->
+    <Property Id="ARPCONTACT">$(var.ProductName)</Property>
+    <!-- Internet address or URL for technical support. -->
+    <Property Id="ARPHELPLINK">http://www.codeplex.com/$(var.ProductName)</Property>
+    <!-- URL for the home page of an application. -->
+    <Property Id="ARPURLINFOABOUT">http://www.codeplex.com/$(var.ProductName)</Property>
+    <!-- URL for application update information. -->
+    <Property Id="ARPURLUPDATEINFO">http://www.codeplex.com/$(var.ProductName)</Property>
+    <!-- TODO: Changes page?.. -->
+    <!-- Specifies the primary icon for the installation package. -->
+    <Property Id="ARPPRODUCTICON">F.ProductIcon.ico</Property>
+
+    <Property Id="VISUALSTUDIO_LOCATION">Microsoft Visual Studio 9.0\Common7\IDE</Property>
+    
+  </Fragment>
+</Wix>

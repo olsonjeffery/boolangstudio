@@ -74,6 +74,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Package.ico" />
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\BooConsoleApplication.vstemplate" />
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\ConsoleApplication.ico" />
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\BooClassLibrary.vstemplate" />
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\ClassLibrary.ico" />
+    <ZipItem Include="Templates\Boo\Items\TextFile\Text.txt" />
+    <ZipItem Include="Templates\Boo\Items\TextFile\TextFile.vstemplate" />
+    <ZipItem Include="Templates\Boo\Items\TextFile\txt.ico" />
+    <ZipItem Include="Templates\Boo\Items\Class\BooClass.vstemplate" />
+    <ZipItem Include="Templates\Boo\Items\Class\Class.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BooLangProject\BooLangProject.csproj">
@@ -84,6 +93,19 @@
       <Project>{947EAB0F-FEAE-4D39-B08B-55CC0C84BE07}</Project>
       <Name>BooLangService</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ZipItem Include="Templates\Boo\Items\Class\Class.boo" />
+  </ItemGroup>
+  <ItemGroup>
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\AssemblyInfo.boo" />
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\Class.boo" />
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\ClassLibrary.booproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\AssemblyInfo.boo" />
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\ConsoleApplication.booproj" />
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\Program.boo" />
   </ItemGroup>
   <PropertyGroup>
     <!--
@@ -103,4 +125,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)obj\$(ConfigurationName)\Class.zip $(SolutionDir)Pre\Class.zip
+copy $(ProjectDir)obj\$(ConfigurationName)\TextFile.zip $(SolutionDir)Pre\TextFile.zip
+copy $(ProjectDir)obj\$(ConfigurationName)\ClassLibrary.zip $(SolutionDir)Pre\ClassLibrary.zip
+copy $(ProjectDir)obj\$(ConfigurationName)\ConsoleApplication.zip $(SolutionDir)Pre\ConsoleApplication.zip</PostBuildEvent>
+  </PropertyGroup>
 </Project>
