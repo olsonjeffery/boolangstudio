@@ -20,7 +20,7 @@
         <Control Id="Text" Type="Text" X="25" Y="70" Width="320" Height="40">
           <Text>To install in this folder, click "Next". To install to a different folder, enter it below or click "Browse".</Text>
         </Control>
-        <Control Id="BannerBitmap" Type="Bitmap" X="245" Y="2" Width="123" Height="40" Text="boo_banner.bmp" />
+        <Control Id="BannerBitmap" Type="Bitmap" FixedSize="yes" X="0" Y="0" Width="370" Height="44" Text="boo_banner.bmp" />
         <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="374" Height="0" />
         <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="374" Height="0" />
         <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes">

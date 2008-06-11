@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Package;
 using Boo.BooLangService;
 using Boo.BooLangProject;
+using Microsoft.VisualStudio;
 
 namespace Boo.BooLangStudio
 {
@@ -25,52 +26,43 @@ namespace Boo.BooLangStudio
     /// to do it: it derives from the Package class that provides the implementation of the 
     /// IVsPackage interface and uses the registration attributes defined in the framework to 
     /// register itself and its components with the shell.
-    /// </summary>
-    // This attribute tells the registration utility (regpkg.exe) that this class needs
-    // to be registered as package.
+    /// </summary>    
     [PackageRegistration(UseManagedResourcesOnly = true)]
-    // A Visual Studio component can be registered under different regitry roots; for instance
-    // when you debug your package you want to register it in the experimental hive. This
-    // attribute specifies the registry root to use if no one is provided to regpkg.exe with
-    // the /root switch.
     [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\9.0Exp")]
-    // This attribute is used to register the informations needed to show the this package
-    // in the Help/About dialog of Visual Studio.
-    [InstalledProductRegistration(false, "#110", "#112", "1.0", IconResourceID = 400)]
-    // In order be loaded inside Visual Studio in a machine that has not the VS SDK installed, 
-    // package needs to have a valid load key (it can be requested at 
-    // http://msdn.microsoft.com/vstudio/extend/). This attributes tells the shell that this 
-    // package has a load key embedded in its resources.
-    [ProvideLoadKey("Standard", "1.0", "BooLangService", "Boo", 1)]
+    [InstalledProductRegistration(true, "#110", "#112", "1.0", IconResourceID = 400)]
+    [ProvideLoadKey("Standard", "1.0", "BooLangStudio", "Boo", 113)]
     [ProvideService(typeof(Boo.BooLangService.BooLangService))]
-    [ProvideLanguageExtension(typeof(Boo.BooLangService.BooLangService), Boo.BooLangService.BooLangService.LanguageExtension)]
-    [ProvideLanguageService(typeof(Boo.BooLangService.BooLangService), Boo.BooLangService.BooLangService.LanguageName, 0,
+    [ProvideLanguageExtension(
+        typeof(Boo.BooLangService.BooLangService),
+        Boo.BooLangService.BooLangService.LanguageExtension)]
+    [ProvideLanguageService(typeof(Boo.BooLangService.BooLangService),
+        Boo.BooLangService.BooLangService.LanguageName,
+        111,
         CodeSense = true,
         DefaultToInsertSpaces = true,
         EnableCommenting = true,
         MatchBraces = true,
         ShowCompletion = true,
         ShowMatchingBrace = true)]
-    
     [ProvideProjectFactory(typeof(BooLangProjectFactory),
         "Boo",
         "Boo Project Files (*.booproj);*.booproj",
         "booproj",
         "booproj",
-        //@"..\..\..\BooLangProject\Templates\Projects",
         @".\NullPath",
-        LanguageVsTemplate="Boo",
-        NewProjectRequireNewFolderVsTemplate=false
+        LanguageVsTemplate = "Boo",
+        NewProjectRequireNewFolderVsTemplate = false
         )]
     [ProvideProjectItem(typeof(BooLangProjectFactory),
         "Boo",
-        @".\NullPath",
+        @".\\NullPath",
         32)]
+    [SingleFileGeneratorSupportRegistrationAttribute(typeof(BooLangProjectFactory))]
     [RegisterMsBuildTargets("Boo_0.8.1",
-        @".\NullPath\Boo.Microsoft.Build.targets"
+        @".\Boo.Microsoft.Build.targets"
         )]
     [Guid(GuidList.guidBooLangStudioPkgString)]
-    public sealed class BooLangStudioPackage : ProjectPackage
+    public sealed class BooLangStudioPackage : ProjectPackage, IVsInstalledProduct
     {
         /// <summary>
         /// Default constructor of the package.
@@ -110,5 +102,87 @@ namespace Boo.BooLangStudio
         }
         #endregion
 
+        #region IVsInstalledProduct Members
+        /// <summary>
+        /// This method is called during Devenv /Setup to get the bitmap to
+        /// display on the splash screen for this package.
+        /// </summary>
+        /// <param name="pIdBmp">The resource id corresponding to the bitmap to display on the splash screen</param>
+        /// <returns>HRESULT, indicating success or failure</returns>
+        public int IdBmpSplash(out uint pIdBmp)
+        {
+            pIdBmp = 200;
+
+            return VSConstants.S_OK;
+        }
+
+        /// <summary>
+        /// This method is called to get the icon that will be displayed in the
+        /// Help About dialog when this package is selected.
+        /// </summary>
+        /// <param name="pIdIco">The resource id corresponding to the icon to display on the Help About dialog</param>
+        /// <returns>HRESULT, indicating success or failure</returns>
+        public int IdIcoLogoForAboutbox(out uint pIdIco)
+        {
+            pIdIco = 400;
+
+            return VSConstants.S_OK;
+        }
+
+        /// <summary>
+        /// This methods provides the product official name, it will be
+        /// displayed in the help about dialog.
+        /// </summary>
+        /// <param name="pbstrName">Out parameter to which to assign the product name</param>
+        /// <returns>HRESULT, indicating success or failure</returns>
+        public int OfficialName(out string pbstrName)
+        {
+            pbstrName = GetResourceString("110");
+            return VSConstants.S_OK;
+        }
+
+        /// <summary>
+        /// This methods provides the product description, it will be
+        /// displayed in the help about dialog.
+        /// </summary>
+        /// <param name="pbstrProductDetails">Out parameter to which to assign the description of the package</param>
+        /// <returns>HRESULT, indicating success or failure</returns>
+        public int ProductDetails(out string pbstrProductDetails)
+        {
+            pbstrProductDetails = GetResourceString("112");
+            return VSConstants.S_OK;
+        }
+
+        /// <summary>
+        /// This methods provides the product version, it will be
+        /// displayed in the help about dialog.
+        /// </summary>
+        /// <param name="pbstrPID">Out parameter to which to assign the version number</param>
+        /// <returns>HRESULT, indicating success or failure</returns>
+        public int ProductID(out string pbstrPID)
+        {
+            pbstrPID = GetResourceString("111");
+            return VSConstants.S_OK;
+        }
+
+        /// <summary>
+        /// This method loads a localized string based on the specified resource.
+        /// </summary>
+        /// <param name="resourceName">Resource to load</param>
+        /// <returns>String loaded for the specified resource</returns>
+        public string GetResourceString(string resourceName)
+        {
+            string resourceValue;
+            IVsResourceManager resourceManager = (IVsResourceManager)GetService(typeof(SVsResourceManager));
+            if (resourceManager == null)
+            {
+                throw new InvalidOperationException("Could not get SVsResourceManager service. Make sure the package is Sited before calling this method");
+            }
+            Guid packageGuid = this.GetType().GUID;
+            int hr = resourceManager.LoadResourceString(ref packageGuid, -1, resourceName, out resourceValue);
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(hr);
+            return resourceValue;
+        }
+        #endregion
     }
 }

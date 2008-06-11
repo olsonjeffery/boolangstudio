@@ -13,6 +13,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectBasePath>$(VSSDK90Install)VisualStudioIntegration\Common\Source\CSharp\Project</ProjectBasePath>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>BooLangStudio.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -115,6 +117,9 @@
     <EmbeddedResource Include="Resources\BooProjectNode.bmp" />
     <EmbeddedResource Include="Resources\BooFileNode.bmp" />
     <EmbeddedResource Include="Resources\imagelis.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BooLangStudio.snk" />
   </ItemGroup>
   <Import Project="$(ProjectBasePath)\ProjectBase.Files" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

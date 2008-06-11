@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Boo.BooLangStudio {
+namespace Splash.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Boo.BooLangStudio {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Boo.BooLangStudio.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Splash.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,67 +60,10 @@ namespace Boo.BooLangStudio {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to BooLangStudio.
-        /// </summary>
-        internal static string _110 {
+        internal static System.Drawing.Icon BooXP {
             get {
-                return ResourceManager.GetString("110", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Boo.
-        /// </summary>
-        internal static string _111 {
-            get {
-                return ResourceManager.GetString("111", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Boo language integration for Visual Studio.
-        /// </summary>
-        internal static string _112 {
-            get {
-                return ResourceManager.GetString("112", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to R3PEE3K0EZHTR8D1ZPZEPHDPDDC1I9KMHMHHZHAMDQKARCJCQHPJPQQEMDKJHMMQ
-        ///KZC2P8C1Q0D2DMJCKZJQCHAAHIKDICEHAEIPPTHDK9A9QHACDERZIZQRZ9DMD0IQ.
-        /// </summary>
-        internal static string _113 {
-            get {
-                return ResourceManager.GetString("113", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Boo language integration for Visual Studio.
-        /// </summary>
-        internal static string ProductDetails {
-            get {
-                return ResourceManager.GetString("ProductDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0.1.
-        /// </summary>
-        internal static string ProductID {
-            get {
-                return ResourceManager.GetString("ProductID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BooLangStudio.
-        /// </summary>
-        internal static string ProductName {
-            get {
-                return ResourceManager.GetString("ProductName", resourceCulture);
+                object obj = ResourceManager.GetObject("BooXP", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }

@@ -16,7 +16,7 @@
         Text="[ButtonText_Exit]">
           <Publish Event="EndDialog" Value="Exit">1</Publish>
         </Control>
-        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="450" Height="44"
+        <Control Id="BannerBitmap" Type="Bitmap" FixedSize="yes" X="0" Y="0" Width="98" Height="44"
         TabSkip="no" Text="[BannerBitmap]" />
         <Control Id="Description" Type="Text" X="65" Y="20" Width="280" Height="20"
         Transparent="yes" NoPrefix="yes">
