@@ -6,7 +6,7 @@
         <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[Button_Cancel]">
           <Publish Event="SpawnDialog" Value="Cancel">1</Publish>
         </Control>
-        <Control Id="BannerBitmap" Type="Bitmap" X="245" Y="2" Width="123" Height="40" TabSkip="yes" Text="boo_banner.bmp" />
+        <Control Id="BannerBitmap" Type="Bitmap" FixedSize="yes" X="0" Y="0" Width="370" Height="44" TabSkip="yes" Text="boo_banner.bmp" />
         <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[Button_Back]" />
         <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Disabled="yes" Text="[Button_Next]" />
         <Control Id="Text" Type="Text" X="35" Y="65" Width="300" Height="20">

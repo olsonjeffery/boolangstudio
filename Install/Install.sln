@@ -13,6 +13,11 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Install", "WiX\Install.wixp
 		{35549DBF-BC64-4D4E-904C-7AE3A35B998B} = {35549DBF-BC64-4D4E-904C-7AE3A35B998B}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Splash", "Splash\Splash.csproj", "{5B59546F-4AF7-490D-80D3-FB20E38705FF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92959D0A-F8FE-4EB6-A889-F968C8457165} = {92959D0A-F8FE-4EB6-A889-F968C8457165}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +64,16 @@ Global
 		{92959D0A-F8FE-4EB6-A889-F968C8457165}.Release|Any CPU.ActiveCfg = Release|x86
 		{92959D0A-F8FE-4EB6-A889-F968C8457165}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{92959D0A-F8FE-4EB6-A889-F968C8457165}.Release|x86.ActiveCfg = Release|x86
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5B59546F-4AF7-490D-80D3-FB20E38705FF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

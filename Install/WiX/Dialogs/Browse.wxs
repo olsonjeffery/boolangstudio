@@ -15,15 +15,15 @@
         <Control Id="DirectoryCombo" Type="DirectoryCombo" X="70" Y="55" Width="220" Height="80" Property="_BrowseProperty" Indirect="yes" Fixed="yes" Remote="yes">
           <Subscribe Event="IgnoreChange" Attribute="IgnoreChange" />
         </Control>
-        <Control Id="Up" Type="PushButton" X="298" Y="55" Width="19" Height="19" Icon="yes" FixedSize="yes" IconSize="16" Text="up.bmp">
+        <Control Id="Up" Type="PushButton" X="298" Y="55" Width="19" Height="19" Bitmap="yes" FixedSize="yes" IconSize="16" Text="up.bmp">
           <Publish Event="DirectoryListUp" Value="0">1</Publish>
         </Control>
-        <Control Id="NewFolder" Type="PushButton" X="325" Y="55" Width="19" Height="19" Icon="yes" FixedSize="yes" IconSize="16" Text="folder_add.bmp">
+        <Control Id="NewFolder" Type="PushButton" X="325" Y="55" Width="19" Height="19" Bitmap="yes" FixedSize="yes" IconSize="16" Text="folder_add.bmp">
           <Publish Event="DirectoryListNew" Value="0">1</Publish>
         </Control>
         <Control Id="DirectoryList" Type="DirectoryList" X="25" Y="83" Width="320" Height="110" Property="_BrowseProperty" Sunken="yes" Indirect="yes" TabSkip="no" />
         <Control Id="PathLabel" Type="Text" X="25" Y="205" Width="59" Height="10" TabSkip="no" Text="&amp;Folder name:" />
-        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="66" FixedSize="yes" TabSkip="no" Text="boo_banner.bmp" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="270" Height="44" FixedSize="yes" TabSkip="no" Text="boo_banner.bmp" />
         <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="374" Height="0" />
         <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="374" Height="0" />
         <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes">

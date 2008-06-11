@@ -1,24 +1,21 @@
 Windows Registry Editor Version 5.00
 
 [$RootKey$\MSBuild\SafeImports]
-"Boo_0.8.1"=".\\NullPath\\Boo.Microsoft.Build.targets"
+"Boo_0.8.1"=".\\Boo.Microsoft.Build.targets"
 [$RootKey$\InstalledProducts\BooLangStudioPackage]
-@="#110"
 "Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
-"ProductDetails"="#112"
-"PID"="1.0"
-"LogoID"="#400"
+"UseInterface"=dword:00000001
 [$RootKey$\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}]
-@="Boo.BooLangStudio.BooLangStudioPackage, BooLangStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+@="Boo.BooLangStudio.BooLangStudioPackage, BooLangStudio, Version=0.1.0.0, Culture=neutral, PublicKeyToken=8e685270f77c1cee"
 "InprocServer32"="%windir%\\system32\\mscoree.dll"
 "Class"="Boo.BooLangStudio.BooLangStudioPackage"
-"Assembly"="BooLangStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+"Assembly"="BooLangStudio, Version=0.1.0.0, Culture=neutral, PublicKeyToken=8e685270f77c1cee"
 [$RootKey$\Languages\File Extensions\.boo]
 @="{bc81f858-0ab5-45a0-985b-c160bcde7390}"
 [$RootKey$\Languages\Language Services\Boo]
 @="{bc81f858-0ab5-45a0-985b-c160bcde7390}"
 "Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
-"LangResID"=dword:00000000
+"LangResID"=dword:0000006F
 "ShowCompletion"=dword:00000001
 "ShowMatchingBrace"=dword:00000001
 "CodeSense"=dword:00000001
@@ -26,10 +23,10 @@ Windows Registry Editor Version 5.00
 "EnableCommenting"=dword:00000001
 "DefaultToInsertSpaces"=dword:00000001
 [$RootKey$\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}]
-"ID"=dword:00000001
+"ID"=dword:00000071
 "MinEdition"="Standard"
 "ProductVersion"="1.0"
-"ProductName"="BooLangService"
+"ProductName"="BooLangStudio"
 "CompanyName"="Boo"
 [$RootKey$\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}]
 @="BooLangProjectFactory"
@@ -38,17 +35,19 @@ Windows Registry Editor Version 5.00
 "Package"="{55663be2-a969-4279-82c5-a6f27936f4f7}"
 "DefaultProjectExtension"="booproj"
 "PossibleProjectExtensions"="booproj"
-"ProjectTemplatesDir"="K:\\Projects\\boo\\boolangstudio\\Bin\\.\\NullPath"
+"ProjectTemplatesDir"="C:\\Users\\justinc\\Projects\\boo\\boolangstudio\\Bin\\.\\NullPath"
 "Language(VsTemplate)"="Boo"
 [$RootKey$\NewProjectTemplates\TemplateDirs\{55663be2-a969-4279-82c5-a6f27936f4f7}\/1]
 @="Boo"
 "SortPriority"=dword:00000064
-"TemplatesDir"="K:\\Projects\\boo\\boolangstudio\\Bin\\.\\NullPath"
+"TemplatesDir"="C:\\Users\\justinc\\Projects\\boo\\boolangstudio\\Bin\\.\\NullPath"
 [$RootKey$\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}\AddItemTemplates\TemplateDirs\{55663be2-a969-4279-82c5-a6f27936f4f7}\/1]
 @="Boo"
-"TemplatesDir"="K:\\Projects\\boo\\boolangstudio\\Bin\\NullPath"
+"TemplatesDir"="C:\\Users\\justinc\\Projects\\boo\\boolangstudio\\Bin\\NullPath"
 "SortPriority"=dword:00000020
 [$RootKey$\Services\{bc81f858-0ab5-45a0-985b-c160bcde7390}]
 @="{55663be2-a969-4279-82c5-a6f27936f4f7}"
 "Name"="BooLangService"
+[$RootKey$\Generators\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}]
+@=""
 

@@ -6,6 +6,7 @@ using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using Microsoft.Build.BuildEngine;
 using System.Configuration;
 using Microsoft.Win32;
+using System.Reflection;
 
 namespace Boo.BooLangProject
 {
@@ -17,8 +18,7 @@ namespace Boo.BooLangProject
         public BooLangProjectFactory(Package package)
             : base(package)
         {
-
-            string booBinPath = (string)Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\VisualStudio\9.0Exp\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}").GetValue("BooBinPath");
+            string booBinPath = (string)Registry.LocalMachine.OpenSubKey(@"Software\BooLangStudio").GetValue("BooBinPath");
             this.package = (ProjectPackage)package;
             this.BuildEngine.GlobalProperties["BoocToolPath"] = new BuildProperty("BoocToolPath", booBinPath);
             this.BuildEngine.GlobalProperties["BooBinPath"] = new BuildProperty("BooBinPath",booBinPath);

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using EnvDTE;
+using System.Reflection;
 
 namespace Boo.BooLangProject
 {
@@ -70,7 +71,8 @@ namespace Boo.BooLangProject
         {
             base.Reload();
             // setting the BooBinPath
-            this.SetProjectProperty("BooBinPath", "dummy2");
+            string booBinPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            this.SetProjectProperty("BooBinPath", booBinPath);
             this.Save(this.FileName, 0, 0);         
         }
 
