@@ -2,7 +2,6 @@ namespace BooPegLexer
 
 import System
 import System.Collections.Generic
-import Microsoft.VisualStudio.Package
 import Boo.Pegs
 import Boo.Lang.Compiler
 import Boo.Lang.Compiler.MetaProgramming
@@ -43,13 +42,12 @@ public class PegLexer:
   	_line = line
   	_currentPos = 0
   
-  public def NextToken(ideToken as TokenInfo, pegToken as PegToken, ref state as int) as bool:
+  public def NextToken(pegToken as PegToken, ref state as int) as bool:
     
     # logic goes here
-    ideToken.Type = TokenType.Unknown
-    ideToken.Color = TokenColor.Text
-    ideToken.StartIndex = 0
-    ideToken.EndIndex = 0
+    pegToken.Type = PegTokenType.EOL
+    pegToken.StartIndex = 0
+    pegToken.EndIndex = 0
     
     result = false
     # try and guess what the next token type is..
@@ -57,14 +55,14 @@ public class PegLexer:
       # we're in a multi-line comment zone, the only hope
       # is to match it against a ML-comment, otherwise
       # we return the entire line as a ml-comment token
-      result = self.InMultiLineComment(ideToken,pegToken,state)
+      result = self.InMultiLineComment(pegToken,state)
     elif (state == 14):
       # we're in a tripple-quote zone, ditto as above
-      result = self.InTrippleQuoteString(ideToken,pegToken,state)
+      result = self.InTrippleQuoteString(pegToken,state)
     else:
       # otherwise, try and figure out what the next token
       # is gonna be
-      result = self.InGeneralLexingCase(ideToken,pegToken,state)
+      result = self.InGeneralLexingCase(pegToken,state)
     
     # what to do with a false result?
     
@@ -72,19 +70,19 @@ public class PegLexer:
     
     # set the tokenInfo
     
-    return false
+    return result
     
   #endregion
   
   #region Logic related..
   
-  public virtual def InMultiLineComment(tokenInfo as TokenInfo, pegToken as PegToken, ref state as int):
+  public virtual def InMultiLineComment(pegToken as PegToken, ref state as int):
   	return false
   
-  public virtual def InTrippleQuoteString(tokenInfo as TokenInfo, pegToken as PegToken, ref state as int):
+  public virtual def InTrippleQuoteString(pegToken as PegToken, ref state as int):
   	return false
   
-  public virtual def InGeneralLexingCase(tokenInfo as TokenInfo, pegToken as PegToken, ref state as int):
+  public virtual def InGeneralLexingCase(pegToken as PegToken, ref state as int):
   	return false
   
   #endregion
@@ -108,6 +106,9 @@ public class PegLexer:
     Macros.AddRange(macros)
     peg:
       Keyword = ++[a-z],IsKeyword
+  
+  public def GetDefaultKeywordList() as (string):
+  	return ("def","class","interface","get","set","namespace","public","private","protected","internal","virtual","override","abstract","static","final","partial","transient","if","elif","else","raise","except","ensure","try","for","while","null","true","false","and","or","is","isa","not","in","as","do","break","continue","cast","import","from","goto","of","ref","self","super","typeof","yield","pass","return","char","string","int","callable","enum","struct","event","constructor","destructor")
   
   #endregion
   

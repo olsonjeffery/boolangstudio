@@ -9,4 +9,9 @@ public class PegToken:
 	
 	[property(Type)]
 	_type as PegTokenType
-
+	
+	[property(StartIndex)]
+	_startIndex as int
+	
+	[property(EndIndex)]
+	_endIndex as int

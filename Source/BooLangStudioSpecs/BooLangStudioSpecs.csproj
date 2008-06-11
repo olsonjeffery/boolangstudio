@@ -94,6 +94,7 @@
     <Compile Include="PegLexer\AndPassingInDifferentStates.cs" />
     <Compile Include="PegLexer\WhenAttemptingToGetATokenFromThePegLexer.cs" />
     <Compile Include="PegLexer\WhenSettingTheSourceInBooScanner.cs" />
+    <Compile Include="PegLexer\WhenTranslatingTokens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

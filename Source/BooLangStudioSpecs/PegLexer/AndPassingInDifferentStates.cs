@@ -45,12 +45,12 @@ namespace Boo.BooLangStudioSpecs
 			using (Mocks.Record())
 			{
 				Expect
-					.Call(lexer.InMultiLineComment(token,pegToken,ref state))
+					.Call(lexer.InMultiLineComment(pegToken,ref state))
 					.Return(false);
 			}
 			using (Mocks.Playback())
 			{
-				lexer.NextToken(token,pegToken,ref state);
+				lexer.NextToken(pegToken,ref state);
 			}
 		}
 	}
@@ -69,12 +69,12 @@ namespace Boo.BooLangStudioSpecs
 			using (Mocks.Record())
 			{
 				Expect
-					.Call(lexer.InTrippleQuoteString(token,pegToken,ref state))
+					.Call(lexer.InTrippleQuoteString(pegToken,ref state))
 					.Return(false);
 			}
 			using (Mocks.Playback())
 			{
-				lexer.NextToken(token,pegToken,ref state);
+				lexer.NextToken(pegToken,ref state);
 			}
 		}
 	}
@@ -93,12 +93,12 @@ namespace Boo.BooLangStudioSpecs
 			using (Mocks.Record())
 			{
 				Expect
-					.Call(lexer.InGeneralLexingCase(token,pegToken,ref state))
+					.Call(lexer.InGeneralLexingCase(pegToken,ref state))
 					.Return(false);
 			}
 			using (Mocks.Playback())
 			{
-				lexer.NextToken(token,pegToken,ref state);
+				lexer.NextToken(pegToken,ref state);
 			}
 		}
 	}

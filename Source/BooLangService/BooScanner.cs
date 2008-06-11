@@ -30,7 +30,7 @@ namespace Boo.BooLangService
         public BooScanner()
         {
         	_lexer = new PegLexer();
-        	_lexer.InitializeAndBindPegs(GetKeywords(),new string[] { });
+        	_lexer.InitializeAndBindPegs(_lexer.GetDefaultKeywordList(),new string[] { });
         }
 		
         /// <summary>
@@ -41,7 +41,7 @@ namespace Boo.BooLangService
         public BooScanner(PegLexer lexer)
         {
         	_lexer = lexer;
-        	_lexer.InitializeAndBindPegs(GetKeywords(), new string[] { });
+        	_lexer.InitializeAndBindPegs(lexer.GetDefaultKeywordList(), new string[] { });
         }
         
         public BooScanner(Microsoft.VisualStudio.TextManager.Interop.IVsTextLines buffer) 
@@ -51,13 +51,36 @@ namespace Boo.BooLangService
         }
 
         #region lexer/colorizing-related
-
-        PegToken pegToken = null;
+		
+        private TokenInfo _reusableIdeToken = new TokenInfo();
+        public TokenInfo TranslatePegToken(PegToken token)
+        {
+        	// setting ide token and coloring info
+        	switch(token.Type)
+        	{
+        		case PegTokenType.WhiteSpace:
+        			_reusableIdeToken.Type = TokenType.WhiteSpace;
+        			_reusableIdeToken.Color = TokenColor.Text;
+        			break;
+        		default:
+        			_reusableIdeToken.Type = TokenType.Unknown;
+        			_reusableIdeToken.Color = TokenColor.Text;
+        			break;
+        	}
+        	_reusableIdeToken.StartIndex = token.StartIndex;
+        	_reusableIdeToken.EndIndex = token.EndIndex;
+        	
+        	return _reusableIdeToken;
+        }
+        
+        PegToken pegToken = new PegToken();
         public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
         {
-        	if(_lexer.NextToken(tokenInfo,pegToken,ref state) == false)
+        	_lexer.NextToken(pegToken,ref state);
+        	tokenInfo = TranslatePegToken(pegToken);
+        	if (pegToken.Type == PegTokenType.EOL)
         		return false;
-
+        	
         	return true;
         }
 
@@ -65,86 +88,6 @@ namespace Boo.BooLangService
         {
         	_lexer.SetSource(source.Substring(offset));
         }
-        
-
-	
-        protected string[] GetKeywords()
-       {
-	       	return new string[] {
-	       		// declarations
-	       		"def",
-	       		"class",
-	       		"interface",
-	       		"get",
-	       		"set",
-	       		"namespace",
-	       		// modifiers
-	       		"public",
-	       		"private",
-	       		"protected",
-	       		"internal",
-	       		"virtual",
-	       		"override",
-	       		"abstract",
-	       		"static",
-	       		"final",
-	       		"partial",
-	       		"transient",
-	       		// conditionals
-	       		"if",
-	       		"elif",
-	       		"else",
-	       		// exception stuff
-	       		"raise",
-	       		"except",
-	       		"ensure",
-	       		"try",
-	       		// loops
-	       		"for",
-	       		"while",
-	       		// literals
-	       		"null",
-	       		"true",
-	       		"false",
-	       		// logical operators
-	       		"and",
-	       		"or",
-	       		"is",
-	       		"isa",
-	       		"not",
-	       		"in",
-	       		// misc
-	       		"as",
-	       		"do",
-	       		"break",
-	       		"continue",
-	       		"cast",
-	       		"import",
-	       		"from",
-	       		"goto",
-	       		"of",
-	       		"ref",
-	       		"self",
-	       		"super",
-	       		"typeof",
-	       		// return-type-stuff
-	       		"yield",       	
-	       		"pass",
-	       		"return",
-	       		// primitives
-	       		"char",
-	       		"string",
-	       		"int",
-	       		"callable",
-	       		"enum",
-	       		"struct",
-	       		"event",
-	       		// special methods
-	       		"constructor",
-	       		"destructor"
-	       		
-	       	};
-       }
         
         #endregion
 
