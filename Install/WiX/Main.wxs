@@ -625,10 +625,10 @@
     
     <CustomAction Id="InstallDevenv.Command"                
                   Property="QtExecCmdLine"
-                  Value="&quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv&quot; /setup"/>
+                  Value="&quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv&quot; /InstallVSTemplates"/>
     <CustomAction Id="UninstallDevenv.Command"                
                   Property="QtExecCmdLine"                
-                  Value="&quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv&quot; /setup"/>
+                  Value="&quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv&quot; /InstallVSTemplates"/>
 
     <CustomAction Id="FinalizeDevenv.Command"
                   Property="QtExecCmdLine"
@@ -648,8 +648,8 @@
       <Custom Action="UninstallDevenv.Command" Before="UninstallDevenv">Installed</Custom>
       <Custom Action="UninstallDevenv" Before="RemoveFiles">Installed</Custom>
 
-      <!--<Custom Action="FinalizeDevenv.Command" After="InstallFinalize" />
-      <Custom Action="FinalizeDevenv" After="FinalizeDevenv.Command" />-->
+      <Custom Action="FinalizeDevenv.Command" After="InstallFinalize" />
+      <Custom Action="FinalizeDevenv" After="FinalizeDevenv.Command" />
       
     </InstallExecuteSequence>
 

@@ -68,7 +68,8 @@ namespace Splash
                 _process.StartInfo.Verb = "runas";
                 _process.Start();
                 _process.WaitForExit();
-                Close();
+
+                Dispatcher.Invoke(DispatcherPriority.Send, (Action)Close);
             }
         }
     }
