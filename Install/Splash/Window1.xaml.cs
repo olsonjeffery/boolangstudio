@@ -62,10 +62,15 @@ namespace Splash
                     DispatcherPriority.Send,
                     (Action)delegate { boo.Visibility = Visibility.Hidden; });
 
+                string verb = null;
+                if (System.Environment.OSVersion.Platform == PlatformID.Win32NT &&
+                    System.Environment.OSVersion.Version > new Version("6.0.0.0"))
+                    verb = "runas";
+
                 _process = new Process();
                 _process.StartInfo.FileName = "msiexec";
                 _process.StartInfo.Arguments = string.Format(" /i \"{0}\"", _tempPath);
-                _process.StartInfo.Verb = "runas";
+                _process.StartInfo.Verb = verb;
                 _process.Start();
                 _process.WaitForExit();
 

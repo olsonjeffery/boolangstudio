@@ -12,8 +12,17 @@
     
     <Package InstallerVersion="200" Compressed="yes" />
 
-    <Media Id="1" Cabinet="$(var.ProductName).cab" EmbedCab="yes" />    
+    <Media Id="1" Cabinet="$(var.ProductName).cab" EmbedCab="yes" />
 
+    <!--VS Values-->
+    <Property Id="VSINSTALLDIR">
+      <RegistrySearch Id="VSinstallDirSearch"
+                      Root="HKLM"
+                      Type="raw"
+                      Name="InstallDir"
+                      Key="$(var.VisualStudioRegistryRoot)"/>
+    </Property>
+    
     <Directory Id="TARGETDIR" Name="SourceDir">
       
       <Component Id="RegistryComponent" Guid="1A3CC8E0-F25E-429c-978C-0AAE8B400E72">
@@ -111,7 +120,6 @@
                          Value="BooLangStudio, Version=$(var.BooLangStudioVersion), Culture=neutral, PublicKeyToken=$(var.BooLangStudioPublicKey)" />
 
         </RegistryKey>
-
 
         <!--
               [HKEY_LOCAL_MACHINE\Software\Microsoft\VisualStudio\9.0Exp\Languages\File Extensions\.boo]
@@ -521,45 +529,42 @@
           </Directory>
 		    </Directory>
         
-        <Directory Id="VS" Name="$(var.VisualStudioFolder)">
-          <Directory Id="Common7" Name="Common7">
-            <Directory Id="IDE" Name="IDE">
-              <Directory Id="ProjectTemplates" Name="ProjectTemplates">
-                <Directory Id="BooProjectTemplates" Name="Boo">
-                  <Component Id="BooProjects" Guid="0683EC38-6517-41c8-A4AE-4158E9404DBD">
-                    <File Id="BooClassLibrary"
-                          Name="ClassLibrary.zip"
-                          DiskId="1"
-                          Source="$(sys.SOURCEFILEDIR)..\Pre\ClassLibrary.zip"
-                          Vital="yes"/>
-                    <File Id="BooConsoleApplication"
-                          Name="ConsoleApplication.zip"
-                          DiskId="1"
-                          Source="$(sys.SOURCEFILEDIR)..\Pre\ConsoleApplication.zip"
-                          Vital="yes"/>
-                  </Component>
-                </Directory>
-              </Directory>
-              <Directory Id="ItemTemplates" Name="ItemTemplates">
-                <Directory Id="BooItemTemplates" Name="Boo">
-                  <Component Id="BooItems" Guid="B60746C6-9790-4cb5-898C-586B361BC351">
-                    <File Id="BooClass"
-                          Name="Class.zip"
-                          DiskId="1"
-                          Source="$(sys.SOURCEFILEDIR)..\Pre\Class.zip"
-                          Vital="yes"/>
-                    <File Id="BooTextFile"
-                          Name="TextFile.zip"
-                          DiskId="1"
-                          Source="$(sys.SOURCEFILEDIR)..\Pre\TextFile.zip"
-                          Vital="yes"/>
-                  </Component>
-                </Directory>
-              </Directory>
-            </Directory>
+      </Directory>
+
+      <Directory Id="VSINSTALLDIR">
+        <Directory Id="ProjectTemplates" Name="ProjectTemplates">
+          <Directory Id="BooProjectTemplates" Name="Boo">
+            <Component Id="BooProjects" Guid="0683EC38-6517-41c8-A4AE-4158E9404DBD">
+              <File Id="BooClassLibrary"
+                    Name="ClassLibrary.zip"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\Pre\ClassLibrary.zip"
+                    Vital="yes"/>
+              <File Id="BooConsoleApplication"
+                    Name="ConsoleApplication.zip"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\Pre\ConsoleApplication.zip"
+                    Vital="yes"/>
+            </Component>
           </Directory>
         </Directory>
-	    </Directory>
+        <Directory Id="ItemTemplates" Name="ItemTemplates">
+          <Directory Id="BooItemTemplates" Name="Boo">
+            <Component Id="BooItems" Guid="B60746C6-9790-4cb5-898C-586B361BC351">
+              <File Id="BooClass"
+                    Name="Class.zip"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\Pre\Class.zip"
+                    Vital="yes"/>
+              <File Id="BooTextFile"
+                    Name="TextFile.zip"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\Pre\TextFile.zip"
+                    Vital="yes"/>
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
     </Directory>
 
     <Feature Id="ProductFeature" Title="All" Level="1">
@@ -603,8 +608,6 @@
 
     <Property Id="Button_Yes">&amp;Yes</Property>
     <Property Id="Button_No">&amp;No</Property>
-    <!--END BUTTON TEXT-->
-
 
     <!-- devenv commands -->
     <CustomAction Id="InstallDevenv"                  
@@ -625,14 +628,14 @@
     
     <CustomAction Id="InstallDevenv.Command"                
                   Property="QtExecCmdLine"
-                  Value="&quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv&quot; /InstallVSTemplates"/>
+                  Value="&quot;[VSINSTALLDIR]devenv&quot; /InstallVSTemplates"/>
     <CustomAction Id="UninstallDevenv.Command"                
                   Property="QtExecCmdLine"                
-                  Value="&quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv&quot; /InstallVSTemplates"/>
+                  Value="&quot;[VSINSTALLDIR]devenv&quot; /InstallVSTemplates"/>
 
     <CustomAction Id="FinalizeDevenv.Command"
                   Property="QtExecCmdLine"
-                  Value="&quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv&quot; /setup"/>
+                  Value="&quot;[VSINSTALLDIR]devenv&quot; /setup"/>
 
     <Binary Id="wixca"
             src="$(sys.SOURCEFILEDIR)..\..\Dependencies\wix\wixca.dll"/>
