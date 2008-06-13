@@ -3,29 +3,19 @@ namespace BooPegLexer
 import System
 
 public enum PegTokenType:
+	Whitespace
 	EOL
-	Unknown
+	SingleQuoteString
 	Identifier
 	Keyword
 	Macro
-	WhiteSpace
-	SingleQuoteString
-	MalformedSingleQuoteString
-	DoubleQuoteString
-	MalformedDoubleQuoteString
-	TrippleQuoteString
-	MalformedTrippleQuoteString
-	DoubleWhackLineComment
-	NumberSignLineComment
-	MultiLineComment
-	MultiLineCommentClose
-	QqOpen
-	QqClose
+	AdditionSign
+	SubtractionSign
 	LeftParen
 	RightParen
-	AdditionOperator
-	SubtractionOpearator
-	MultiplicationOpeartor
+	QqOpen
+	QqClose
+	EqualsSign
 	
 	
 

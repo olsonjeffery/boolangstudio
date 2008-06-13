@@ -24,11 +24,12 @@ public class PegLexer:
   	get:
   		return _line
   
+  [property(CurrentIndex)]
   private _currentIndex as int = 0
   
   public RemainingLine as string:
   	get:
-  		return _line.Substring(_currentIndex)
+  		return _line.Substring(CurrentIndex)
   
   #endregion
   
@@ -40,14 +41,9 @@ public class PegLexer:
   #region Common public interface  	
   public def SetSource(line as string):
   	_line = line
-  	_currentPos = 0
+  	_currentIndex = 0
   
-  public def NextToken(pegToken as PegToken, ref state as int) as bool:
-    
-    # logic goes here
-    pegToken.Type = PegTokenType.EOL
-    pegToken.StartIndex = 0
-    pegToken.EndIndex = 0
+  public def NextToken(token as PegToken, ref state as int) as bool:
     
     result = false
     # try and guess what the next token type is..
@@ -55,26 +51,34 @@ public class PegLexer:
       # we're in a multi-line comment zone, the only hope
       # is to match it against a ML-comment, otherwise
       # we return the entire line as a ml-comment token
-      result = self.InMultiLineComment(pegToken,state)
+      result = InMultiLineComment(token,state)
     elif (state == 14):
       # we're in a tripple-quote zone, ditto as above
-      result = self.InTrippleQuoteString(pegToken,state)
+      result = InTrippleQuoteString(token,state)
     else:
       # otherwise, try and figure out what the next token
       # is gonna be
-      result = self.InGeneralLexingCase(pegToken,state)
+      result = InGeneralLexingCase(token,state)
     
-    # what to do with a false result?
-    
-    # turn the appropriate peg context loose on it..
-    
-    # set the tokenInfo
+    # if nothing in the items above can parse it,
+    # we'll just mark the rest of the line as unparsable
+    # for now
+    if not result:
+      token.StartIndex = _currentIndex
+      token.EndIndex = _line.Length-1
     
     return result
     
   #endregion
   
   #region Logic related..
+  
+  public def GetContext(pegToken as PegToken) as PegContext:
+    ctx = PegLexerContext(RemainingLine,pegToken)
+    ctx.Token.Type = PegTokenType.EOL
+    ctx.Token.StartIndex = 0
+    ctx.Token.EndIndex = 0
+    return ctx
   
   public virtual def InMultiLineComment(pegToken as PegToken, ref state as int):
   	return false
@@ -83,15 +87,17 @@ public class PegLexer:
   	return false
   
   public virtual def InGeneralLexingCase(pegToken as PegToken, ref state as int):
-  	return false
+    ctx = GetContext(pegToken)
+    result = ctx.Match(self.BooTokenPeg)
+    if not result:
+      raise Exception("Match has failed! BARF!!!!")
+    return result
   
   #endregion
   
   #region PEG related members and fields
   
-  # identifiers and keywords
-  private Keyword
-  
+  # identifiers and keywords 
   IsKeyword = FunctionExpression() do (ctx as PegContext):
     identifier = text(ctx)
     return identifier in Keywords
@@ -100,15 +106,54 @@ public class PegLexer:
     identifier = text(ctx)
     return identifier in Macros
   
+  public def HandlePegMatch(ctx as PegLexerContext, type as PegTokenType):
+    line = text(ctx)
+    ctx.Token.Type = type
+    ctx.Token.StartIndex = _currentIndex
+    ctx.Token.EndIndex = _currentIndex + line.Length-1
+    _currentIndex += line.Length
+    print "Type: "+ctx.Token.Type+" Start: "+ctx.Token.StartIndex+ " End: "+ctx.Token.EndIndex +" New _currentIndex: "+_currentIndex
+  	
+  private BooTokenPeg as ChoiceExpression
+  
   # meant to be ran once on class setup...?
   public def InitializeAndBindPegs(keywords as (string), macros as (string)):
     Keywords.AddRange(keywords)
     Macros.AddRange(macros)
     peg:
-      Keyword = ++[a-z],IsKeyword
+      self.BooTokenPeg = [Words,Whitespace,Strings,MiscOperators,Delimiters]
+      
+      # words
+      Words = [Keyword,Identifier,Macro]
+      Keyword = ++[a-z], IsKeyword,{$HandlePegMatch(PegTokenType.Keyword)}
+      Identifier = [a-z,A-Z,'_'],--[a-z,A-Z,'_',0-9], not IsKeyword,not IsMacro,{$HandlePegMatch(PegTokenType.Identifier)}
+      Macro = ++[a-z], IsMacro,{$HandlePegMatch(PegTokenType.Macro)}
+      
+      Whitespace = ++whitespace(),{$HandlePegMatch(PegTokenType.Whitespace)}
+      
+      # strings
+      Strings = [SingleQuoteString]
+      SingleQuoteString = "'",--(not "'", any()),"'",{$HandlePegMatch(PegTokenType.SingleQuoteString)}
+      
+      # misc operators
+      MiscOperators = [AdditionSign,SubtractionSign,EqualsSign]
+      AdditionSign = ++'+',{$HandlePegMatch(PegTokenType.AdditionSign)}
+      SubtractionSign = ++'-',{$HandlePegMatch(PegTokenType.SubtractionSign)}
+      EqualsSign = ++'=',{$HandlePegMatch(PegTokenType.EqualsSign)}
+      
+      # delimiters
+      Delimiters = [LeftParen,RightParen,QqOpen,QqClose]
+      LeftParen = '(',{$HandlePegMatch(PegTokenType.LeftParen)}
+      RightParen = ')',{$HandlePegMatch(PegTokenType.RightParen)}
+      QqOpen = '[|',{$HandlePegMatch(PegTokenType.QqOpen)}
+      QqClose = '|]',{$HandlePegMatch(PegTokenType.QqClose)}
+      
   
   public def GetDefaultKeywordList() as (string):
   	return ("def","class","interface","get","set","namespace","public","private","protected","internal","virtual","override","abstract","static","final","partial","transient","if","elif","else","raise","except","ensure","try","for","while","null","true","false","and","or","is","isa","not","in","as","do","break","continue","cast","import","from","goto","of","ref","self","super","typeof","yield","pass","return","char","string","int","callable","enum","struct","event","constructor","destructor")
+  
+  public def GetDefaultMacroList() as (string):
+  	return ("print", "assert", "using")
   
   #endregion
   

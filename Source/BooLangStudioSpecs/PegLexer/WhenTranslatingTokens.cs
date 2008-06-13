@@ -26,10 +26,10 @@ namespace Boo.BooLangStudioSpecs
 		public AndPegTokenTypeIsWhitespace()
 			: base()
 		{
-			pegToken.Type = PegTokenType.WhiteSpace;
+			pegToken.Type = PegTokenType.Whitespace;
 			pegToken.StartIndex = 0;
 			pegToken.EndIndex = 1;
-			ideToken = scanner.TranslatePegToken(pegToken);
+			scanner.TranslatePegToken(pegToken,ideToken);
 		}
 		
 		[Fact]

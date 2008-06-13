@@ -41,7 +41,7 @@ namespace Boo.BooLangService
         public BooScanner(PegLexer lexer)
         {
         	_lexer = lexer;
-        	_lexer.InitializeAndBindPegs(lexer.GetDefaultKeywordList(), new string[] { });
+        	_lexer.InitializeAndBindPegs(lexer.GetDefaultKeywordList(), lexer.GetDefaultMacroList());
         }
         
         public BooScanner(Microsoft.VisualStudio.TextManager.Interop.IVsTextLines buffer) 
@@ -52,32 +52,37 @@ namespace Boo.BooLangService
 
         #region lexer/colorizing-related
 		
-        private TokenInfo _reusableIdeToken = new TokenInfo();
-        public TokenInfo TranslatePegToken(PegToken token)
+        public void TranslatePegToken(PegToken token, TokenInfo ideToken)
         {
         	// setting ide token and coloring info
         	switch(token.Type)
         	{
-        		case PegTokenType.WhiteSpace:
-        			_reusableIdeToken.Type = TokenType.WhiteSpace;
-        			_reusableIdeToken.Color = TokenColor.Text;
-        			break;
+        		case PegTokenType.Whitespace:
+        	    ideToken.Type = TokenType.WhiteSpace;
+        			ideToken.Color = TokenColor.Text;
+              break;
+            case PegTokenType.Keyword:
+              ideToken.Type = TokenType.Keyword;
+              ideToken.Color = TokenColor.Keyword;
+              break;
+            case PegTokenType.Macro:
+              ideToken.Type = TokenType.Keyword;
+              ideToken.Color = TokenColor.Keyword;
+              break;
         		default:
-        			_reusableIdeToken.Type = TokenType.Unknown;
-        			_reusableIdeToken.Color = TokenColor.Text;
+              ideToken.Type = TokenType.Unknown;
+        			ideToken.Color = TokenColor.Text;
         			break;
         	}
-        	_reusableIdeToken.StartIndex = token.StartIndex;
-        	_reusableIdeToken.EndIndex = token.EndIndex;
-        	
-        	return _reusableIdeToken;
+        	ideToken.StartIndex = token.StartIndex;
+        	ideToken.EndIndex = token.EndIndex;
         }
         
         PegToken pegToken = new PegToken();
         public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
         {
         	_lexer.NextToken(pegToken,ref state);
-        	tokenInfo = TranslatePegToken(pegToken);
+        	TranslatePegToken(pegToken, tokenInfo);
         	if (pegToken.Type == PegTokenType.EOL)
         		return false;
         	

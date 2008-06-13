@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.Package;
 using BooLangService;
 using BooPegLexer;
 using Rhino.Mocks;
+using Boo.Pegs;
 
 namespace Boo.BooLangStudioSpecs
 {
@@ -20,12 +21,14 @@ namespace Boo.BooLangStudioSpecs
 	{
 		protected int startIndex = 0;
 		protected int endIndex = 0;
+		protected PegLexerContext ctx = null;
 		
 		public AndPassingInDifferentStates()
 			: base()
 		{
 			line = "doesn't matter because it's in the ml_comment zone";
 			endIndex = line.Length-1;
+
 		}
 		
 
@@ -45,7 +48,7 @@ namespace Boo.BooLangStudioSpecs
 			using (Mocks.Record())
 			{
 				Expect
-					.Call(lexer.InMultiLineComment(pegToken,ref state))
+				  .Call(lexer.InMultiLineComment(pegToken,ref state))
 					.Return(false);
 			}
 			using (Mocks.Playback())
@@ -69,7 +72,7 @@ namespace Boo.BooLangStudioSpecs
 			using (Mocks.Record())
 			{
 				Expect
-					.Call(lexer.InTrippleQuoteString(pegToken,ref state))
+				  .Call(lexer.InTrippleQuoteString(pegToken,ref state))
 					.Return(false);
 			}
 			using (Mocks.Playback())
@@ -93,7 +96,7 @@ namespace Boo.BooLangStudioSpecs
 			using (Mocks.Record())
 			{
 				Expect
-					.Call(lexer.InGeneralLexingCase(pegToken,ref state))
+				  .Call(lexer.InGeneralLexingCase(pegToken,ref state))
 					.Return(false);
 			}
 			using (Mocks.Playback())

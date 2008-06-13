@@ -38,6 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\boo\build\Boo.Lang.Parser.dll</HintPath>
     </Reference>
+    <Reference Include="Boo.Pegs">
+      <HintPath>..\..\Dependencies\boo-extensions\build\Boo.Pegs.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\Rhino\Castle.Core.dll</HintPath>
@@ -93,7 +96,7 @@
     <Compile Include="LineScanner\StringLexing.cs" />
     <Compile Include="PegLexer\AndPassingInDifferentStates.cs" />
     <Compile Include="PegLexer\WhenAttemptingToGetATokenFromThePegLexer.cs" />
-    <Compile Include="PegLexer\WhenSettingTheSourceInBooScanner.cs" />
+    <Compile Include="PegLexer\WhenProcessingALineWithBooScanner.cs" />
     <Compile Include="PegLexer\WhenTranslatingTokens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
