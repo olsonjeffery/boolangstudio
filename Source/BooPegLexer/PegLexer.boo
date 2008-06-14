@@ -24,12 +24,24 @@ public class PegLexer:
   	get:
   		return _line
   
-  [property(CurrentIndex)]
+  private _lineLength as int:
+    get:
+      return _line.Length
+  
   private _currentIndex as int = 0
+  public CurrentIndex as int:
+    get:
+      return _currentIndex
+    set:
+      _currentIndex = value
+
   
   public RemainingLine as string:
   	get:
-  		return _line.Substring(CurrentIndex)
+  	  if CurrentIndex >= _line.Length:
+  	    return string.Empty
+  	  else:
+  	    return _line.Substring(CurrentIndex)
   
   #endregion
   
@@ -46,6 +58,11 @@ public class PegLexer:
   public def NextToken(token as PegToken, ref state as int) as bool:
     
     result = false
+    
+    # we've hit EOL
+    if RemainingLine.Equals(string.Empty):
+      return false
+    
     # try and guess what the next token type is..
     if (state == 13):
       # we're in a multi-line comment zone, the only hope
@@ -63,9 +80,10 @@ public class PegLexer:
     # if nothing in the items above can parse it,
     # we'll just mark the rest of the line as unparsable
     # for now
-    if not result:
+    if result == false:
       token.StartIndex = _currentIndex
       token.EndIndex = _line.Length-1
+      _currentIndex = _line.Length
     
     return result
     

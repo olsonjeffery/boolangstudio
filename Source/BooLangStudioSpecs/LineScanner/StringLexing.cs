@@ -9,7 +9,8 @@ using Spec = Xunit.FactAttribute;
 
 namespace Boo.BooLangStudioSpecs
 {
-      
+  
+      /*
     public abstract class StringLexingContext : LexingBaseFixture
     {
 
@@ -208,5 +209,5 @@ namespace Boo.BooLangStudioSpecs
 
 
     }
-
+  */
 }

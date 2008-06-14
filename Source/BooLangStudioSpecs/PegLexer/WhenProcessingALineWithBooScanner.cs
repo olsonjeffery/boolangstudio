@@ -121,7 +121,7 @@ namespace Boo.BooLangStudioSpecs
 			remainingLine = line.Substring(lexerPos);
 		}
 		
-  [Fact]
+    [Fact]
 		public void StateShouldBeZero()
 		{
 			Assert.True(state == 0, "Actual: "+state.ToString());
@@ -162,4 +162,161 @@ namespace Boo.BooLangStudioSpecs
 		  Assert.True(scanner.Lexer.CurrentIndex == 7, "Actual: "+scanner.Lexer.CurrentIndex);
 		}
 	}
+	
+	public class AndWhenTheScannerHasProcessedTheThirdToken : TokenProcessingTestFixture
+	{
+		
+		public AndWhenTheScannerHasProcessedTheThirdToken()
+			: base()
+		{
+		  lexerPos = 7;
+			// first token
+		  isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token,ref state);
+			// second token
+			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
+			// third token
+			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
+			remainingLine = line.Substring(lexerPos);
+		}
+		
+    [Fact]
+		public void StateShouldBeZero()
+		{
+			Assert.True(state == 0, "Actual: "+state.ToString());
+		}
+		
+		[Fact]
+		public void TokenTypeShouldBeWhitespace()
+		{
+			Assert.True(token.Type == TokenType.WhiteSpace,"Actual: "+token.Type.ToString());
+		}
+		
+		[Fact]
+		public void TokenColorShouldBeText()
+		{
+			Assert.True(token.Color == TokenColor.Text, "Actual: "+token.Color.ToString());
+		}
+		
+		[Fact]
+		public void TokenStartIndexShouldBeSeven()
+		{
+			Assert.True(token.StartIndex == 7, "Actual: "+token.StartIndex.ToString());
+		}
+		
+		[Fact]
+		public void TokenEndIndexShouldBeSeven()
+		{
+			Assert.True(token.EndIndex == 7, "Actual: "+token.EndIndex.ToString());
+		}
+		
+		[Fact]
+		public void IsMoreTokensValueShouldBeTrue()
+		{
+			Assert.True(isMoreTokens, "Actual: "+isMoreTokens.ToString());
+		}
+		
+		[Fact] void TheLexersCurrentIndexShouldBeEight()
+		{
+		  Assert.True(scanner.Lexer.CurrentIndex == 8, "Actual: "+scanner.Lexer.CurrentIndex);
+		}
+	}
+	
+	public class AndWhenTheScannerHasProcessedTheFourthToken : TokenProcessingTestFixture
+	{
+		
+		public AndWhenTheScannerHasProcessedTheFourthToken()
+			: base()
+		{
+		  lexerPos = 15;
+			// first token
+		  isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token,ref state);
+			// second token
+			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
+			// third token
+			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
+			// fourth token
+			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
+			remainingLine = string.Empty;
+		}
+		
+    [Fact]
+		public void StateShouldBeZero()
+		{
+			Assert.True(state == 0, "Actual: "+state.ToString());
+		}
+		
+		[Fact]
+		public void TokenTypeShouldBeString()
+		{
+			Assert.True(token.Type == TokenType.String,"Actual: "+token.Type.ToString());
+		}
+		
+		[Fact]
+		public void TokenColorShouldBeString()
+		{
+			Assert.True(token.Color == TokenColor.String, "Actual: "+token.Color.ToString());
+		}
+		
+		[Fact]
+		public void TokenStartIndexShouldBeEight()
+		{
+			Assert.True(token.StartIndex == 8, "Actual: "+token.StartIndex.ToString());
+		}
+		
+		[Fact]
+		public void TokenEndIndexShouldBeFourteen()
+		{
+			Assert.True(token.EndIndex == 14, "Actual: "+token.EndIndex.ToString());
+		}
+		
+		[Fact]
+		public void IsMoreTokensValueShouldBeTrue()
+		{
+			Assert.True(isMoreTokens, "Actual: "+isMoreTokens.ToString());
+		}
+		
+		[Fact] void TheLexersCurrentIndexShouldBeFifteen()
+		{
+		  Assert.True(scanner.Lexer.CurrentIndex == 15, "Actual: "+scanner.Lexer.CurrentIndex);
+		}
+	}
+	
+	public class AndWhenTheScannerHasProcessedTheFifthToken : TokenProcessingTestFixture
+	{
+		
+		public AndWhenTheScannerHasProcessedTheFifthToken()
+			: base()
+		{
+		  lexerPos = 15;
+			// first token
+		  isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token,ref state);
+			// second token
+			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
+			// third token
+			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
+			// fourth token
+			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
+			// fifth token
+			isMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
+			remainingLine = string.Empty;
+		}
+		
+    [Fact]
+		public void StateShouldBeZero()
+		{
+			Assert.True(state == 0, "Actual: "+state.ToString());
+		}
+		
+		[Fact]
+		public void IsMoreTokensValueShouldBeFalse()
+		{
+			Assert.True(isMoreTokens, "Actual: "+isMoreTokens.ToString());
+		}
+		
+		[Fact] void TheLexersCurrentIndexShouldBeFifteen()
+		{
+		  Assert.True(scanner.Lexer.CurrentIndex == 15, "Actual: "+scanner.Lexer.CurrentIndex);
+		}
+	}
+	
 }

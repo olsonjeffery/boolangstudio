@@ -69,6 +69,10 @@ namespace Boo.BooLangService
               ideToken.Type = TokenType.Keyword;
               ideToken.Color = TokenColor.Keyword;
               break;
+            case PegTokenType.SingleQuoteString:
+              ideToken.Type = TokenType.String;
+              ideToken.Color = TokenColor.String;
+              break;
         		default:
               ideToken.Type = TokenType.Unknown;
         			ideToken.Color = TokenColor.Text;
@@ -82,9 +86,9 @@ namespace Boo.BooLangService
         public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
         {
         	_lexer.NextToken(pegToken,ref state);
-        	TranslatePegToken(pegToken, tokenInfo);
         	if (pegToken.Type == PegTokenType.EOL)
         		return false;
+        	TranslatePegToken(pegToken, tokenInfo);
         	
         	return true;
         }
