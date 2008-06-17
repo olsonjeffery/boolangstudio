@@ -10,7 +10,7 @@ using Spec = Xunit.FactAttribute;
 namespace Boo.BooLangStudioSpecs
 {
   
-      /*
+      
     public abstract class StringLexingContext : LexingBaseFixture
     {
 
@@ -67,7 +67,7 @@ namespace Boo.BooLangStudioSpecs
             List<TokenInfo> parenTokens = new List<TokenInfo>(from i in tokens
                                                               where i.Type == TokenType.Delimiter
                                                               select i);
-            Assert.True(parenTokens.Count == 2);
+            Assert.True(parenTokens.Count == 2, "Actual paren count: "+parenTokens.Count.ToString());
             Assert.True(parenTokens[0].StartIndex == 15, "LPAREN start Actual " + parenTokens[0].StartIndex);
             Assert.True(parenTokens[0].EndIndex == 15, "LPAREN end Actual " + parenTokens[0].EndIndex);
             Assert.True(parenTokens[1].StartIndex == 34, "LPAREN start Actual " + parenTokens[0].StartIndex);
@@ -209,5 +209,5 @@ namespace Boo.BooLangStudioSpecs
 
 
     }
-  */
+  
 }

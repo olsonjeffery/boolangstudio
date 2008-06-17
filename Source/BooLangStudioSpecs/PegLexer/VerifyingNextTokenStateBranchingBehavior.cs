@@ -17,24 +17,30 @@ using Boo.Pegs;
 
 namespace Boo.BooLangStudioSpecs
 {
-	public abstract class AndPassingInDifferentStates : WhenAttemptingToGetATokenFromThePegLexer
+	
+		/// <summary>
+	/// Description of WhenAttemptingToGetATokenFromThePegLexer.
+	/// </summary>
+	public abstract class VerifyingNextTokenStateBranchingBehavior : LexerPartialMockFixture
 	{
-		protected int startIndex = 0;
-		protected int endIndex = 0;
-		protected PegLexerContext ctx = null;
-		
-		public AndPassingInDifferentStates()
+		protected int state = 0;
+		protected string line = string.Empty;
+		protected TokenInfo token = null;
+		protected PegToken pegToken = null;
+		public VerifyingNextTokenStateBranchingBehavior()
 			: base()
 		{
+			token = new TokenInfo();
+			pegToken = new PegToken();
+			
 			line = "doesn't matter because it's in the ml_comment zone";
-			endIndex = line.Length-1;
-
+			lexer.SetSource(line);
 		}
-		
-
-	}
+	}	
 	
-	public class AndStateIsThirteen : AndPassingInDifferentStates
+
+	
+	public class AndStateIsThirteen : VerifyingNextTokenStateBranchingBehavior
 	{
 		public AndStateIsThirteen()
 			: base()
@@ -58,7 +64,7 @@ namespace Boo.BooLangStudioSpecs
 		}
 	}
 	
-	public class AndStateIsFourteen : AndPassingInDifferentStates
+	public class AndStateIsFourteen : VerifyingNextTokenStateBranchingBehavior
 	{
 		public AndStateIsFourteen()
 			: base()
@@ -82,7 +88,7 @@ namespace Boo.BooLangStudioSpecs
 		}
 	}
 	
-	public class AndStateIsZero : AndPassingInDifferentStates
+	public class AndStateIsZero : VerifyingNextTokenStateBranchingBehavior
 	{
 		public AndStateIsZero()
 			: base()

@@ -310,7 +310,7 @@ namespace Boo.BooLangStudioSpecs
 		[Fact]
 		public void IsMoreTokensValueShouldBeFalse()
 		{
-			Assert.True(isMoreTokens, "Actual: "+isMoreTokens.ToString());
+			Assert.True(isMoreTokens == false, "Actual: "+isMoreTokens.ToString());
 		}
 		
 		[Fact] void TheLexersCurrentIndexShouldBeFifteen()

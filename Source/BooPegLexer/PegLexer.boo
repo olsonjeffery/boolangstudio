@@ -61,6 +61,7 @@ public class PegLexer:
     
     # we've hit EOL
     if RemainingLine.Equals(string.Empty):
+      token.Type = PegTokenType.EOL
       return false
     
     # try and guess what the next token type is..
@@ -107,8 +108,6 @@ public class PegLexer:
   public virtual def InGeneralLexingCase(pegToken as PegToken, ref state as int):
     ctx = GetContext(pegToken)
     result = ctx.Match(self.BooTokenPeg)
-    if not result:
-      raise Exception("Match has failed! BARF!!!!")
     return result
   
   #endregion
@@ -151,7 +150,8 @@ public class PegLexer:
       
       # strings
       Strings = [SingleQuoteString]
-      SingleQuoteString = "'",--(not "'", any()),"'",{$HandlePegMatch(PegTokenType.SingleQuoteString)}
+      SingleQuoteString = "'",--SingleQuoteStringCharacter,"'",{$HandlePegMatch(PegTokenType.SingleQuoteString)}
+      SingleQuoteStringCharacter = ("\\\\" / "\\'" / (not "'", any()))
       
       # misc operators
       MiscOperators = [AdditionSign,SubtractionSign,EqualsSign]

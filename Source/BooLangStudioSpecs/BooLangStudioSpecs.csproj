@@ -87,14 +87,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseTestFixture.cs" />
+    <Compile Include="AutoMockingTestFixture.cs" />
     <Compile Include="LineScanner\LexingBaseFixture.cs" />
     <Compile Include="LineScanner\LineCommentLexing.cs" />
     <Compile Include="LineScanner\MalformedStrings.cs" />
     <Compile Include="LineScanner\MultiLineCommentLexing.cs" />
     <Compile Include="LineScanner\StringInterpolation.cs" />
     <Compile Include="LineScanner\StringLexing.cs" />
-    <Compile Include="PegLexer\AndPassingInDifferentStates.cs" />
+    <Compile Include="PegLexer\LexerPartialMockFixture.cs" />
+    <Compile Include="PegLexer\VerifyingNextTokenStateBranchingBehavior.cs" />
+    <Compile Include="PegLexer\Tokens\SingleQuoteString.cs" />
+    <Compile Include="PegLexer\Tokens\TokenTestFixture.cs" />
     <Compile Include="PegLexer\WhenAttemptingToGetATokenFromThePegLexer.cs" />
     <Compile Include="PegLexer\WhenProcessingALineWithBooScanner.cs" />
     <Compile Include="PegLexer\WhenTranslatingTokens.cs" />
@@ -110,6 +113,7 @@
       <Name>BooPegLexer</Name>
     </ProjectReference>
     <Folder Include="PegLexer" />
+    <Folder Include="PegLexer\Tokens" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -57,10 +57,7 @@ namespace Boo.BooLangService
         	// setting ide token and coloring info
         	switch(token.Type)
         	{
-        		case PegTokenType.Whitespace:
-        	    ideToken.Type = TokenType.WhiteSpace;
-        			ideToken.Color = TokenColor.Text;
-              break;
+        	  // words
             case PegTokenType.Keyword:
               ideToken.Type = TokenType.Keyword;
               ideToken.Color = TokenColor.Keyword;
@@ -69,10 +66,21 @@ namespace Boo.BooLangService
               ideToken.Type = TokenType.Keyword;
               ideToken.Color = TokenColor.Keyword;
               break;
+            case PegTokenType.Identifier:
+              ideToken.Type = TokenType.Identifier;
+              ideToken.Color = TokenColor.Text;
+              break;
+            // whitespace
+        		case PegTokenType.Whitespace:
+        	    ideToken.Type = TokenType.WhiteSpace;
+        			ideToken.Color = TokenColor.Text;
+              break;
+            // strings
             case PegTokenType.SingleQuoteString:
               ideToken.Type = TokenType.String;
               ideToken.Color = TokenColor.String;
               break;
+            // the default case..
         		default:
               ideToken.Type = TokenType.Unknown;
         			ideToken.Color = TokenColor.Text;
