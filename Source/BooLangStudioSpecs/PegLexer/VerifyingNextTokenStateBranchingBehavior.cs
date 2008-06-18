@@ -34,7 +34,6 @@ namespace Boo.BooLangStudioSpecs
 			pegToken = new PegToken();
 			
 			line = "doesn't matter because it's in the ml_comment zone";
-			lexer.SetSource(line);
 		}
 	}	
 	
@@ -59,6 +58,7 @@ namespace Boo.BooLangStudioSpecs
 			}
 			using (Mocks.Playback())
 			{
+				lexer.SetSource(line);
 				lexer.NextToken(pegToken,ref state);
 			}
 		}
@@ -83,6 +83,7 @@ namespace Boo.BooLangStudioSpecs
 			}
 			using (Mocks.Playback())
 			{
+				lexer.SetSource(line);
 				lexer.NextToken(pegToken,ref state);
 			}
 		}
@@ -107,6 +108,7 @@ namespace Boo.BooLangStudioSpecs
 			}
 			using (Mocks.Playback())
 			{
+				lexer.SetSource(line);
 				lexer.NextToken(pegToken,ref state);
 			}
 		}
