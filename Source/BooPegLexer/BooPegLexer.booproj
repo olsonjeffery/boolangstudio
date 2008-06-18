@@ -38,6 +38,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILexer.boo" />
     <Compile Include="PegLexer.boo">
       <SubType>Code</SubType>
     </Compile>

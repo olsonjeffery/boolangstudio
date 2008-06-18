@@ -14,23 +14,27 @@ namespace Boo.BooLangService
     public partial class BooScanner : IScanner
     {
         #region properties and members
-        private PegLexer _lexer = null;
-		public PegLexer Lexer
+        private ILexer __lexer = null;
+		public ILexer Lexer
 		{
 			get
 			{
-				return _lexer;
+				return __lexer;
+			}
+			set
+			{
+				__lexer = value;
+				__lexer.Initialize(new string[] { }, new string[] { });
 			}
 		}
         #endregion
 		
         /// <summary>
-        /// default ctor... news up a lexer
+        /// empty ctor 
         /// </summary>
         public BooScanner()
         {
-        	_lexer = new PegLexer();
-        	_lexer.InitializeAndBindPegs(_lexer.GetDefaultKeywordList(),new string[] { });
+        	//
         }
 		
         /// <summary>
@@ -38,10 +42,9 @@ namespace Boo.BooLangService
         /// already had it's PEGs bound...
         /// </summary>
         /// <param name="buffer"></param>
-        public BooScanner(PegLexer lexer)
+        public BooScanner(ILexer lexer)
         {
-        	_lexer = lexer;
-        	_lexer.InitializeAndBindPegs(lexer.GetDefaultKeywordList(), lexer.GetDefaultMacroList());
+        	Lexer = lexer;
         }
         
         public BooScanner(Microsoft.VisualStudio.TextManager.Interop.IVsTextLines buffer) 
@@ -93,7 +96,7 @@ namespace Boo.BooLangService
         PegToken pegToken = new PegToken();
         public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
         {
-        	_lexer.NextToken(pegToken,ref state);
+        	Lexer.NextToken(pegToken,ref state);
         	if (pegToken.Type == PegTokenType.EOL)
         		return false;
         	TranslatePegToken(pegToken, tokenInfo);
@@ -103,7 +106,7 @@ namespace Boo.BooLangService
 
         public  void SetSource(string source, int offset)
         {
-        	_lexer.SetSource(source.Substring(offset));
+        	Lexer.SetSource(source.Substring(offset));
         }
         
         #endregion

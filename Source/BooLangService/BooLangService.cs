@@ -64,7 +64,7 @@ namespace Boo.BooLangService
             if (_scanner == null)
             {
                 //_scanner = new RegularExpressionScanner();
-                _scanner = new BooScanner();
+                _scanner = new BooScanner(new PegLexer());
             }
             return _scanner;
         }

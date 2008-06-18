@@ -19,7 +19,8 @@ namespace Boo.BooLangStudioSpecs
 		public WhenParsingTheLastTokenInALine()
 			: base()
 		{
-			
+			line = "singleIdentifierToken";
+			lexer.SetSource(line);
 		}
 	}
 }

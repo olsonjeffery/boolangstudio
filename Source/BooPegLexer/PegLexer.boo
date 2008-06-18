@@ -3,10 +3,8 @@ namespace BooPegLexer
 import System
 import System.Collections.Generic
 import Boo.Pegs
-import Boo.Lang.Compiler
-import Boo.Lang.Compiler.MetaProgramming
 
-public class PegLexer:
+public class PegLexer(ILexer):
   
   #region properties
   private _keywords = List of string()
@@ -20,7 +18,7 @@ public class PegLexer:
       return _macros
       
   private _line as string = string.Empty
-  public EntireLine as string:
+  public Line as string:
   	get:
   		return _line
   
@@ -38,7 +36,7 @@ public class PegLexer:
   
   public RemainingLine as string:
   	get:
-  	  if CurrentIndex >= _line.Length:
+  	  if CurrentIndex >= _lineLength:
   	    return string.Empty
   	  else:
   	    return _line.Substring(CurrentIndex)
@@ -133,10 +131,20 @@ public class PegLexer:
   	
   private BooTokenPeg as ChoiceExpression
   
-  # meant to be ran once on class setup...?
-  public def InitializeAndBindPegs(keywords as (string), macros as (string)):
+  public def ResetKeywordsAndMacros(keywords as (string), macros as (string)):
+    Keywords.Clear()
+    Macros.Clear()
+    
+    Keywords.AddRange(GetDefaultKeywordList())
+    Macros.AddRange(GetDefaultMacroList())
+    
     Keywords.AddRange(keywords)
-    Macros.AddRange(macros)
+    Keywords.AddRange(macros)
+  
+  # meant to be ran once on class setup...?
+  public def Initialize(keywords as (string), macros as (string)):
+    ResetKeywordsAndMacros(keywords, macros)
+    
     peg:
       self.BooTokenPeg = [Words,Whitespace,Strings,MiscOperators,Delimiters]
       

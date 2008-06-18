@@ -30,7 +30,7 @@ namespace Boo.BooLangStudioSpecs
     public SingleTokenTestFixture()
       : base()
     {
-      scanner = new BooScanner();
+    	scanner = new BooScanner(new PegLexer());
     }
     
     public virtual void BuildTokens(string codeLine, int startOffset)
