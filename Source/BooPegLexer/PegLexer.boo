@@ -127,7 +127,7 @@ public class PegLexer(ILexer):
     ctx.Token.StartIndex = _currentIndex
     ctx.Token.EndIndex = _currentIndex + line.Length-1
     _currentIndex += line.Length
-    print "Type: "+ctx.Token.Type+" Start: "+ctx.Token.StartIndex+ " End: "+ctx.Token.EndIndex +" New _currentIndex: "+_currentIndex
+    //print "Type: "+ctx.Token.Type+" Start: "+ctx.Token.StartIndex+ " End: "+ctx.Token.EndIndex +" New _currentIndex: "+_currentIndex
   	
   private BooTokenPeg as ChoiceExpression
   
@@ -157,15 +157,18 @@ public class PegLexer(ILexer):
       Whitespace = ++whitespace(),{$HandlePegMatch(PegTokenType.Whitespace)}
       
       # strings
-      Strings = [SingleQuoteString]
+      Strings = [SingleQuoteString,DoubleQuoteString]
       SingleQuoteString = "'",--SingleQuoteStringCharacter,"'",{$HandlePegMatch(PegTokenType.SingleQuoteString)}
       SingleQuoteStringCharacter = ("\\\\" / "\\'" / (not "'", any()))
+      DoubleQuoteString = '"',--DoubleQuoteStringCharacter,'"',{$HandlePegMatch(PegTokenType.DoubleQuoteString)}
+      DoubleQuoteStringCharacter = ("\\\\" / '\\"' / (not '"', any()))
       
       # misc operators
-      MiscOperators = [AdditionSign,SubtractionSign,EqualsSign]
+      MiscOperators = [AdditionSign,SubtractionSign,EqualsSign,Comma]
       AdditionSign = ++'+',{$HandlePegMatch(PegTokenType.AdditionSign)}
       SubtractionSign = ++'-',{$HandlePegMatch(PegTokenType.SubtractionSign)}
       EqualsSign = ++'=',{$HandlePegMatch(PegTokenType.EqualsSign)}
+      Comma = ',',{$HandlePegMatch(PegTokenType.Comma)}
       
       # delimiters
       Delimiters = [LeftParen,RightParen,QqOpen,QqClose]

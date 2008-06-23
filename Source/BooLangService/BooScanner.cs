@@ -76,12 +76,20 @@ namespace Boo.BooLangService
             // whitespace
         		case PegTokenType.Whitespace:
         	    ideToken.Type = TokenType.WhiteSpace;
-        			ideToken.Color = TokenColor.Text;
+                ideToken.Color = TokenColor.Text;
               break;
             // strings
             case PegTokenType.SingleQuoteString:
               ideToken.Type = TokenType.String;
               ideToken.Color = TokenColor.String;
+              break;
+            case PegTokenType.DoubleQuoteString:
+              ideToken.Type = TokenType.String;
+              ideToken.Color = TokenColor.String;
+              break;
+            case PegTokenType.Comma:
+              ideToken.Type = TokenType.Text;
+              ideToken.Color = TokenColor.Text;
               break;
             // the default case..
         		default:

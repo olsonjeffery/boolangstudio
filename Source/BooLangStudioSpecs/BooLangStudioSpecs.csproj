@@ -88,14 +88,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMockingTestFixture.cs" />
-    <Compile Include="LexerEndOfLineBehavior.cs" />
     <Compile Include="LineScanner\LexingBaseFixture.cs" />
     <Compile Include="LineScanner\LineCommentLexing.cs" />
     <Compile Include="LineScanner\MalformedStrings.cs" />
     <Compile Include="LineScanner\MultiLineCommentLexing.cs" />
     <Compile Include="LineScanner\StringInterpolation.cs" />
     <Compile Include="LineScanner\StringLexing.cs" />
+    <Compile Include="PegLexer\LexerEndOfLineBehavior.cs" />
     <Compile Include="PegLexer\LexerPartialMockFixture.cs" />
+    <Compile Include="PegLexer\Tokens\Comma.cs" />
+    <Compile Include="PegLexer\Tokens\DoubleQuoteString.cs" />
     <Compile Include="PegLexer\VerifyingNextTokenStateBranchingBehavior.cs" />
     <Compile Include="PegLexer\Tokens\SingleQuoteString.cs" />
     <Compile Include="PegLexer\Tokens\TokenTestFixture.cs" />
@@ -113,8 +115,6 @@
       <Project>{4E326F12-116A-4A83-96E5-6433540E13A1}</Project>
       <Name>BooPegLexer</Name>
     </ProjectReference>
-    <Folder Include="PegLexer" />
-    <Folder Include="PegLexer\Tokens" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
