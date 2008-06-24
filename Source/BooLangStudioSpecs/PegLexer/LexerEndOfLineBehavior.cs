@@ -21,25 +21,12 @@ namespace Boo.BooLangStudioSpecs
 		{
             // if you pass in an empty line, the lexer
             // will act as though it's at the EOL
-			line = "singleToken";
+			line = "";
 		}
 
         [Fact]
         public void NextTokenMethodShouldntBranchOut()
         {
-            bool retVal = true;
-            using (Mocks.Record())
-            {
-                Expect
-                    .Call(lexer.InGeneralLexingCase(pegToken, ref state))
-                    .Return(true);
-            }
-            using (Mocks.Playback())
-            {
-                lexer.SetSource(line);
-                lexer.NextToken(pegToken, ref state);
-            }
-
             using (Mocks.Record())
             {
                 DoNotExpect
@@ -51,18 +38,21 @@ namespace Boo.BooLangStudioSpecs
             }
             using (Mocks.Playback())
             {
-                retVal = lexer.NextToken(pegToken, ref state);
+                lexer.NextToken(pegToken, ref state);
             }
-            Assert.False(retVal);
         }
 
         [Fact]
         public void NextTokenMethodShouldReturnFalse()
         {
+            lexer = new PegLexer();
             lexer.SetSource(line);
             // consume the token
-            lexer.NextToken(pegToken, ref state);
-            bool retVal = lexer.NextToken(pegToken, ref state);
+            bool retVal = true;
+
+            retVal = lexer.NextToken(pegToken, ref state);
+            
+
             Assert.False(retVal);
         }
 
