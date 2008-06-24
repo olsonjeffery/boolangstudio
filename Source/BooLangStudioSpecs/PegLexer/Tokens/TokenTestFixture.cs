@@ -61,19 +61,19 @@ namespace Boo.BooLangStudioSpecs
     }
     
     [Fact]
-    public void TokenColorShouldBeString()
+    public void VerifyTokenColor()
     {
     	Assert.True(tokens[0].Color == expectedTokenColor , "Expected: "+expectedTokenColor.ToString()+" Actual: "+tokens[0].Type.ToString());
     }
     
     [Fact]
-    public void TokenStartIndexShouldBeZero()
+    public void VerifyStartIndex()
     {
       Assert.True(tokens[0].StartIndex == expectedStartIndex, "Expected: "+expectedStartIndex.ToString()+" Actual: "+tokens[0].StartIndex.ToString());
     }
     
     [Fact]
-    public void TokenEndIndexShouldBeSeventeen()
+    public void VerifyEndIndex()
     {
       Assert.True(tokens[0].EndIndex == expectedEndIndex, "Expected: "+expectedEndIndex.ToString()+" Actual: "+tokens[0].EndIndex.ToString());
     }

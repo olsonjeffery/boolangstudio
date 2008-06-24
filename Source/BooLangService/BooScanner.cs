@@ -91,6 +91,14 @@ namespace Boo.BooLangService
               ideToken.Type = TokenType.Text;
               ideToken.Color = TokenColor.Text;
               break;
+            case PegTokenType.DoubleWhackLineComment:
+              ideToken.Type = TokenType.Comment;
+              ideToken.Color = TokenColor.Comment;
+              break;
+            case PegTokenType.NumberSignLineComment:
+              ideToken.Type = TokenType.Comment;
+              ideToken.Color = TokenColor.Comment;
+              break;
             // the default case..
         		default:
               ideToken.Type = TokenType.Unknown;
@@ -105,9 +113,9 @@ namespace Boo.BooLangService
         public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
         {
         	Lexer.NextToken(pegToken,ref state);
-        	if (pegToken.Type == PegTokenType.EOL)
-        		return false;
         	TranslatePegToken(pegToken, tokenInfo);
+            if (pegToken.Type == PegTokenType.EOL)
+                return false;
         	
         	return true;
         }

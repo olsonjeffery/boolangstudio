@@ -146,7 +146,12 @@ public class PegLexer(ILexer):
     ResetKeywordsAndMacros(keywords, macros)
     
     peg:
-      self.BooTokenPeg = [Words,Whitespace,Strings,MiscOperators,Delimiters]
+      self.BooTokenPeg = [Comments,Words,Whitespace,Strings,MiscOperators,Delimiters]
+      
+      # comments
+      Comments = [DoubleWhackLineComment,NumberSignLineComment]
+      DoubleWhackLineComment = "//",--any(),{$HandlePegMatch(PegTokenType.DoubleWhackLineComment)}
+      NumberSignLineComment = "#",--any(),{$HandlePegMatch(PegTokenType.DoubleWhackLineComment)}
       
       # words
       Words = [Keyword,Identifier,Macro]

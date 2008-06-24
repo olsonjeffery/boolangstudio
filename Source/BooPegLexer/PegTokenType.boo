@@ -18,6 +18,8 @@ public enum PegTokenType:
 	RightParen
 	QqOpen
 	QqClose
+	DoubleWhackLineComment
+	NumberSignLineComment
 
 	
 	

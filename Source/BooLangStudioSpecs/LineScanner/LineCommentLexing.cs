@@ -43,9 +43,9 @@ namespace Boo.BooLangStudioSpecs
         }
 
         [Spec]
-        public void NoTokensShouldAppearAfterTheLineCommentTokenExceptEOF()
+        public void LastValidTokenShouldBeTheCommentToken()
         {
-            Assert.True(tokens[tokens.Count - 1].Type == TokenType.WhiteSpace, "Not expected tokentype: " + tokens[tokens.Count - 1].Type.ToString());
+            Assert.True(tokens[tokens.Count - 1].Type == TokenType.Comment, "Not expected tokentype: " + tokens[tokens.Count - 1].Type.ToString());
             
         }
 
@@ -93,9 +93,9 @@ namespace Boo.BooLangStudioSpecs
         }
 
         [Spec]
-        public void NoTokensShouldAppearAfterTheLineCommentTokenExceptEOF()
+        public void LastValidTokenShouldBeTheCommentToken()
         {
-            Assert.True(tokens[tokens.Count - 1].Type == TokenType.WhiteSpace, "Not expected tokentype: " + tokens[tokens.Count - 1].Type.ToString());
+            Assert.True(tokens[tokens.Count - 1].Type == TokenType.Comment, "Not expected tokentype: " + tokens[tokens.Count - 1].Type.ToString());
 
         }
 

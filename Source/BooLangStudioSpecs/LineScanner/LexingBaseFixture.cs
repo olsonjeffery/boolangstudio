@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Package;
 using System.IO;
 using Xunit;
 using Spec = Xunit.FactAttribute;
+using BooPegLexer;
 
 namespace Boo.BooLangStudioSpecs
 {
@@ -22,7 +23,7 @@ namespace Boo.BooLangStudioSpecs
         {
             lexer = GetLexer(rawCodeString);
             tokens = new List<TokenInfo>();
-            scanner = new Boo.BooLangService.BooScanner();
+            scanner = new Boo.BooLangService.BooScanner(new PegLexer());
         }
 
         public antlr.TokenStream GetLexer(string line)
@@ -42,10 +43,13 @@ namespace Boo.BooLangStudioSpecs
             {
                 TokenInfo token = new TokenInfo();
 
-                bool yetMoreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref _mlState);
-                tokens.Add(token);
-                moreTokens = yetMoreTokens;
-                Console.WriteLine("type: " + token.Type.ToString() + " start: " + token.StartIndex.ToString() + " end: " + token.EndIndex + " ");
+                moreTokens = scanner.ScanTokenAndProvideInfoAboutIt(token, ref _mlState);
+                if (moreTokens)
+                {
+                    tokens.Add(token);
+                    Console.WriteLine("type: " + token.Type.ToString() + " start: " + token.StartIndex.ToString() + " end: " + token.EndIndex + " ");
+                }
+                
             }
         }
     }

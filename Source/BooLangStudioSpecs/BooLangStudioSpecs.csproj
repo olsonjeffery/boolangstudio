@@ -98,6 +98,11 @@
     <Compile Include="PegLexer\LexerPartialMockFixture.cs" />
     <Compile Include="PegLexer\Tokens\Comma.cs" />
     <Compile Include="PegLexer\Tokens\DoubleQuoteString.cs" />
+    <Compile Include="PegLexer\Tokens\DoubleWhackLineComment.cs" />
+    <Compile Include="PegLexer\Tokens\Identifier.cs" />
+    <Compile Include="PegLexer\Tokens\Keyword.cs" />
+    <Compile Include="PegLexer\Tokens\Macro.cs" />
+    <Compile Include="PegLexer\Tokens\NumberSignLineComment.cs" />
     <Compile Include="PegLexer\VerifyingNextTokenStateBranchingBehavior.cs" />
     <Compile Include="PegLexer\Tokens\SingleQuoteString.cs" />
     <Compile Include="PegLexer\Tokens\TokenTestFixture.cs" />
