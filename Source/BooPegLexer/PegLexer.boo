@@ -76,11 +76,16 @@ public class PegLexer(ILexer):
       # is gonna be
       result = InGeneralLexingCase(token,state)
     
+    # here is where we deal with entering/exiting
+    # ml comment regions and tripple quotes
+    state = 13 if token.Type == PegTokenType.MlCommentOpen
+    state = 0 if token.Type == PegTokenType.MlCommentClose
+    
     # if nothing in the items above can parse it,
     # we'll just mark the rest of the line as unparsable
     # for now
     if result == false:
-      token.StartIndex = _currentIndex
+      token.StartIndex = _currentIndex unless state == 13
       token.EndIndex = _line.Length-1
       _currentIndex = _line.Length
     
@@ -90,7 +95,7 @@ public class PegLexer(ILexer):
   
   #region Logic related..
   
-  public def GetContext(pegToken as PegToken) as PegContext:
+  public def GetContext(pegToken as PegToken) as PegLexerContext:
     ctx = PegLexerContext(RemainingLine,pegToken)
     ctx.Token.Type = PegTokenType.EOL
     ctx.Token.StartIndex = 0
@@ -98,15 +103,21 @@ public class PegLexer(ILexer):
     return ctx
   
   public virtual def InMultiLineComment(pegToken as PegToken, ref state as int):
-  	return false
+  	ctx = GetContext(pegToken)
+  	if not ctx.Match(self.MlCommentClose):
+  	  ctx.Token.Type = PegTokenType.MlComment
+  	  ctx.Token.StartIndex = 0 # ?
+  	  _currentIndex = Line.Length
+  	  ctx.Token.EndIndex = _currentIndex-1
+  	  return false
+  	return true
   
   public virtual def InTrippleQuoteString(pegToken as PegToken, ref state as int):
   	return false
   
   public virtual def InGeneralLexingCase(pegToken as PegToken, ref state as int):
     ctx = GetContext(pegToken)
-    result = ctx.Match(self.BooTokenPeg)
-    return result
+    return ctx.Match(self.BooTokenPeg)
   
   #endregion
   
@@ -126,10 +137,10 @@ public class PegLexer(ILexer):
     ctx.Token.Type = type
     ctx.Token.StartIndex = _currentIndex
     ctx.Token.EndIndex = _currentIndex + line.Length-1
-    _currentIndex += line.Length
-    //print "Type: "+ctx.Token.Type+" Start: "+ctx.Token.StartIndex+ " End: "+ctx.Token.EndIndex +" New _currentIndex: "+_currentIndex
-  	
+    _currentIndex = ctx.Token.EndIndex + 1
+    
   private BooTokenPeg as ChoiceExpression
+  private MlCommentClose as PegRule
   
   public def ResetKeywordsAndMacros(keywords as (string), macros as (string)):
     Keywords.Clear()
@@ -149,9 +160,14 @@ public class PegLexer(ILexer):
       self.BooTokenPeg = [Comments,Words,Whitespace,NumericLiterals,Strings,MiscOperators,Delimiters]
       
       # comments
-      Comments = [DoubleWhackLineComment,NumberSignLineComment]
+      Comments = [DoubleWhackLineComment,NumberSignLineComment,MlComment,MlCommentOpen]
       DoubleWhackLineComment = "//",--any(),{$HandlePegMatch(PegTokenType.DoubleWhackLineComment)}
       NumberSignLineComment = "#",--any(),{$HandlePegMatch(PegTokenType.DoubleWhackLineComment)}
+      MlComment = "/*",--(not "*/",any()),"*/",{$HandlePegMatch(PegTokenType.MlComment)}
+      MlCommentOpen = "/*",--(not "*/",any()),{$HandlePegMatch(PegTokenType.MlCommentOpen)}
+      
+      self.MlCommentClose = [Mlc]
+      Mlc = --(not "*/",any()),"*/",{$HandlePegMatch(PegTokenType.MlCommentClose)}
       
       # words
       Words = [Keyword,Identifier,Macro]
@@ -198,7 +214,7 @@ public class PegLexer(ILexer):
       
   
   public def GetDefaultKeywordList() as (string):
-  	return ("def","class","interface","get","set","namespace","public","private","protected","internal","virtual","override","abstract","static","final","partial","transient","if","elif","else","raise","except","ensure","try","for","while","null","true","false","and","or","is","isa","not","in","as","do","break","continue","cast","import","from","goto","of","ref","self","super","typeof","yield","pass","return","char","string","int","callable","enum","struct","event","constructor","destructor")
+  	return ("def","class","interface","get","set","namespace","public","private","protected","internal","virtual","override","abstract","static","final","partial","transient","if","unless","elif","else","raise","except","ensure","try","for","while","null","true","false","and","or","is","isa","not","in","as","do","break","continue","cast","import","from","goto","of","ref","self","super","typeof","yield","pass","return","char","string","int","callable","enum","struct","event","constructor","destructor")
   
   public def GetDefaultMacroList() as (string):
   	return ("print", "assert", "using")

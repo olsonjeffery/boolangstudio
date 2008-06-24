@@ -159,6 +159,18 @@ namespace Boo.BooLangService
               ideToken.Type = TokenType.Literal;
               ideToken.Color = TokenColor.Number;
               break;
+            case PegTokenType.MlComment:
+              ideToken.Type = TokenType.Comment;
+              ideToken.Color = TokenColor.Comment;
+              break;
+            case PegTokenType.MlCommentOpen:
+              ideToken.Type = TokenType.Comment;
+              ideToken.Color = TokenColor.Comment;
+              break;
+            case PegTokenType.MlCommentClose:
+              ideToken.Type = TokenType.Comment;
+              ideToken.Color = TokenColor.Comment;
+              break;
             // the default case..
             default:
               ideToken.Type = TokenType.Unknown;

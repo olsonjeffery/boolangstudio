@@ -31,6 +31,9 @@ public enum PegTokenType:
 	IntegerLiteral
 	FloatLiteral
 	TimespanLiteral
+	MlComment
+	MlCommentOpen
+	MlCommentClose
 
 	
 	

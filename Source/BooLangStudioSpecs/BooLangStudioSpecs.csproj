@@ -108,6 +108,7 @@
     <Compile Include="PegLexer\Tokens\IntegerLiteral.cs" />
     <Compile Include="PegLexer\Tokens\Keyword.cs" />
     <Compile Include="PegLexer\Tokens\Macro.cs" />
+    <Compile Include="PegLexer\Tokens\MlComment.cs" />
     <Compile Include="PegLexer\Tokens\MultiplicationSign.cs" />
     <Compile Include="PegLexer\Tokens\NumberSignLineComment.cs" />
     <Compile Include="PegLexer\Tokens\Parens.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="PegLexer\Tokens\Splice.cs" />
     <Compile Include="PegLexer\Tokens\SquareBrackets.cs" />
     <Compile Include="PegLexer\Tokens\SubtractionSign.cs" />
+    <Compile Include="PegLexer\Tokens\Whitespace.cs" />
     <Compile Include="PegLexer\VerifyingNextTokenStateBranchingBehavior.cs" />
     <Compile Include="PegLexer\Tokens\SingleQuoteString.cs" />
     <Compile Include="PegLexer\Tokens\TokenTestFixture.cs" />
