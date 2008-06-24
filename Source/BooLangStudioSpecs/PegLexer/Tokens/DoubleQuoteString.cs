@@ -14,7 +14,7 @@ using Boo.BooLangService;
 namespace Boo.BooLangStudioSpecs
 {
 
-    public class TokenBasicDoubleQuoteString : SingleTokenTestFixture
+    public class TokenBasicDoubleQuoteString : AutoTokenTestFixture
     {
         public TokenBasicDoubleQuoteString()
             : base()
@@ -34,7 +34,7 @@ namespace Boo.BooLangStudioSpecs
 
     }
 
-    public class TokenDoubleQuoteStringWithEscapedDelimiter : SingleTokenTestFixture
+    public class TokenDoubleQuoteStringWithEscapedDelimiter : AutoTokenTestFixture
     {
         public TokenDoubleQuoteStringWithEscapedDelimiter()
             : base()

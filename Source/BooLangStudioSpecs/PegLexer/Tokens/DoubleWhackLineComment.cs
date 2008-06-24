@@ -14,7 +14,7 @@ using Boo.BooLangService;
 namespace Boo.BooLangStudioSpecs
 {
 
-    public class TokenDoubleWhackLineComment : SingleTokenTestFixture
+    public class TokenDoubleWhackLineComment : AutoTokenTestFixture
     {
         public TokenDoubleWhackLineComment()
             : base()

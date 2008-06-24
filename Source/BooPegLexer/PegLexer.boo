@@ -146,7 +146,7 @@ public class PegLexer(ILexer):
     ResetKeywordsAndMacros(keywords, macros)
     
     peg:
-      self.BooTokenPeg = [Comments,Words,Whitespace,Strings,MiscOperators,Delimiters]
+      self.BooTokenPeg = [Comments,Words,Whitespace,NumericLiterals,Strings,MiscOperators,Delimiters]
       
       # comments
       Comments = [DoubleWhackLineComment,NumberSignLineComment]
@@ -159,7 +159,13 @@ public class PegLexer(ILexer):
       Identifier = [a-z,A-Z,'_'],--[a-z,A-Z,'_',0-9], not IsKeyword,not IsMacro,{$HandlePegMatch(PegTokenType.Identifier)}
       Macro = ++[a-z], IsMacro,{$HandlePegMatch(PegTokenType.Macro)}
       
+      # whitespace
       Whitespace = ++whitespace(),{$HandlePegMatch(PegTokenType.Whitespace)}
+      
+      # numeric literals
+      NumericLiterals = [FloatLiteral,IntegerLiteral]
+      FloatLiteral = --'-',++[0-9],'.',++[0-9],{$HandlePegMatch(PegTokenType.FloatLiteral)}
+      IntegerLiteral = --'-',++[0-9],{$HandlePegMatch(PegTokenType.IntegerLiteral)}
       
       # strings
       Strings = [SingleQuoteString,DoubleQuoteString]
@@ -169,18 +175,26 @@ public class PegLexer(ILexer):
       DoubleQuoteStringCharacter = ("\\\\" / '\\"' / (not '"', any()))
       
       # misc operators
-      MiscOperators = [AdditionSign,SubtractionSign,EqualsSign,Comma]
+      MiscOperators = [AdditionSign,SubtractionSign,EqualsSign,Comma,DivisionSign,MultiplicationSign,Period,Splice]
       AdditionSign = ++'+',{$HandlePegMatch(PegTokenType.AdditionSign)}
       SubtractionSign = ++'-',{$HandlePegMatch(PegTokenType.SubtractionSign)}
       EqualsSign = ++'=',{$HandlePegMatch(PegTokenType.EqualsSign)}
       Comma = ',',{$HandlePegMatch(PegTokenType.Comma)}
+      DivisionSign = '/',{$HandlePegMatch(PegTokenType.DivisionSign)}
+      MultiplicationSign = '*',{$HandlePegMatch(PegTokenType.MultiplicationSign)}
+      Period = '.',{$HandlePegMatch(PegTokenType.Period)}
+      Splice = '$',{$HandlePegMatch(PegTokenType.Splice)}
       
       # delimiters
-      Delimiters = [LeftParen,RightParen,QqOpen,QqClose]
+      Delimiters = [LeftParen,RightParen,QqOpen,QqClose,LeftSquareBracket,RightSquareBracket,LeftCurlyBrace,RightCurlyBrace]
       LeftParen = '(',{$HandlePegMatch(PegTokenType.LeftParen)}
       RightParen = ')',{$HandlePegMatch(PegTokenType.RightParen)}
       QqOpen = '[|',{$HandlePegMatch(PegTokenType.QqOpen)}
       QqClose = '|]',{$HandlePegMatch(PegTokenType.QqClose)}
+      LeftSquareBracket = '[',{$HandlePegMatch(PegTokenType.LeftSquareBracket)}
+      RightSquareBracket = ']',{$HandlePegMatch(PegTokenType.RightSquareBracket)}
+      LeftCurlyBrace = '{',{$HandlePegMatch(PegTokenType.LeftCurlyBrace)}
+      RightCurlyBrace = '}',{$HandlePegMatch(PegTokenType.RightCurlyBrace)}
       
   
   public def GetDefaultKeywordList() as (string):

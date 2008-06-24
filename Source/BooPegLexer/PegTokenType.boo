@@ -20,6 +20,17 @@ public enum PegTokenType:
 	QqClose
 	DoubleWhackLineComment
 	NumberSignLineComment
+	DivisionSign
+	MultiplicationSign
+	Period
+	LeftSquareBracket
+	RightSquareBracket
+	LeftCurlyBrace
+	RightCurlyBrace
+	Splice
+	IntegerLiteral
+	FloatLiteral
+	TimespanLiteral
 
 	
 	

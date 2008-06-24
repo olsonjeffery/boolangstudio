@@ -14,7 +14,7 @@ using Boo.BooLangService;
 namespace Boo.BooLangStudioSpecs
 {
 
-    public class TokenMacro : SingleTokenTestFixture
+    public class TokenMacro : AutoTokenTestFixture
     {
         public TokenMacro()
             : base()

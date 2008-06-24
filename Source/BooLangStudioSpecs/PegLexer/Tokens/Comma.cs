@@ -14,7 +14,7 @@ using Boo.BooLangService;
 namespace Boo.BooLangStudioSpecs
 {
 
-    public class TokenComma : SingleTokenTestFixture
+    public class TokenComma : AutoTokenTestFixture
     {
         public TokenComma()
             : base()

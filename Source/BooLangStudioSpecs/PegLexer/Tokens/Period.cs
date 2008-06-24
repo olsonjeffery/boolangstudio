@@ -14,20 +14,20 @@ using Boo.BooLangService;
 namespace Boo.BooLangStudioSpecs
 {
 
-    public class TokenNumberSignLineComment : AutoTokenTestFixture
+    public class TokenPeriod : AutoTokenTestFixture
     {
-        public TokenNumberSignLineComment()
+        public TokenPeriod()
             : base()
         {
-            //      0         1
-            //      0123456789012345
-            line = "# a line comment";
+            //      0
+            //      0
+            line = ".";
             offset = 0;
 
-            expectedTokenType = TokenType.Comment;
-            expectedTokenColor = TokenColor.Comment;
+            expectedTokenType = TokenType.Operator;
+            expectedTokenColor = TokenColor.Text;
             expectedStartIndex = 0;
-            expectedEndIndex = 15;
+            expectedEndIndex = 0;
 
             BuildTokens(line, offset);
         }

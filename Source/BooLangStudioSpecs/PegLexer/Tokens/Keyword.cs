@@ -14,7 +14,7 @@ using Boo.BooLangService;
 namespace Boo.BooLangStudioSpecs
 {
 
-    public class TokenKeyword : SingleTokenTestFixture
+    public class TokenKeyword : AutoTokenTestFixture
     {
         public TokenKeyword()
             : base()

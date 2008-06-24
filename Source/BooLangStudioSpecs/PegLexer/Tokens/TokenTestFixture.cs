@@ -13,7 +13,7 @@ using Boo.BooLangService;
 
 namespace Boo.BooLangStudioSpecs
 {
-  public abstract class SingleTokenTestFixture : AutoMockingTestFixture
+  public abstract class AutoTokenTestFixture : AutoMockingTestFixture
   {
     protected BooScanner scanner;
     
@@ -27,7 +27,7 @@ namespace Boo.BooLangStudioSpecs
     protected int expectedStartIndex;
     protected int expectedEndIndex;
     
-    public SingleTokenTestFixture()
+    public AutoTokenTestFixture()
       : base()
     {
     	scanner = new BooScanner(new PegLexer());
@@ -79,5 +79,40 @@ namespace Boo.BooLangStudioSpecs
     }
     
     
+  }
+
+  public class ManualTokenTestFixture : AutoMockingTestFixture
+  {
+
+      protected PegLexer lexer;
+      protected TokenType expectedTokenType;
+      protected TokenColor expectedTokenColor;
+      protected int expectedStartIndex;
+      protected int expectedEndIndex;
+      protected int state;
+      protected BooScanner scanner;
+      protected TokenInfo token;
+      protected bool result;
+      protected string line;
+      protected int offset;
+
+      public ManualTokenTestFixture()
+          : base()
+      {
+          //             0         1         2         3   
+          //             012345678901234567890123456789012345678
+          line = string.Empty;
+          offset = 0;
+
+          expectedTokenType = TokenType.Unknown;
+          expectedTokenColor = TokenColor.Text;
+          expectedStartIndex = 0;
+          expectedEndIndex = 0;
+          state = 0;
+
+          lexer = new PegLexer();
+          scanner = new BooScanner(lexer);
+          token = new TokenInfo();
+      }
   }
 }
