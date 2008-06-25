@@ -25,7 +25,7 @@ public class PegLexer(ILexer):
   private _lineLength as int:
     get:
       return _line.Length
-  
+    
   private _currentIndex as int = 0
   public CurrentIndex as int:
     get:
@@ -67,10 +67,10 @@ public class PegLexer(ILexer):
       # we're in a multi-line comment zone, the only hope
       # is to match it against a ML-comment, otherwise
       # we return the entire line as a ml-comment token
-      result = InMultiLineComment(token,state)
+      result = InMultiLineRegion(token,state,PegTokenType.MlComment,self.MlCommentClose)
     elif (state == 14):
       # we're in a tripple-quote zone, ditto as above
-      result = InTrippleQuoteString(token,state)
+      result = InMultiLineRegion(token,state,PegTokenType.TripleQuoteString,self.TripleQuoteStringClose)
     else:
       # otherwise, try and figure out what the next token
       # is gonna be
@@ -106,21 +106,11 @@ public class PegLexer(ILexer):
     ctx.Token.EndIndex = 0
     return ctx
   
-  public virtual def InMultiLineComment(pegToken as PegToken, ref state as int):
+  public virtual def InMultiLineRegion(pegToken as PegToken, ref state as int, targetType as PegTokenType, rule as PegRule):
   	ctx = GetContext(pegToken)
-  	if not ctx.Match(self.MlCommentClose):
-  	  ctx.Token.Type = PegTokenType.MlComment
-  	  ctx.Token.StartIndex = 0 # ?
-  	  _currentIndex = Line.Length
-  	  ctx.Token.EndIndex = _currentIndex-1
-  	  return false
-  	return true
-  
-  public virtual def InTrippleQuoteString(pegToken as PegToken, ref state as int):
-  	ctx = GetContext(pegToken)
-  	if not ctx.Match(self.TripleQuoteStringClose):
-  	  ctx.Token.Type = PegTokenType.TripleQuoteString
-  	  ctx.Token.StartIndex = 0 # ?
+  	if not ctx.Match(rule):
+  	  ctx.Token.Type = targetType
+  	  ctx.Token.StartIndex = 0
   	  _currentIndex = Line.Length
   	  ctx.Token.EndIndex = _currentIndex-1
   	  return false

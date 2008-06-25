@@ -94,7 +94,6 @@
     <Compile Include="LineScanner\MultiLineCommentLexing.cs" />
     <Compile Include="LineScanner\StringInterpolation.cs" />
     <Compile Include="LineScanner\StringLexing.cs" />
-    <Compile Include="PegLexer\LexerEndOfLineBehavior.cs" />
     <Compile Include="PegLexer\LexerPartialMockFixture.cs" />
     <Compile Include="PegLexer\Tokens\AdditionSign.cs" />
     <Compile Include="PegLexer\Tokens\Comma.cs" />
@@ -118,7 +117,6 @@
     <Compile Include="PegLexer\Tokens\SubtractionSign.cs" />
     <Compile Include="PegLexer\Tokens\TripleQuoteString.cs" />
     <Compile Include="PegLexer\Tokens\Whitespace.cs" />
-    <Compile Include="PegLexer\VerifyingNextTokenStateBranchingBehavior.cs" />
     <Compile Include="PegLexer\Tokens\SingleQuoteString.cs" />
     <Compile Include="PegLexer\Tokens\TokenTestFixture.cs" />
     <Compile Include="PegLexer\WhenAttemptingToGetATokenFromThePegLexer.cs" />
