@@ -34,6 +34,9 @@ public enum PegTokenType:
 	MlComment
 	MlCommentOpen
 	MlCommentClose
+	TripleQuoteString
+	TripleQuoteStringOpen
+	TripleQuoteStringClose
 
 	
 	

@@ -14,13 +14,13 @@ using Boo.BooLangService;
 namespace Boo.BooLangStudioSpecs
 {
 
-    public class WhenParsingTheStartOfAnMlCommentRegion : ManualTokenTestFixture
+    public class WhenParsingTheStartOfATripleQuoteRegion : ManualTokenTestFixture
     {
-        public WhenParsingTheStartOfAnMlCommentRegion()
+        public WhenParsingTheStartOfATripleQuoteRegion()
             : base()
         {
-            //      0123456789
-            line = "/* comment";
+            //      00112234567
+            line = "\"\"\" blah";
             offset = 0;
             state = 0;
             scanner.SetSource(line, offset);
@@ -28,21 +28,21 @@ namespace Boo.BooLangStudioSpecs
         }
 
         [Fact]
-        public void StateShouldBeThirteen()
+        public void StateShouldBeFourteen()
         {
-            Assert.True(state == 13, "Actual: " + state.ToString());
+            Assert.True(state == 14, "Actual: " + state.ToString());
         }
 
         [Fact]
-        public void TokenTypeShouldBeComment()
+        public void TokenTypeShouldBeString()
         {
-            Assert.True(token.Type == TokenType.Comment, "actual: " + token.Type.ToString());
+            Assert.True(token.Type == TokenType.String, "actual: " + token.Type.ToString());
         }
 
         [Fact]
-        public void TokenColorShouldBeComment()
+        public void TokenColorShouldBeString()
         {
-            Assert.True(token.Color == TokenColor.Comment, "actual: " + token.Color.ToString());
+            Assert.True(token.Color == TokenColor.String, "actual: " + token.Color.ToString());
         }
 
         [Fact]
@@ -54,41 +54,41 @@ namespace Boo.BooLangStudioSpecs
         [Fact]
         public void EndIndexShouldBeNine()
         {
-            Assert.True(token.EndIndex == 9, "Actual: " + token.EndIndex.ToString());
+            Assert.True(token.EndIndex == 7, "Actual: " + token.EndIndex.ToString());
         }
 
     }
 
 
-    public class WhenParsingIntraMlCommentRegion : ManualTokenTestFixture
+    public class WhenParsingIntraTripleQuoteStringRegion : ManualTokenTestFixture
     {
-        public WhenParsingIntraMlCommentRegion()
+        public WhenParsingIntraTripleQuoteStringRegion()
             : base()
         {
             //      0123456789
-            line = "allcomment";
+            line = "allastring";
             offset = 0;
-            state = 13;
+            state = 14;
             scanner.SetSource(line, offset);
             scanner.ScanTokenAndProvideInfoAboutIt(token, ref state);
         }
 
         [Fact]
-        public void StateShouldBeThirteen()
+        public void StateShouldBeFourteen()
         {
-            Assert.True(state == 13, "Actual: " + state.ToString());
+            Assert.True(state == 14, "Actual: " + state.ToString());
         }
 
         [Fact]
-        public void TokenTypeShouldBeComment()
+        public void TokenTypeShouldBeString()
         {
-            Assert.True(token.Type == TokenType.Comment, "actual: " + token.Type.ToString());
+            Assert.True(token.Type == TokenType.String, "actual: " + token.Type.ToString());
         }
 
         [Fact]
-        public void TokenColorShouldBeComment()
+        public void TokenColorShouldBeString()
         {
-            Assert.True(token.Color == TokenColor.Comment, "actual: " + token.Color.ToString());
+            Assert.True(token.Color == TokenColor.String, "actual: " + token.Color.ToString());
         }
 
         [Fact]
@@ -105,25 +105,25 @@ namespace Boo.BooLangStudioSpecs
 
     }
 
-    public class WhenParsingTheEndOfAMlCommentRegion : ManualTokenTestFixture
+    public class WhenParsingTheEndOfATripleQuoteString : ManualTokenTestFixture
     {
-        protected TokenInfo commentCloseToken;
+        protected TokenInfo tripleQuoteStringCloseToken;
         protected TokenInfo whitespaceToken;
         int betweenRunCurrentIndex;
         bool resultOne;
         string remainingLine;
 
-        public WhenParsingTheEndOfAMlCommentRegion()
+        public WhenParsingTheEndOfATripleQuoteString()
             : base()
         {
-            //      012345678901234
-            line = "the end */ ";
+            //      012345678899001
+            line = "the end \"\"\" ";
             offset = 0;
-            state = 13;
+            state = 14;
             scanner.SetSource(line, offset);
 
-            commentCloseToken = new TokenInfo();
-            resultOne = scanner.ScanTokenAndProvideInfoAboutIt(commentCloseToken, ref state);
+            tripleQuoteStringCloseToken = new TokenInfo();
+            resultOne = scanner.ScanTokenAndProvideInfoAboutIt(tripleQuoteStringCloseToken, ref state);
 
             betweenRunCurrentIndex = lexer.CurrentIndex;
             remainingLine = lexer.RemainingLine;
@@ -135,7 +135,7 @@ namespace Boo.BooLangStudioSpecs
         [Fact]
         public void RemainingLineAfterFirstParseShouldBeASingleSpace()
         {
-            Assert.True(remainingLine == " ", "Actual: " + remainingLine);
+            Assert.True(remainingLine == " ", "Actual: '" + remainingLine+"'");
         }
 
         [Fact]
@@ -151,9 +151,9 @@ namespace Boo.BooLangStudioSpecs
         }
 
         [Fact]
-        public void CurrentIndexBetweenTokensShouldBeTen()
+        public void CurrentIndexBetweenTokensShouldBeEleven()
         {
-            Assert.True(betweenRunCurrentIndex == 10, "Actual: " + betweenRunCurrentIndex.ToString());
+            Assert.True(betweenRunCurrentIndex == 11, "Actual: " + betweenRunCurrentIndex.ToString());
         }
 
         [Fact]
@@ -163,27 +163,27 @@ namespace Boo.BooLangStudioSpecs
         }
 
         [Fact]
-        public void CommentTokenTypeShouldBeComment()
+        public void StringTokenTypeShouldBeString()
         {
-            Assert.True(commentCloseToken.Type == TokenType.Comment, "actual: " + commentCloseToken.Type.ToString());
+            Assert.True(tripleQuoteStringCloseToken.Type == TokenType.String, "actual: " + tripleQuoteStringCloseToken.Type.ToString());
         }
 
         [Fact]
-        public void CommentTokenColorShouldBeComment()
+        public void StringTokenColorShouldBeString()
         {
-            Assert.True(commentCloseToken.Color == TokenColor.Comment, "actual: " + commentCloseToken.Color.ToString());
+            Assert.True(tripleQuoteStringCloseToken.Color == TokenColor.String, "actual: " + tripleQuoteStringCloseToken.Color.ToString());
         }
 
         [Fact]
-        public void CommentTokenStartIndexShouldBeZero()
+        public void StringTokenStartIndexShouldBeZero()
         {
-            Assert.True(commentCloseToken.StartIndex == 0, "Actual: " + commentCloseToken.StartIndex.ToString());
+            Assert.True(tripleQuoteStringCloseToken.StartIndex == 0, "Actual: " + tripleQuoteStringCloseToken.StartIndex.ToString());
         }
 
         [Fact]
-        public void CommentTokenEndIndexShouldBeNine()
+        public void StringTokenEndIndexShouldBeTen()
         {
-            Assert.True(commentCloseToken.EndIndex == 9, "Actual: " + commentCloseToken.EndIndex.ToString());
+            Assert.True(tripleQuoteStringCloseToken.EndIndex == 10, "Actual: " + tripleQuoteStringCloseToken.EndIndex.ToString());
         }
 
         [Fact]
@@ -199,15 +199,15 @@ namespace Boo.BooLangStudioSpecs
         }
 
         [Fact]
-        public void WhitespaceTokenStartIndexShouldBeTen()
+        public void WhitespaceTokenStartIndexShouldBeEleven()
         {
-            Assert.True(whitespaceToken.StartIndex == 10, "Actual: " + whitespaceToken.StartIndex.ToString());
+            Assert.True(whitespaceToken.StartIndex == 11, "Actual: " + whitespaceToken.StartIndex.ToString());
         }
 
         [Fact]
-        public void WhitespaceTokenEndIndexShouldBeTen()
+        public void WhitespaceTokenEndIndexShouldBeEleven()
         {
-            Assert.True(whitespaceToken.EndIndex == 10, "Actual: " + whitespaceToken.EndIndex.ToString());
+            Assert.True(whitespaceToken.EndIndex == 11, "Actual: " + whitespaceToken.EndIndex.ToString());
         }
 
 

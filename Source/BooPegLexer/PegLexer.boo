@@ -78,14 +78,18 @@ public class PegLexer(ILexer):
     
     # here is where we deal with entering/exiting
     # ml comment regions and tripple quotes
-    state = 13 if token.Type == PegTokenType.MlCommentOpen
-    state = 0 if token.Type == PegTokenType.MlCommentClose
+    if token.Type == PegTokenType.MlCommentClose or token.Type == PegTokenType.TripleQuoteStringClose:  
+      state = 0
+    elif token.Type == PegTokenType.TripleQuoteStringOpen:
+      state = 14
+    elif token.Type == PegTokenType.MlCommentOpen:  
+      state = 13
     
     # if nothing in the items above can parse it,
     # we'll just mark the rest of the line as unparsable
     # for now
     if result == false:
-      token.StartIndex = _currentIndex unless state == 13
+      token.StartIndex = _currentIndex unless state == 13 or state == 14
       token.EndIndex = _line.Length-1
       _currentIndex = _line.Length
     
@@ -113,7 +117,14 @@ public class PegLexer(ILexer):
   	return true
   
   public virtual def InTrippleQuoteString(pegToken as PegToken, ref state as int):
-  	return false
+  	ctx = GetContext(pegToken)
+  	if not ctx.Match(self.TripleQuoteStringClose):
+  	  ctx.Token.Type = PegTokenType.TripleQuoteString
+  	  ctx.Token.StartIndex = 0 # ?
+  	  _currentIndex = Line.Length
+  	  ctx.Token.EndIndex = _currentIndex-1
+  	  return false
+  	return true
   
   public virtual def InGeneralLexingCase(pegToken as PegToken, ref state as int):
     ctx = GetContext(pegToken)
@@ -141,23 +152,18 @@ public class PegLexer(ILexer):
     
   private BooTokenPeg as ChoiceExpression
   private MlCommentClose as PegRule
+  private TripleQuoteStringClose as PegRule
   
-  public def ResetKeywordsAndMacros(keywords as (string), macros as (string)):
+  public def ResetKeywordsAndMacros():
     Keywords.Clear()
     Macros.Clear()
     
     Keywords.AddRange(GetDefaultKeywordList())
     Macros.AddRange(GetDefaultMacroList())
-    
-    Keywords.AddRange(keywords)
-    Keywords.AddRange(macros)
   
-  # meant to be ran once on class setup...?
-  public def Initialize(keywords as (string), macros as (string)):
-    ResetKeywordsAndMacros(keywords, macros)
-    
+  public def Initialize():
     peg:
-      self.BooTokenPeg = [Comments,Words,Whitespace,NumericLiterals,Strings,MiscOperators,Delimiters]
+      self.BooTokenPeg = (Comments / Words / Whitespace / NumericLiterals / Strings / MiscOperators / Delimiters)
       
       # comments
       Comments = [DoubleWhackLineComment,NumberSignLineComment,MlComment,MlCommentOpen]
@@ -170,6 +176,7 @@ public class PegLexer(ILexer):
       Mlc = --(not "*/",any()),"*/",{$HandlePegMatch(PegTokenType.MlCommentClose)}
       
       # words
+      
       Words = [Keyword,Identifier,Macro]
       Keyword = ++[a-z], IsKeyword,{$HandlePegMatch(PegTokenType.Keyword)}
       Identifier = [a-z,A-Z,'_'],--[a-z,A-Z,'_',0-9], not IsKeyword,not IsMacro,{$HandlePegMatch(PegTokenType.Identifier)}
@@ -184,11 +191,17 @@ public class PegLexer(ILexer):
       IntegerLiteral = --'-',++[0-9],{$HandlePegMatch(PegTokenType.IntegerLiteral)}
       
       # strings
-      Strings = [SingleQuoteString,DoubleQuoteString]
+      Strings = [SingleQuoteString,TripleQuoteString,TripleQuoteStringOpen,DoubleQuoteString]
       SingleQuoteString = "'",--SingleQuoteStringCharacter,"'",{$HandlePegMatch(PegTokenType.SingleQuoteString)}
       SingleQuoteStringCharacter = ("\\\\" / "\\'" / (not "'", any()))
       DoubleQuoteString = '"',--DoubleQuoteStringCharacter,'"',{$HandlePegMatch(PegTokenType.DoubleQuoteString)}
       DoubleQuoteStringCharacter = ("\\\\" / '\\"' / (not '"', any()))
+      TripleQuoteString = '"""',--(not '"""',any()),'"""',{$HandlePegMatch(PegTokenType.TripleQuoteString)}
+      TripleQuoteStringOpen = '"""',--(not '"""',any()),{$HandlePegMatch(PegTokenType.TripleQuoteStringOpen)}
+      
+      self.TripleQuoteStringClose = [Tqsc]
+      Tqsc = --(not '"""',any()),'"""',{$HandlePegMatch(PegTokenType.TripleQuoteStringClose)}
+      
       
       # misc operators
       MiscOperators = [AdditionSign,SubtractionSign,EqualsSign,Comma,DivisionSign,MultiplicationSign,Period,Splice]
@@ -211,6 +224,14 @@ public class PegLexer(ILexer):
       RightSquareBracket = ']',{$HandlePegMatch(PegTokenType.RightSquareBracket)}
       LeftCurlyBrace = '{',{$HandlePegMatch(PegTokenType.LeftCurlyBrace)}
       RightCurlyBrace = '}',{$HandlePegMatch(PegTokenType.RightCurlyBrace)}
+  
+  # meant to be ran once on class setup...?
+  public def Initialize(keywords as (string), macros as (string)):
+    ResetKeywordsAndMacros()
+    Keywords.AddRange(keywords)
+    Keywords.AddRange(macros)
+    Initialize()
+    
       
   
   public def GetDefaultKeywordList() as (string):

@@ -171,6 +171,18 @@ namespace Boo.BooLangService
               ideToken.Type = TokenType.Comment;
               ideToken.Color = TokenColor.Comment;
               break;
+            case PegTokenType.TripleQuoteString:
+              ideToken.Type = TokenType.String;
+              ideToken.Color = TokenColor.String;
+              break;
+            case PegTokenType.TripleQuoteStringOpen:
+              ideToken.Type = TokenType.String;
+              ideToken.Color = TokenColor.String;
+              break;
+            case PegTokenType.TripleQuoteStringClose:
+              ideToken.Type = TokenType.String;
+              ideToken.Color = TokenColor.String;
+              break;
             // the default case..
             default:
               ideToken.Type = TokenType.Unknown;

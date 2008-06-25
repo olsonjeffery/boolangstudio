@@ -116,6 +116,7 @@
     <Compile Include="PegLexer\Tokens\Splice.cs" />
     <Compile Include="PegLexer\Tokens\SquareBrackets.cs" />
     <Compile Include="PegLexer\Tokens\SubtractionSign.cs" />
+    <Compile Include="PegLexer\Tokens\TripleQuoteString.cs" />
     <Compile Include="PegLexer\Tokens\Whitespace.cs" />
     <Compile Include="PegLexer\VerifyingNextTokenStateBranchingBehavior.cs" />
     <Compile Include="PegLexer\Tokens\SingleQuoteString.cs" />
