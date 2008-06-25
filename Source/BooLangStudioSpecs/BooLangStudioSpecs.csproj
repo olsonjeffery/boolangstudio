@@ -107,6 +107,7 @@
     <Compile Include="PegLexer\Tokens\IntegerLiteral.cs" />
     <Compile Include="PegLexer\Tokens\Keyword.cs" />
     <Compile Include="PegLexer\Tokens\Macro.cs" />
+    <Compile Include="PegLexer\Tokens\MalformedStrings.cs" />
     <Compile Include="PegLexer\Tokens\MlComment.cs" />
     <Compile Include="PegLexer\Tokens\MultiplicationSign.cs" />
     <Compile Include="PegLexer\Tokens\NumberSignLineComment.cs" />

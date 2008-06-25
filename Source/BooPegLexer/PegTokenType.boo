@@ -37,6 +37,8 @@ public enum PegTokenType:
 	TripleQuoteString
 	TripleQuoteStringOpen
 	TripleQuoteStringClose
+	MalformedSingleQuoteString
+	MalformedDoubleQuoteString
 
 	
 	

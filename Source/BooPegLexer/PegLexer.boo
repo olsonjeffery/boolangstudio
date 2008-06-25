@@ -57,27 +57,19 @@ public class PegLexer(ILexer):
     
     result = false
     
-    # we've hit EOL
     if RemainingLine.Equals(string.Empty):
       token.Type = PegTokenType.EOL
       return false
     
-    # try and guess what the next token type is..
+    # getting ready to parse out a token
     if (state == 13):
-      # we're in a multi-line comment zone, the only hope
-      # is to match it against a ML-comment, otherwise
-      # we return the entire line as a ml-comment token
       result = InMultiLineRegion(token,state,PegTokenType.MlComment,self.MlCommentClose)
     elif (state == 14):
-      # we're in a tripple-quote zone, ditto as above
       result = InMultiLineRegion(token,state,PegTokenType.TripleQuoteString,self.TripleQuoteStringClose)
     else:
-      # otherwise, try and figure out what the next token
-      # is gonna be
       result = InGeneralLexingCase(token,state)
     
-    # here is where we deal with entering/exiting
-    # ml comment regions and tripple quotes
+    # after parsing the token
     if token.Type == PegTokenType.MlCommentClose or token.Type == PegTokenType.TripleQuoteStringClose:  
       state = 0
     elif token.Type == PegTokenType.TripleQuoteStringOpen:
@@ -85,9 +77,7 @@ public class PegLexer(ILexer):
     elif token.Type == PegTokenType.MlCommentOpen:  
       state = 13
     
-    # if nothing in the items above can parse it,
-    # we'll just mark the rest of the line as unparsable
-    # for now
+    # if nothing above was able to parse the token
     if result == false:
       token.StartIndex = _currentIndex unless state == 13 or state == 14
       token.EndIndex = _line.Length-1
@@ -97,7 +87,7 @@ public class PegLexer(ILexer):
     
   #endregion
   
-  #region Logic related..
+  #region Parsing flow-logic related..
   
   public def GetContext(pegToken as PegToken) as PegLexerContext:
     ctx = PegLexerContext(RemainingLine,pegToken)
@@ -109,6 +99,9 @@ public class PegLexer(ILexer):
   public virtual def InMultiLineRegion(pegToken as PegToken, ref state as int, targetType as PegTokenType, rule as PegRule):
   	ctx = GetContext(pegToken)
   	if not ctx.Match(rule):
+  	  # if the above item doesn't match, we remain in
+  	  # the multi-line string/comment until we can
+  	  # match on the closing delimiters
   	  ctx.Token.Type = targetType
   	  ctx.Token.StartIndex = 0
   	  _currentIndex = Line.Length
@@ -124,7 +117,6 @@ public class PegLexer(ILexer):
   
   #region PEG related members and fields
   
-  # identifiers and keywords 
   IsKeyword = FunctionExpression() do (ctx as PegContext):
     identifier = text(ctx)
     return identifier in Keywords
@@ -153,7 +145,7 @@ public class PegLexer(ILexer):
   
   public def Initialize():
     peg:
-      self.BooTokenPeg = (Comments / Words / Whitespace / NumericLiterals / Strings / MiscOperators / Delimiters)
+      self.BooTokenPeg = (Comments / Words / Whitespace / NumericLiterals / Strings / MalformedStrings / MiscOperators / Delimiters)
       
       # comments
       Comments = [DoubleWhackLineComment,NumberSignLineComment,MlComment,MlCommentOpen]
@@ -192,6 +184,10 @@ public class PegLexer(ILexer):
       self.TripleQuoteStringClose = [Tqsc]
       Tqsc = --(not '"""',any()),'"""',{$HandlePegMatch(PegTokenType.TripleQuoteStringClose)}
       
+      # malformed strings... make sure these come AFTER the regular strings
+      MalformedStrings = [MalformedSingleQuoteString,MalformedDoubleQuoteString]
+      MalformedSingleQuoteString = "'",--(not "'",any()),{$HandlePegMatch(PegTokenType.MalformedSingleQuoteString)}
+      MalformedDoubleQuoteString = '"',--(not '"',any()),{$HandlePegMatch(PegTokenType.MalformedDoubleQuoteString)}
       
       # misc operators
       MiscOperators = [AdditionSign,SubtractionSign,EqualsSign,Comma,DivisionSign,MultiplicationSign,Period,Splice]

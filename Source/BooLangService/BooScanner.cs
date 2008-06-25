@@ -183,6 +183,14 @@ namespace Boo.BooLangService
               ideToken.Type = TokenType.String;
               ideToken.Color = TokenColor.String;
               break;
+            case PegTokenType.MalformedSingleQuoteString:
+              ideToken.Type = TokenType.String;
+              ideToken.Color = TokenColor.String;
+              break;
+            case PegTokenType.MalformedDoubleQuoteString:
+              ideToken.Type = TokenType.String;
+              ideToken.Color = TokenColor.String;
+              break;
             // the default case..
             default:
               ideToken.Type = TokenType.Unknown;
