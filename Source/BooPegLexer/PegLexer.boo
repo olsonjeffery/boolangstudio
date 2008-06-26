@@ -145,7 +145,7 @@ public class PegLexer(ILexer):
   
   public def Initialize():
     peg:
-      self.BooTokenPeg = (Comments / Words / Whitespace / NumericLiterals / Strings / MalformedStrings / MiscOperators / Delimiters)
+      self.BooTokenPeg = (Comments / Words / Whitespace / NumericLiterals / Strings / MalformedStrings / MiscOperators / Delimiters / MiscStuff)
       
       # comments
       Comments = [DoubleWhackLineComment,NumberSignLineComment,MlComment,MlCommentOpen]
@@ -199,6 +199,10 @@ public class PegLexer(ILexer):
       MultiplicationSign = '*',{$HandlePegMatch(PegTokenType.MultiplicationSign)}
       Period = '.',{$HandlePegMatch(PegTokenType.Period)}
       Splice = '$',{$HandlePegMatch(PegTokenType.Splice)}
+      
+      #Misc stuff
+      MiscStuff = [Exclamation]
+      Exclamation = '!',{$HandlePegMatch(PegTokenType.Exclamation)}
       
       # delimiters
       Delimiters = [LeftParen,RightParen,QqOpen,QqClose,LeftSquareBracket,RightSquareBracket,LeftCurlyBrace,RightCurlyBrace]

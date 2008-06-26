@@ -39,6 +39,7 @@ public enum PegTokenType:
 	TripleQuoteStringClose
 	MalformedSingleQuoteString
 	MalformedDoubleQuoteString
+	Exclamation
 
 	
 	

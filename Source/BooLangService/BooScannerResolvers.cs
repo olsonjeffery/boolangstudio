@@ -151,6 +151,10 @@ namespace Boo.BooLangService
                     ideToken.Type = TokenType.String;
                     ideToken.Color = TokenColor.String;
                     break;
+                case PegTokenType.Exclamation:
+                    ideToken.Type = TokenType.Text;
+                    ideToken.Type = TokenType.Text;
+                    break;
                 // the default case..
                 default:
                     ideToken.Type = TokenType.Unknown;

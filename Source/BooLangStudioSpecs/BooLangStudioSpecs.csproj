@@ -102,6 +102,7 @@
     <Compile Include="PegLexer\Tokens\DoubleQuoteString.cs" />
     <Compile Include="PegLexer\Tokens\DoubleWhackLineComment.cs" />
     <Compile Include="PegLexer\Tokens\EqualSign.cs" />
+    <Compile Include="PegLexer\Tokens\Exclamation.cs" />
     <Compile Include="PegLexer\Tokens\FloatLiteral.cs" />
     <Compile Include="PegLexer\Tokens\Identifier.cs" />
     <Compile Include="PegLexer\Tokens\IntegerLiteral.cs" />
