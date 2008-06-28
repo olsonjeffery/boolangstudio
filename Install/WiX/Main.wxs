@@ -24,6 +24,296 @@
     </Property>
     
     <Directory Id="TARGETDIR" Name="SourceDir">
+
+      <Component Id="FileAssociations" Guid="390BEA6D-090A-4a4a-9E79-A0409A06449B">
+        <RegistryKey Action="create"
+                     Root="HKCR"
+                     Key=".boo">
+          <RegistryValue Action="write"
+                         Type="string"
+                         Value="VisualStudio.boo.9.0" />
+          <RegistryValue Action="write"
+                         Type="string"
+                         Name="Content Type"
+                         Value="text/plain"/>
+          <RegistryValue Action="write"
+                         Type="string"
+                         Name="PerceivedType"
+                         Value="text" />
+          <RegistryKey Action="create" Key="OpenWithList">
+            <RegistryKey Action="create" Key="devenv.exe" />
+          </RegistryKey>
+          <RegistryKey Action="create" Key="OpenWithProgids">
+            <RegistryValue Action="write"
+                           Type="string"
+                           Name="VisualStudio.boo.9.0"
+                           Value=""/>
+            <RegistryKey Action="create" Key="Shared">
+              <RegistryValue Action="write"
+                             Type="string"
+                             Value="Shared to keep this from being removed with install/uninstall of side-by-side components." />
+            </RegistryKey>
+          </RegistryKey>
+          <RegistryKey Action="create" Key="PersistentHandler">
+            <RegistryValue Action="write"
+                           Type="string"
+                           Value="{5e941d80-bf96-11cd-b579-08002b30bfeb}" />
+          </RegistryKey>
+        </RegistryKey>
+        <RegistryKey Action="create"
+                     Root="HKCR"
+                     Key=".booproj">
+          <RegistryValue Action="write"
+                         Type="string"
+                         Value="VisualStudio.booproj.9.0"/>
+          <RegistryValue Action="write"
+                         Type="string"
+                         Name="Content Type"
+                         Value="text/plain"/>
+          <RegistryKey Action="create" Key="OpenWithList">
+            <RegistryKey Action="create" Key="VSLauncher.exe"/>
+          </RegistryKey>
+          <RegistryKey Action="create" Key="OpenWithProgids">
+            <RegistryValue Action="write"
+                           Type="string"
+                           Name="VisualStudio.booproj.9.0"
+                           Value="" />
+            <RegistryKey Action="create" Key="Shared" >
+              <RegistryValue Action="write" 
+                             Type="string" 
+                             Value="shared" />
+            </RegistryKey>
+          </RegistryKey>
+        </RegistryKey>
+        <RegistryKey Action="create"
+                     Root="HKCR"
+                     Key="VisualStudio.boo.9.0">
+          <RegistryValue Action="write"
+                         Type="string"
+                         Value="Boo source file" />
+          <RegistryValue Action="write"
+                         Type="string"
+                         Name="AlwaysShowExt"
+                         Value="1" />
+          <RegistryKey Action="create" Key="DefaultIcon">
+            <RegistryValue Action="write"
+                           Type="string"
+                           Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,1" />
+          </RegistryKey>
+          <RegistryKey Action="create" Key="shell">
+            <RegistryKey Action="create" Key="Open">
+              <RegistryKey Action="create" Key="Command">
+                <RegistryValue Action="write" 
+                               Type="string" 
+                               Value="&quot;[VSINSTALLDIR]devenv.exe&quot; /dde"/>
+              </RegistryKey>
+              <RegistryKey Action="create" Key="ddeexec">
+                <RegistryValue Action="write" 
+                               Type="string" 
+                               Value="Open(&quot;%1&quot;)"/>
+                <RegistryKey Action="create" Key="Application">
+                  <RegistryValue Action="write" 
+                                 Type="string" 
+                                 Value="VisualStudio.9.0"/>
+                </RegistryKey>
+                <RegistryKey Action="create" Key="Topic">
+                  <RegistryValue Action="write" 
+                                 Type="string" 
+                                 Value="system"/>
+                </RegistryKey>
+              </RegistryKey>
+            </RegistryKey>
+          </RegistryKey>
+        </RegistryKey>
+        <RegistryKey Action="create"
+                     Root="HKCR"
+                     Key="VisualStudio.booproj.9.0">
+          <RegistryValue Action="write" 
+                         Type="string" 
+                         Value="Boo project file"/>
+          <RegistryKey Action="create" Key="DefaultIcon">
+            <RegistryValue Action="write" 
+                           Type="string"
+                           Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,2" />
+          </RegistryKey>
+          <RegistryKey Action="create" Key="shell">
+            <RegistryKey Action="create" Key="open">
+              <RegistryKey Action="create" Key="Command">
+                <RegistryValue Action="write" 
+                               Type="string"
+                               Value="&quot;[ProgramFilesFolder]Common Files\Microsoft Shared\MSEnv\VSLauncher.exe&quot; &quot;%1&quot;"/>
+              </RegistryKey>
+            </RegistryKey>
+          </RegistryKey>
+        </RegistryKey>
+         
+        <RegistryKey Root="HKLM"
+                     Action="create"
+                     Key="Software">
+          <RegistryKey Action="create" Key="Classes">
+            <RegistryKey Action="create" Key=".boo">
+              <RegistryValue Action="write" 
+                             Type="string" 
+                             Value="VisualStudio.boo.9.0"/>
+              <RegistryValue Action="write" 
+                             Type="string" 
+                             Name="Content Type" 
+                             Value="text/plain"/>
+              <RegistryValue Action="write" 
+                             Type="string" 
+                             Name="PerceivedType" 
+                             Value="text" />
+              <RegistryKey Action="create" Key="OpenWithList">
+                <RegistryKey Action="create" Key="vsta.exe"/>
+              </RegistryKey>
+              <RegistryKey Action="create" Key="OpenWithProgids">
+                <RegistryValue Action="write" 
+                               Type="string" 
+                               Value="VisualStudio.boo.9.0"/>
+                <RegistryKey Action="create" Key="Shared">
+                  <RegistryValue Action="write" 
+                                 Type="string" 
+                                 Value="shared"/>
+                </RegistryKey>
+              </RegistryKey>
+              <RegistryKey Action="create" Key="PersistentHandler">
+                <RegistryValue Action="write" 
+                               Type="string" 
+                               Value="{5e941d80-bf96-11cd-b579-08002b30bfeb}"/>
+              </RegistryKey>
+            </RegistryKey>
+            <RegistryKey Action="create" Key=".booproj">
+              <RegistryKey Action="create" Key="OpenWithList">
+                <RegistryKey Action="create" Key="VSLauncher.exe">
+                  <RegistryValue Action="write" 
+                                 Type="string" 
+                                 Value="VisualStudio.booproj.9.0" />
+                </RegistryKey>
+              </RegistryKey>
+              <RegistryKey Action="create" Key="OpenWithProgids">
+                <RegistryKey Action="create" Key="Shared">
+                  <RegistryValue Action="write" 
+                                 Type="string" 
+                                 Value="shared"/>
+                </RegistryKey>
+              </RegistryKey>
+            </RegistryKey>
+            <RegistryKey Action="create" Key="VisualStudio.boo.9.0">
+              <RegistryValue Action="write" 
+                             Type="string" 
+                             Value="Boo source file" />
+              <RegistryValue Action="write" 
+                             Type="integer" 
+                             Name="AlwaysShowExt" 
+                             Value="1" />
+              <RegistryKey Action="create" Key="DefaultIcon">
+                <RegistryValue Action="write" 
+                               Type="string" 
+                               Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,1"/>
+              </RegistryKey>
+              <RegistryKey Action="create" Key="shell">
+                <RegistryKey Action="create" Key="Open">
+                  <RegistryKey Action="create" Key="Command">
+                    <RegistryValue Action="write" 
+                                   Type="string" 
+                                   Value="&quot;[VSINSTALLDIR]devenv.exe&quot; /dde" />
+                  </RegistryKey>
+                  <RegistryKey Action="create" Key="ddeexec">
+                    <RegistryValue Action="write" 
+                                   Type="string" 
+                                   Value="Open(&quot;%1&quot;)" />
+                    <RegistryKey Action="create" Key="Application">
+                      <RegistryValue Action="write" 
+                                     Type="string" 
+                                     Value="VisualStudio.9.0" />
+                    </RegistryKey>
+                    <RegistryKey Action="create" Key="Topic">
+                      <RegistryValue Action="write" 
+                                     Type="string" 
+                                     Value="system" />
+                    </RegistryKey>
+                  </RegistryKey>
+                </RegistryKey>
+              </RegistryKey>
+            </RegistryKey>
+            <RegistryKey Action="create" Key="VisualStudio.booproj.9.0">
+              <RegistryValue Action="write" 
+                             Type="string" 
+                             Value="Boo project file" />
+              <RegistryKey Action="create" Key="DefaultIcon">
+                <RegistryValue Action="write" 
+                               Type="string" 
+                               Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,2" />
+                <!-- The image number is by index not resource ID! Doh! -->
+                
+              </RegistryKey>
+              <RegistryKey Action="create" Key="shell">
+                <RegistryKey Action="create" Key="Open">
+                  <RegistryKey Action="create" Key="Command">
+                    <RegistryValue Action="write" 
+                                   Type="string" 
+                                   Value="&quot;[ProgramFilesFolder]Common Files\Microsoft Shared\MSEnv\VSLauncher.exe&quot; &quot;%1&quot;"/>
+                  </RegistryKey>
+                </RegistryKey>
+              </RegistryKey>
+            </RegistryKey>
+          </RegistryKey>
+          <RegistryKey Action="create" Key="Microsoft">
+            <RegistryKey Action="create" Key=".NETFramework">
+              <RegistryKey Action="create" Key="AssemblyFolders">
+                <RegistryKey Action="create" Key="$(var.ProductName)">
+                  <RegistryValue Action="write" 
+                                 Type="string" 
+                                 Value="[INSTALLLOCATION]Dependencies\boo\build\" />
+                </RegistryKey>
+              </RegistryKey>
+            </RegistryKey>
+            <RegistryKey Action="create" Key="VisualStudio">
+              <RegistryKey Action="create" Key="9.0">
+                <RegistryKey Action="create" Key="ShellFileAssociations">
+                  <RegistryKey Action="create" Key=".boo">
+                    <RegistryValue Action="write" 
+                                   Type="string" 
+                                   Value="VisualStudio.boo.9.0"/>
+                  </RegistryKey>
+                  <RegistryKey Action="create" Key=".booproj">
+                    <RegistryValue Action="write" 
+                                   Type="string" 
+                                   Value="VisualStudio.booproj.9.0"/>
+                  </RegistryKey>
+                </RegistryKey>
+              </RegistryKey>
+            </RegistryKey>
+          </RegistryKey>
+        </RegistryKey>
+      </Component>
+
+      <Component Id="UserFileAssociations" Guid="AA279EDE-A34E-4c3b-A678-2CEAB9F80F25">
+
+        <RegistryKey Root="HKCU"
+                     Action="create"
+                     Key="Software">
+          
+          <RegistryKey Key="Microsoft\Windows\CurrentVersion\Explorer\FileExts">
+            <RegistryKey Key=".boo">
+              <RegistryKey Key="OpenWithList">
+                <RegistryValue Type="string" Name="a" Value="NOTEPAD.EXE"/>
+                <RegistryValue Type="string" Name="MRUList" Value="a"/>
+              </RegistryKey>
+              <RegistryKey Key="OpenWIthProgids">
+                <RegistryValue Type="binary" Name="boo_auto_file" Value=""/>
+                <RegistryValue Type="binary" Name="VisualStudio.boo.9.0" Value="" />
+              </RegistryKey>
+            </RegistryKey>
+            <RegistryKey Key=".booproj">
+              <RegistryKey Key="OpenWithList"/>
+              <RegistryKey Key="OpenWithProgids">
+                <RegistryValue Type="string" Value="VisualStudio.booproj.9.0"/>
+              </RegistryKey>
+            </RegistryKey>
+          </RegistryKey>
+        </RegistryKey>
+      </Component>
       
       <Component Id="RegistryComponent" Guid="1A3CC8E0-F25E-429c-978C-0AAE8B400E72">
         <RegistryKey Id="ApplicationRoot"
@@ -399,9 +689,14 @@
                     DiskId="1"
                     Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.Lang.Parser.dll"
                     Vital="yes"/>
+              <File Id="BooLangStudio.Resources.dll"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\BooLangStudio.Resources.dll"
+                    Vital="yes"/>
             </Component>
             
           </Directory>
+          
           <Directory Id="Dependencies" Name="Dependencies">
             <Directory Id="boo" Name="boo">
               <Directory Id="build" Name="build">
@@ -572,6 +867,8 @@
 	    <ComponentRef Id="ProductComponent" Primary="yes" />
       <ComponentRef Id="BooComponent" />
       <ComponentRef Id="RegistryComponent" />
+      <ComponentRef Id="FileAssociations" />
+      <ComponentRef Id="UserFileAssociations" />
       
       <ComponentRef Id="ItResources" />
       <ComponentRef Id="PtResources" />
