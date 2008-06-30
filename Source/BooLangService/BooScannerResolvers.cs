@@ -285,11 +285,11 @@ namespace Boo.BooLangService
                     break;
                 case BooLexer.LPAREN:
                     tokenInfo.Type = TokenType.Delimiter;
-                    //TODO: tokenInfo.Trigger = TokenTriggers.ParameterStart | TokenTriggers.MatchBraces;
+                    tokenInfo.Trigger = TokenTriggers.ParameterStart | TokenTriggers.MatchBraces;
                     break;
                 case BooLexer.RPAREN:
                     tokenInfo.Type = TokenType.Delimiter;
-                    //TODO: tokenInfo.Trigger = TokenTriggers.ParameterEnd | TokenTriggers.MatchBraces;
+                    tokenInfo.Trigger = TokenTriggers.ParameterEnd | TokenTriggers.MatchBraces;
                     break;
                 case BooLexer.ASSIGN:
                     tokenInfo.Type = TokenType.Operator;
@@ -299,7 +299,7 @@ namespace Boo.BooLangService
                     break;
                 case BooLexer.COMMA:
                     tokenInfo.Type = TokenType.Text;
-                    //TODO: COMMA.. tokenInfo.Trigger = TokenTriggers.ParameterNext;
+                    tokenInfo.Trigger = TokenTriggers.ParameterNext;
                     break;
                 case BooLexer.ASSEMBLY_ATTRIBUTE_BEGIN:
                     tokenInfo.Type = TokenType.Text;

@@ -39,6 +39,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\boo\build\Boo.Lang.Parser.dll</HintPath>
     </Reference>
+    <Reference Include="MbUnit.AddIn, Version=2.41.232.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\MbUnit\MbUnit.AddIn.dll</HintPath>
+    </Reference>
     <Reference Include="MbUnit.Framework, Version=2.41.232.0, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\MbUnit\MbUnit.Framework.dll</HintPath>
@@ -71,6 +75,7 @@
     <Compile Include="Intellisense\WhenShowingIntellisenseAtImportStatement.cs" />
     <Compile Include="Intellisense\WhenShowingIntellisenseForMemberSuggestion.cs" />
     <Compile Include="Intellisense\WhenShowingIntellisenseInMethodBody.cs" />
+    <Compile Include="Intellisense\WhenShowingToolTipForMethod.cs" />
     <Compile Include="LineCommentLexing.cs" />
     <Compile Include="MiscParseIssues.cs" />
     <Compile Include="MultiLineCommentLexing.cs" />

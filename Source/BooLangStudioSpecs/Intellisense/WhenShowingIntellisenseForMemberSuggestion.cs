@@ -8,9 +8,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Test]
         public void ShowPublicMethodsForClass()
         {
-            string line;
-            int lineNum, colNum;
-            var document = Compile(out line, out lineNum, out colNum, @"
+            var declarations = GetDeclarations(@"
 class TheClassToReference:
   def FirstMethod():
     pass
@@ -24,10 +22,20 @@ class MyClass:
     instance.~
 ");
 
-            var finder = CreateFinder(document, line);
-            var declarations = finder.Find(lineNum, colNum);
-
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
+        }
+
+        [Test]
+        public void ExcludeConstructorFromList()
+        {
+            var declarations = GetDeclarations(@"
+class MyClass:
+  def MyMethod():
+    instance = ""a string""
+    instance.~
+");
+
+            ValidateNonPresenceOfDeclarations(declarations, ".ctor");
         }
     }
 }

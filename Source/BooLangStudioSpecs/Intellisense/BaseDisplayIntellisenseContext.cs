@@ -55,7 +55,33 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             return new DeclarationFinder(document, referenceLookup, lineView, "fileName");
         }
 
-        protected void ValidatePresenceOfDeclarations(BooDeclarations declarations, params string[] expectedDeclarationNames)
+        protected void ValidatePresenceOfDeclarations(IntellisenseDeclarations declarations, params string[] expectedDeclarationNames)
+        {
+            Dictionary<string, bool> foundDeclarations = GetExpectedDeclarations(expectedDeclarationNames, declarations);
+
+            // assert each entry is true in the dictionary, meaning all declarations were
+            // found in the list
+            foreach (var name in foundDeclarations.Keys)
+            {
+                Assert.IsTrue(foundDeclarations[name],
+                              "Expected to find declaration '" + name + "' in list of intellisense declarations, but didn't.");
+            }
+        }
+
+        protected void ValidateNonPresenceOfDeclarations(IntellisenseDeclarations declarations, params string[] expectedDeclarationNames)
+        {
+            Dictionary<string, bool> foundDeclarations = GetExpectedDeclarations(expectedDeclarationNames, declarations);
+
+            // assert each entry is true in the dictionary, meaning all declarations were
+            // found in the list
+            foreach (var name in foundDeclarations.Keys)
+            {
+                Assert.IsFalse(foundDeclarations[name],
+                              "Expected to NOT find declaration '" + name + "' in list of intellisense declarations, but did.");
+            }
+        }
+
+        private Dictionary<string, bool> GetExpectedDeclarations(string[] expectedDeclarationNames, IntellisenseDeclarations declarations)
         {
             var foundDeclarations = new Dictionary<string, bool>();
 
@@ -73,14 +99,18 @@ namespace Boo.BooLangStudioSpecs.Intellisense
                 if (foundDeclarations.ContainsKey(name))
                     foundDeclarations[name] = true;
             }
+            return foundDeclarations;
+        }
 
-            // assert each entry is true in the dictionary, meaning all declarations were
-            // found in the list
-            foreach (var name in foundDeclarations.Keys)
-            {
-                Assert.IsTrue(foundDeclarations[name],
-                              "Expected to find declaration '" + name + "' in list of intellisense declarations, but didn't.");
-            }
+        protected IntellisenseDeclarations GetDeclarations(string code)
+        {
+            string line;
+            int lineNum, colNum;
+
+            var document = Compile(out line, out lineNum, out colNum, code);
+            var finder = CreateFinder(document, line);
+
+            return finder.Find(lineNum, colNum);
         }
     }
 }

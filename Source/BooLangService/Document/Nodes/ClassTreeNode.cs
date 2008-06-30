@@ -6,5 +6,10 @@ namespace Boo.BooLangService.Document.Nodes
     public class ClassTreeNode : AbstractTreeNode
     {
         public string FullName { get; set; }
+
+        public override string GetIntellisenseDescription()
+        {
+            return "Class " + FullName;
+        }
     }
 }

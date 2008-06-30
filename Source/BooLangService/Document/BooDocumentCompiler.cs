@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler;
 using Boo.Lang.Compiler.IO;
 using Boo.Lang.Compiler.Pipelines;
 using Boo.Lang.Compiler.TypeSystem;
 using BooLangService;
+using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangService.Document
 {
@@ -14,7 +16,12 @@ namespace Boo.BooLangService.Document
     {
         public CompiledDocument Compile(string filename, string source)
         {
-            BooDocumentVisitor visitor = CompileDocument(filename, source);
+            return Compile(filename, source, null);
+        }
+
+        public CompiledDocument Compile(string filename, string source, IList<Assembly> references)
+        {
+            BooDocumentVisitor visitor = CompileDocument(filename, source, references);
 
             return new CompiledDocument(
                 visitor.Document,
@@ -24,12 +31,13 @@ namespace Boo.BooLangService.Document
             );
         }
 
-        private BooDocumentVisitor CompileDocument(string filename, string source)
+        private BooDocumentVisitor CompileDocument(string filename, string source, IList<Assembly> references)
         {
             var visitor = new BooDocumentVisitor();
             BooCompiler compiler = CreateCompiler(visitor);
 
             compiler.Parameters.Input.Add(new StringInput(filename, source));
+            compiler.Parameters.References.Extend(references);
             compiler.Run();
 
             return visitor;

@@ -3,6 +3,7 @@ using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler.Ast;
 using Boo.Lang.Compiler.Steps;
 using Boo.Lang.Compiler.TypeSystem;
+using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangService.Document
 {
@@ -39,12 +40,12 @@ namespace Boo.BooLangService.Document
         {
             // this is a bit nasty - get all the members of the referenced namespace
             // then push them on the tree, so they're referencable
-            INamespace ns = (INamespace)TypeSystemServices.GetEntity(node);
+            var ns = (INamespace)TypeSystemServices.GetEntity(node);
             IEntity[] entites = ns.GetMembers();
 
             importedNamespaces[node.Namespace] = new List<IBooParseTreeNode>();
 
-            foreach (IEntity entity in entites)
+            foreach (var entity in entites)
             {
                 if (entity is IType)
                     importedNamespaces[node.Namespace].Add(new ClassTreeNode { Name = entity.Name, FullName = entity.FullName });
@@ -85,9 +86,33 @@ namespace Boo.BooLangService.Document
             Pop(node.LexicalInfo.Line);
         }
 
+        public override bool EnterConstructor(Constructor node)
+        {
+            base.EnterConstructor(node);
+
+            return EnterMethod(node);
+        }
+
         public override bool EnterMethod(Method node)
         {
-            Push(new MethodTreeNode { ReturnType = node.ReturnType.ToString() }, node.Name, node.LexicalInfo.Line);
+            var parameters = new List<MethodParameter>();
+
+            // add parameters... 
+            // TODO: Clean Me
+            foreach (var parameter in node.Parameters)
+            {
+                parameters.Add(new MethodParameter
+                {
+                    Name = parameter.Name,
+                    Type = parameter.Type.ToString()
+                });
+            }
+
+            var parent = (TypeDefinition)node.ParentNode;
+            var method = new MethodTreeNode(node.ReturnType != null ? node.ReturnType.ToString() : "void", parent != null ? parent.Name : "");
+            method.Parameters = parameters;
+
+            Push(method, node.Name, node.LexicalInfo.Line);
 
             return base.EnterMethod(node);
         }
@@ -108,7 +133,7 @@ namespace Boo.BooLangService.Document
 
         public override void OnLocal(Local node)
         {
-            ITypedEntity local = (ITypedEntity)TypeSystemServices.GetEntity(node);
+            var local = (ITypedEntity)TypeSystemServices.GetEntity(node);
 
             Push(new LocalTreeNode { ReturnType = local.Type.ToString() }, node.Name, node.LexicalInfo.Line);
 
@@ -123,11 +148,17 @@ namespace Boo.BooLangService.Document
 
             IEntity entity = TypeSystemServices.GetEntity(node);
 
-            referencePoints.Add(new ReferencePoint {
+            referencePoints.Add(new ReferencePoint
+            {
                 Entity = entity,
                 Line = node.LexicalInfo.Line,
                 Column = node.LexicalInfo.Column
             });
+        }
+
+        public override void OnMemberReferenceExpression(MemberReferenceExpression node)
+        {
+            base.OnMemberReferenceExpression(node);
         }
 
         public override void LeaveMethod(Method node)
@@ -135,6 +166,13 @@ namespace Boo.BooLangService.Document
             base.LeaveMethod(node);
 
             Pop(node.Body.EndSourceLocation.Line);
+        }
+
+        public override void LeaveConstructor(Constructor node)
+        {
+            base.LeaveConstructor(node);
+
+            LeaveMethod(node);
         }
 
         public override void LeaveClassDefinition(ClassDefinition node)
