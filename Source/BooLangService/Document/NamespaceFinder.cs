@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using Boo.BooLangService.Document.Nodes;
+using BooLangService;
 using EnvDTE;
 using VSLangProj;
 
@@ -80,26 +81,22 @@ namespace Boo.BooLangService.Document
         private IList<IBooParseTreeNode> QueryNamespacesFromAssembly(string path, string searchQuery)
         {
             var namespaces = new List<IBooParseTreeNode>();
+            var assembly = AssemblyHelper.FindInCurrentAppDomainOrLoad(path);
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            if (assembly == null) return namespaces; // just return empty list
+            
+            foreach (var type in assembly.GetExportedTypes())
             {
-                if (assembly is AssemblyBuilder) continue;
-                if (assembly.CodeBase != new Uri(path).ToString()) continue;
+                if (!type.Namespace.StartsWith(searchQuery)) continue;
 
-                foreach (var type in assembly.GetExportedTypes())
-                {
-                    if (type.Namespace.StartsWith(searchQuery))
-                    {
-                        string ns = type.Namespace;
+                string ns = type.Namespace;
 
-                        ns = ns.Remove(0, searchQuery.Length);
+                ns = ns.Remove(0, searchQuery.Length);
 
-                        if (ns.Contains("."))
-                            ns = ns.Substring(0, ns.IndexOf('.'));
+                if (ns.Contains("."))
+                    ns = ns.Substring(0, ns.IndexOf('.'));
 
-                        namespaces.Add(new ImportedNamespaceTreeNode {Name = ns});
-                    }
-                }
+                namespaces.Add(new ImportedNamespaceTreeNode {Name = ns});
             }
 
             return namespaces;

@@ -57,5 +57,23 @@ interface MyInterface:
             Assert.IsTrue(interfaceNode.Name == "MyInterface",
                           "Name should match the name in the source.");
         }
+
+        [Test]
+        public void MethodParametersShouldBeAddedToMethod()
+        {
+            CompiledDocument document = Compile(@"
+class MyClass:
+  def MyMethod(param1 as string, param2):
+    pass
+");
+            
+            //                                       .root     .class      .method
+            var methodNode = (MethodTreeNode)document.ParseTree.Children[0].Children[0];
+
+            Assert.IsTrue(methodNode.Parameters.Count == 2, "Should be two parameters.");
+            Assert.IsTrue(methodNode.Parameters[0].Name == "param1", "First parameter should be named param1.");
+            Assert.IsTrue(methodNode.Parameters[0].Type == "string", "First parameter should be a string.");
+            Assert.IsTrue(methodNode.Parameters[1].Name == "param2", "First parameter should be named param2.");
+        }
     }
 }

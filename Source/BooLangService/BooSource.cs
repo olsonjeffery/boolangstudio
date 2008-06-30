@@ -53,5 +53,10 @@ namespace BooLangService
 
             return GetText(span);
         }
+
+        public override void MethodTip(IVsTextView textView, int line, int index, TokenInfo info)
+        {
+            base.MethodTip(textView, line, index, info);
+        }
     }
 }

@@ -6,5 +6,10 @@ namespace Boo.BooLangService.Document.Nodes
     public class LocalTreeNode : AbstractTreeNode, IReturnableNode
     {
         public string ReturnType { get; set; }
+
+        public override string GetIntellisenseDescription()
+        {
+            return ReturnType + " " + Name;
+        }
     }
 }

@@ -10,5 +10,8 @@ namespace Boo.BooLangService.Document.Nodes
         int StartLine { get; set; }
         int EndLine { get; set; }
         bool ContainsLine(int line);
+
+        // this smells of cross-purposes
+        string GetIntellisenseDescription();
     }
 }

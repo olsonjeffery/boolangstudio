@@ -6,16 +6,15 @@ using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.VSInterop;
 using Boo.Lang.Compiler.TypeSystem;
-using BooLangService;
-using Boo.BooLangService.VSInterop;
-using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangService.Intellisense
 {
     public class DeclarationFinder
     {
-        private readonly CompiledDocument compiledDocument;
         private const string ImportKeyword = "import";
+        private readonly List<string> excludedMembers = new List<string> {".ctor"};
+
+        private readonly CompiledDocument compiledDocument;
         private readonly Regex IntellisenseTargetRegex = new Regex("[^ (]*$", RegexOptions.Compiled);
         private readonly ILineView lineView;
         private readonly string fileName;
@@ -29,7 +28,7 @@ namespace Boo.BooLangService.Intellisense
             this.fileName = fileName;
         }
 
-        public BooDeclarations Find(int lineNum, int colNum)
+        public IntellisenseDeclarations Find(int lineNum, int colNum)
         {
             string line = lineView.GetTextUptoPosition(lineNum, colNum);
 
@@ -60,24 +59,24 @@ namespace Boo.BooLangService.Intellisense
             return GetScopedIntellisenseDeclarations(lineNum);
         }
 
-        private BooDeclarations GetImportIntellisenseDeclarations(string line)
+        private IntellisenseDeclarations GetImportIntellisenseDeclarations(string line)
         {
             // get any namespace already written (i.e. "Boo.Lang.")
             string intellisenseTarget = GetIntellisenseTarget(line);
-            var declarations = new BooDeclarations();
+            var declarations = new IntellisenseDeclarations();
 
             AddNamespacesFromReferences(declarations, intellisenseTarget);
 
             return declarations;
         }
 
-        private BooDeclarations GetMemberLookupIntellisenseDeclarations(int line, int column)
+        private IntellisenseDeclarations GetMemberLookupIntellisenseDeclarations(int line, int column)
         {
-            var declarations = new BooDeclarations();
+            var declarations = new IntellisenseDeclarations();
 
             IEntity entity = compiledDocument.GetReferencePoint(line, column);
-            INamespace namespaceEntity = entity as INamespace;
-            bool instance = false;
+            var namespaceEntity = entity as INamespace;
+            var instance = false;
 
             if (namespaceEntity == null && entity is InternalLocal)
             {
@@ -88,23 +87,60 @@ namespace Boo.BooLangService.Intellisense
             var members = new List<IEntity>(TypeSystemServices.GetAllMembers(namespaceEntity));
 
             // remove any static members for instances, and any instance members for types
-            members.RemoveAll(e => {
+            members.RemoveAll(e =>
+            {
                 var member = (IMember)e;
 
                 if (!member.IsPublic) return true;
+                if (excludedMembers.Contains(member.Name)) return true;
                 return (instance && member.IsStatic) || (!instance && !member.IsStatic);
             });
 
-            declarations.Add(members);
+            // optimise this so the above is removed, so there's only one loop
+            members.ForEach(e =>
+            {
+                var method = e as IMethod;
+                var property = e as IProperty;
+
+                if (method != null)
+                {
+                    var member = new MethodTreeNode(method.ReturnType.ToString(), method.DeclaringType.FullName)
+                    {
+                        Name = e.Name
+                    };
+
+                    foreach (var parameter in method.GetParameters())
+                    {
+                        member.Parameters.Add(new MethodParameter
+                        {
+                            Name = parameter.Name,
+                            Type = parameter.Type.ToString()
+                        });
+                    }
+
+                    declarations.Add(member);
+                }
+
+                if (property != null)
+                {
+                    var member = new MethodTreeNode(property.GetGetMethod().ReturnType.ToString(), property.DeclaringType.FullName)
+                    {
+                        Name = e.Name
+                    };
+
+                    declarations.Add(member);
+
+                }
+            });
 
             return declarations;
         }
 
-        private BooDeclarations GetScopedIntellisenseDeclarations(int lineNum)
+        private IntellisenseDeclarations GetScopedIntellisenseDeclarations(int lineNum)
         {
             // get the node that the caret is in
             var scopedParseTree = compiledDocument.GetScopeByLine(lineNum);
-            var declarations = new BooDeclarations();
+            var declarations = new IntellisenseDeclarations();
 
             AddMembersFromScopeTree(declarations, scopedParseTree);
             AddKeywords(declarations, scopedParseTree);
@@ -123,7 +159,7 @@ namespace Boo.BooLangService.Intellisense
         /// Adds members from the current scope (flattened, so all containing scopes are included) to
         /// the declarations.
         /// </summary>
-        private void AddMembersFromScopeTree(BooDeclarations declarations, IBooParseTreeNode scopedParseTree)
+        private void AddMembersFromScopeTree(IntellisenseDeclarations declarations, IBooParseTreeNode scopedParseTree)
         {
             var parseTreeFlattener = new BooParseTreeNodeFlatterner();
 
@@ -133,7 +169,7 @@ namespace Boo.BooLangService.Intellisense
         /// <summary>
         /// Adds keywords based on the current scope to the declarations.
         /// </summary>
-        private void AddKeywords(BooDeclarations declarations, IBooParseTreeNode scopedParseTree)
+        private void AddKeywords(IntellisenseDeclarations declarations, IBooParseTreeNode scopedParseTree)
         {
             var keywords = new TypeKeywordResolver();
 
@@ -143,7 +179,7 @@ namespace Boo.BooLangService.Intellisense
         /// <summary>
         /// Adds any types and namespaces, imported at the start of the document, to the declarations.
         /// </summary>
-        private void AddImports(BooDeclarations declarations)
+        private void AddImports(IntellisenseDeclarations declarations)
         {
             // add imports to declarations
             foreach (var importNamespace in compiledDocument.Imports.Keys)
@@ -154,7 +190,7 @@ namespace Boo.BooLangService.Intellisense
             }
         }
 
-        private void AddReferences(BooDeclarations declarations)
+        private void AddReferences(IntellisenseDeclarations declarations)
         {
             AddNamespacesFromReferences(declarations, "");
         }
@@ -162,9 +198,9 @@ namespace Boo.BooLangService.Intellisense
         /// <summary>
         /// Adds namespaces from references to the declarations.
         /// </summary>
-        private void AddNamespacesFromReferences(BooDeclarations declarations, string namespaceContinuation)
+        private void AddNamespacesFromReferences(IntellisenseDeclarations declarations, string namespaceContinuation)
         {
-            declarations.Add(projectReferences.GetReferencedsNamespacesInProjectContaining(fileName, namespaceContinuation));
+            declarations.Add(projectReferences.GetReferencedNamespacesInProjectContaining(fileName, namespaceContinuation));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense.Stubs
     {
         private readonly IList<IBooParseTreeNode> namespaces = new List<IBooParseTreeNode>();
 
-        public IList<IBooParseTreeNode> GetReferencedsNamespacesInProjectContaining(string fileName, string namespaceContinuation)
+        public IList<IBooParseTreeNode> GetReferencedNamespacesInProjectContaining(string fileName, string namespaceContinuation)
         {
             return namespaces;
         }

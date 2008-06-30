@@ -16,7 +16,7 @@ namespace Boo.BooLangService.VSInterop
             this.service = service;
         }
 
-        public IList<IBooParseTreeNode> GetReferencedsNamespacesInProjectContaining(string fileName, string namespaceContinuation)
+        public IList<IBooParseTreeNode> GetReferencedNamespacesInProjectContaining(string fileName, string namespaceContinuation)
         {
             var availableNamespaces = new NamespaceFinder();
             var projects = new ProjectHierarchy(service);

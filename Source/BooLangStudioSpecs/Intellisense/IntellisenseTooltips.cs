@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using Boo.BooLangService;
 using Boo.BooLangService.Document.Nodes;
 using MbUnit.Framework;
+using Microsoft.VisualStudio.Package;
 using Context = MbUnit.Framework.TestFixtureAttribute;
 using Spec = MbUnit.Framework.TestAttribute;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
     [Context]
-    public class WhenDisplayingDescriptionsForIntellisense
+    public class WhenDisplayingDescriptionsForIntellisense : BaseDisplayIntellisenseContext
     {
         [Spec]
         public void ClassesArePrefixedWithClassAndUseFullNamespaceName()
@@ -32,9 +33,34 @@ namespace Boo.BooLangStudioSpecs.Intellisense
                 "Expected: 'int variable'\r\nFound: '" + description + "'.");
         }
 
-        private BooDeclarations CreateDeclarations(params IBooParseTreeNode[] nodes)
+        [Spec]
+        public void MethodsIncludeParameters()
         {
-            var declarations = new BooDeclarations();
+            var declarations = GetDeclarations(@"
+class MyClass:
+  def MyMethod(firstParameter as string, secondParameter as int):
+    ~
+    pass
+");
+            string description = GetDescriptionMatchingName(declarations, "MyMethod");
+
+            Assert.IsTrue(description == "void MyClass.MyMethod(string firstParameter, int secondParameter)",
+                "Expected: 'void MyClass.MyMethod(string firstParameter, int secondParameter)'\r\nFound: '" + description + "'.");
+        }
+
+        private string GetDescriptionMatchingName(Declarations declarations, string name)
+        {
+            int index;
+            bool uniqueMatch;
+
+            declarations.GetBestMatch(name, out index, out uniqueMatch);
+
+            return declarations.GetDescription(index);
+        }
+
+        private IntellisenseDeclarations CreateDeclarations(params IBooParseTreeNode[] nodes)
+        {
+            var declarations = new IntellisenseDeclarations();
 
             declarations.Add(new List<IBooParseTreeNode>(nodes));
 

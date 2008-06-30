@@ -5,6 +5,6 @@ namespace Boo.BooLangService.VSInterop
 {
     public interface IProjectReferenceLookup
     {
-        IList<IBooParseTreeNode> GetReferencedsNamespacesInProjectContaining(string fileName, string namespaceContinuation);
+        IList<IBooParseTreeNode> GetReferencedNamespacesInProjectContaining(string fileName, string namespaceContinuation);
     }
 }

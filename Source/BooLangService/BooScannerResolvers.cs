@@ -18,6 +18,7 @@ namespace Boo.BooLangService
             // setting ide token and coloring info
             switch (token.Type)
             {
+<<<<<<< HEAD:Source/BooLangService/BooScannerResolvers.cs
                 // words
                 case PegTokenType.Keyword:
                     ideToken.Type = TokenType.Keyword;

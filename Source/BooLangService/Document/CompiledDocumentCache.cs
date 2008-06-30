@@ -1,8 +1,14 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.VSInterop;
+using BooLangService;
 using EnvDTE;
+using Microsoft.VisualStudio.Package;
 using VSLangProj;
 
 namespace Boo.BooLangService.Document
@@ -45,9 +51,44 @@ namespace Boo.BooLangService.Document
         {
             var compiler = new BooDocumentCompiler();
 
-            CompiledDocument document = compiler.Compile(fileName, content);
+            var references = GetReferencedAssemblies(fileName);
+
+            CompiledDocument document = compiler.Compile(fileName, content, references);
 
             documents[fileName] = document;
+        }
+
+        private IList<Assembly> GetReferencedAssemblies(string fileName)
+        {
+            var referencedAssemblies = new List<Assembly>();
+            var projects = new ProjectHierarchy(service);
+            var project = projects.GetContainingProject(fileName);
+
+            foreach (Reference reference in project.References)
+            {
+                if (reference.SourceProject == null)
+                {
+                    var assembly = AssemblyHelper.FindInCurrentAppDomainOrLoad(reference.Path);
+
+                    if (assembly != null)
+                        referencedAssemblies.Add(assembly);
+                }
+                else
+                {
+                    // what a faff - get the output file path
+                    string fullPath = reference.SourceProject.Properties.Item("FullPath").Value.ToString();
+                    string outputPath = reference.SourceProject.ConfigurationManager.ActiveConfiguration.Properties.Item("OutputPath").Value.ToString();
+                    string outputDir = Path.Combine(fullPath, outputPath);
+                    string outputFileName = reference.SourceProject.Properties.Item("OutputFileName").Value.ToString();
+                    string assemblyPath = Path.Combine(outputDir, outputFileName);
+                    var assembly = AssemblyHelper.FindInCurrentAppDomainOrLoad(assemblyPath);
+
+                    if (assembly != null)
+                        referencedAssemblies.Add(assembly);
+                }
+            }
+
+            return referencedAssemblies;
         }
 
         private bool IsUsable(string fileName, string content)
