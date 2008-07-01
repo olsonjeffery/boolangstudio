@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler.TypeSystem;
@@ -11,7 +9,7 @@ namespace Boo.BooLangService.Document
         private readonly IBooParseTreeNode root;
         private readonly string content;
         private readonly IDictionary<string, IList<IBooParseTreeNode>> imports;
-        private IList<ReferencePoint> referencePoints;
+        private readonly IList<ReferencePoint> referencePoints;
 
         public CompiledDocument(IBooParseTreeNode root, IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces, IList<ReferencePoint> referencePoints, string content)
         {
@@ -36,7 +34,13 @@ namespace Boo.BooLangService.Document
             get { return root; }
         }
 
-        public IEntity GetReferencePoint(int line, int column)
+        /// <summary>
+        /// Gets an entity, if one exists, at a specified line and column.
+        /// </summary>
+        /// <param name="line">Line</param>
+        /// <param name="column">Column</param>
+        /// <returns>Entity </returns>
+        public IEntity GetEntityAt(int line, int column)
         {
             foreach (var referencePoint in referencePoints)
             {

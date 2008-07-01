@@ -3,10 +3,12 @@ using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler.Ast;
 using Boo.Lang.Compiler.Steps;
 using Boo.Lang.Compiler.TypeSystem;
-using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangService.Document
 {
+    /// <summary>
+    /// Visitor for building a tree of the source for use with intellisense.
+    /// </summary>
     public class BooDocumentVisitor : AbstractTransformerCompilerStep
     {
         private readonly IBooParseTreeNode document = new DocumentTreeNode();
@@ -48,7 +50,12 @@ namespace Boo.BooLangService.Document
             foreach (var entity in entites)
             {
                 if (entity is IType)
-                    importedNamespaces[node.Namespace].Add(new ClassTreeNode { Name = entity.Name, FullName = entity.FullName });
+                {
+                    if (((IType)entity).IsInterface)
+                        importedNamespaces[node.Namespace].Add(new InterfaceTreeNode {Name = entity.Name, FullName = entity.FullName});
+                    else
+                        importedNamespaces[node.Namespace].Add(new ClassTreeNode {Name = entity.Name, FullName = entity.FullName});
+                }
                 else if (entity is INamespace)
                     importedNamespaces[node.Namespace].Add(new ImportedNamespaceTreeNode { Name = entity.Name });
             }
@@ -154,11 +161,6 @@ namespace Boo.BooLangService.Document
                 Line = node.LexicalInfo.Line,
                 Column = node.LexicalInfo.Column
             });
-        }
-
-        public override void OnMemberReferenceExpression(MemberReferenceExpression node)
-        {
-            base.OnMemberReferenceExpression(node);
         }
 
         public override void LeaveMethod(Method node)
