@@ -28,6 +28,12 @@ namespace Boo.BooLangService.Intellisense
             this.fileName = fileName;
         }
 
+        /// <summary>
+        /// Finds any intellisense declarations relative to the current caret position.
+        /// </summary>
+        /// <param name="lineNum">Caret line</param>
+        /// <param name="colNum">Caret column</param>
+        /// <returns>IntellisenseDeclarations</returns>
         public IntellisenseDeclarations Find(int lineNum, int colNum)
         {
             string line = lineView.GetTextUptoPosition(lineNum, colNum);
@@ -74,7 +80,7 @@ namespace Boo.BooLangService.Intellisense
         {
             var declarations = new IntellisenseDeclarations();
 
-            IEntity entity = compiledDocument.GetReferencePoint(line, column);
+            IEntity entity = compiledDocument.GetEntityAt(line, column);
             var namespaceEntity = entity as INamespace;
             var instance = false;
 
@@ -96,7 +102,7 @@ namespace Boo.BooLangService.Intellisense
                 return (instance && member.IsStatic) || (!instance && !member.IsStatic);
             });
 
-            // optimise this so the above is removed, so there's only one loop
+            // optimise this so the above is removed, and there's only one loop
             members.ForEach(e =>
             {
                 var method = e as IMethod;
@@ -129,7 +135,6 @@ namespace Boo.BooLangService.Intellisense
                     };
 
                     declarations.Add(member);
-
                 }
             });
 

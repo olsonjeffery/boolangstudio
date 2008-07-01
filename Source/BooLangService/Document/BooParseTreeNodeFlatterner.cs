@@ -4,8 +4,16 @@ using Boo.BooLangService.Intellisense;
 
 namespace Boo.BooLangService.Document
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BooParseTreeNodeFlatterner
     {
+        /// <summary>
+        /// Flattens a tree into a list.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public BooParseTreeNodeList FlattenFrom(IBooParseTreeNode node)
         {
             BooParseTreeNodeList flattened = new IntellisenseNodeList();
