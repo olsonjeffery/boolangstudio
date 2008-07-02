@@ -98,7 +98,7 @@
           <RegistryKey Action="create" Key="DefaultIcon">
             <RegistryValue Action="write"
                            Type="string"
-                           Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,1" />
+                           Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,0" />
           </RegistryKey>
           <RegistryKey Action="create" Key="shell">
             <RegistryKey Action="create" Key="Open">
@@ -134,7 +134,7 @@
           <RegistryKey Action="create" Key="DefaultIcon">
             <RegistryValue Action="write" 
                            Type="string"
-                           Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,2" />
+                           Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,1" />
           </RegistryKey>
           <RegistryKey Action="create" Key="shell">
             <RegistryKey Action="create" Key="open">
@@ -209,7 +209,7 @@
               <RegistryKey Action="create" Key="DefaultIcon">
                 <RegistryValue Action="write" 
                                Type="string" 
-                               Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,1"/>
+                               Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,0"/>
               </RegistryKey>
               <RegistryKey Action="create" Key="shell">
                 <RegistryKey Action="create" Key="Open">
@@ -243,7 +243,7 @@
               <RegistryKey Action="create" Key="DefaultIcon">
                 <RegistryValue Action="write" 
                                Type="string" 
-                               Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,2" />
+                               Value="[INSTALLLOCATION]Bin\BooLangStudio.Resources.dll,1" />
                 <!-- The image number is by index not resource ID! Doh! -->
                 
               </RegistryKey>

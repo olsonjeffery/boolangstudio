@@ -7,6 +7,7 @@ using Microsoft.Build.BuildEngine;
 using System.Configuration;
 using Microsoft.Win32;
 using System.Reflection;
+using System.IO;
 
 namespace Boo.BooLangProject
 {
@@ -18,7 +19,14 @@ namespace Boo.BooLangProject
         public BooLangProjectFactory(Package package)
             : base(package)
         {
-            string booBinPath = (string)Registry.LocalMachine.OpenSubKey(@"Software\BooLangStudio").GetValue("BooBinPath");
+            RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\BooLangStudio");
+            
+            // The path should be in the registry, but if it's not then do your best by looking
+            // at the location of the current assembly!
+            string booBinPath = (string)(key != null ? 
+                key.GetValue("BooBinPath") : 
+                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\Dependencies\boo\build\"));
+
             this.package = (ProjectPackage)package;
             this.BuildEngine.GlobalProperties["BoocToolPath"] = new BuildProperty("BoocToolPath", booBinPath);
             this.BuildEngine.GlobalProperties["BooBinPath"] = new BuildProperty("BooBinPath",booBinPath);

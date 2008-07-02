@@ -61,6 +61,7 @@ namespace Boo.BooLangStudio
     [RegisterMsBuildTargets("Boo_0.8.1",
         @".\Boo.Microsoft.Build.targets"
         )]
+    [ProvideMenuResource(1000, 1)]
     [Guid(GuidList.guidBooLangStudioPkgString)]
     public sealed class BooLangStudioPackage : ProjectPackage, IVsInstalledProduct
     {
@@ -94,11 +95,31 @@ namespace Boo.BooLangStudio
             this.RegisterProjectFactory(new BooLangProjectFactory(this));
             base.Initialize();
 
+            // Add our command handlers for menu (commands must exist in the .vsct file)
+            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            if (null != mcs)
+            {
+                // Create the command for the menu item.
+                //CommandID menuCommandOrganizeMembers = new CommandID(GuidList.guidBooLangServiceCmdSet, (int)PkgCmdIDList.cmdidExample);
+                //MenuCommand menuItemOrganizeMembers = new MenuCommand(OrganizeMembersCallback, menuCommandOrganizeMembers);
+                //mcs.AddCommand(menuItemOrganizeMembers);
+            }
             
             _service = new Boo.BooLangService.BooLangService();
             _service.SetSite(this);
             IServiceContainer container = (IServiceContainer)this;
             container.AddService(typeof(Boo.BooLangService.BooLangService), _service, true);
+        }
+        #endregion
+
+        #region MenuItem callbacks
+        /// <summary>
+        /// This function is the callback used to execute a command when the a menu item is clicked.
+        /// See the Initialize method to see how the menu item is associated to this function using
+        /// the OleMenuCommandService service and the MenuCommand class.
+        /// </summary>
+        private void OrganizeMembersCallback(object sender, EventArgs e)
+        {
         }
         #endregion
 

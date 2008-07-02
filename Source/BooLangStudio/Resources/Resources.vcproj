@@ -196,10 +196,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\200.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\BooLangStudio.Resources.rc"
 				>
 			</File>
@@ -209,18 +205,6 @@
 			</File>
 			<File
 				RelativePath="..\Templates\Boo\Projects\ClassLibrary\ClassLibrary.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Templates\Boo\Projects\ConsoleApplication\ConsoleApplication.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\logo.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Package.ico"
 				>
 			</File>
 		</Filter>
