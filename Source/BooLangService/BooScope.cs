@@ -24,7 +24,7 @@ namespace BooLangService
 
         public override Declarations GetDeclarations(IVsTextView view, int lineNum, int col, TokenInfo info, ParseReason reason)
         {
-            return declarations.Find(lineNum, col);
+            return declarations.Find(lineNum + 1, col, reason);
         }
 
         public override Methods GetMethods(int line, int col, string name)

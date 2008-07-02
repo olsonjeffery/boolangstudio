@@ -5,6 +5,7 @@ using Boo.BooLangService.Document;
 using Boo.BooLangService.Intellisense;
 using Boo.BooLangStudioSpecs.Intellisense.Stubs;
 using MbUnit.Framework;
+using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
@@ -110,7 +111,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             var document = Compile(out line, out lineNum, out colNum, code);
             var finder = CreateFinder(document, line);
 
-            return finder.Find(lineNum, colNum);
+            return finder.Find(lineNum, colNum, ParseReason.None);
         }
     }
 }

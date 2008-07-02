@@ -1,4 +1,5 @@
 using MbUnit.Framework;
+using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
@@ -16,7 +17,7 @@ import ~
 
             var finder = CreateFinder(document, line,
                                       "Boo", "BooLangStudio");
-            var declarations = finder.Find(lineNum, colNum);
+            var declarations = finder.Find(lineNum, colNum, ParseReason.None);
 
             ValidatePresenceOfDeclarations(declarations, "Boo", "BooLangStudio");
         }

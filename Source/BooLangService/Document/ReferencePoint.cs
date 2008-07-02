@@ -14,7 +14,7 @@ namespace Boo.BooLangService.Document
 
         public bool WithinBounds(int line, int column)
         {
-            return (line >= Line && line <= Line + 1) && (column >= Column && column <= Column + Entity.Name.Length);
+            return (line >= Line && line <= Line + 1) && (column >= Column && column <= Column + Entity.FullName.Length);
         }
     }
 }

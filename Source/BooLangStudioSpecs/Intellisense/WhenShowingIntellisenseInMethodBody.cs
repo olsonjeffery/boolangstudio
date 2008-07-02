@@ -1,3 +1,4 @@
+using Microsoft.VisualStudio.Package;
 using Context = MbUnit.Framework.TestFixtureAttribute;
 using Spec = MbUnit.Framework.TestAttribute;
 
@@ -21,7 +22,7 @@ class MyClass:
 ");
 
             var finder = CreateFinder(document, line);
-            var declarations = finder.Find(lineNum, colNum);
+            var declarations = finder.Find(lineNum, colNum, ParseReason.None);
 
             ValidatePresenceOfDeclarations(declarations, "aNumber", "aString");
         }
@@ -42,7 +43,7 @@ class MyClass:
 ");
 
             var finder = CreateFinder(document, line);
-            var declarations = finder.Find(lineNum, colNum);
+            var declarations = finder.Find(lineNum, colNum, ParseReason.None);
 
             ValidatePresenceOfDeclarations(declarations, "myClassString", "myClassInteger");
 
@@ -67,7 +68,7 @@ class MyClass:
 ");
 
             var finder = CreateFinder(document, line);
-            var declarations = finder.Find(lineNum, colNum);
+            var declarations = finder.Find(lineNum, colNum, ParseReason.None);
 
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
         }
@@ -91,7 +92,7 @@ class MyClass:
 ");
 
             var finder = CreateFinder(document, line);
-            var declarations = finder.Find(lineNum, colNum);
+            var declarations = finder.Find(lineNum, colNum, ParseReason.None);
 
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
         }
@@ -110,7 +111,7 @@ class MyClass:
 
             var finder = CreateFinder(document, line,
                                       "System", "Boo");
-            var declarations = finder.Find(lineNum, colNum);
+            var declarations = finder.Find(lineNum, colNum, ParseReason.None);
 
             ValidatePresenceOfDeclarations(declarations, "System", "Boo");
         }

@@ -153,7 +153,14 @@ namespace Boo.BooLangService.Document
         {
             base.OnReferenceExpression(node);
 
-            IEntity entity = TypeSystemServices.GetEntity(node);
+            var refNode = node;
+            
+            while (refNode.ParentNode.NodeType == NodeType.MemberReferenceExpression)
+            {
+                refNode = (ReferenceExpression)refNode.ParentNode;
+            }
+
+            IEntity entity = TypeSystemServices.GetEntity(refNode);
 
             referencePoints.Add(new ReferencePoint
             {

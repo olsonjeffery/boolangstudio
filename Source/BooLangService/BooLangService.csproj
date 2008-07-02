@@ -92,6 +92,7 @@
     <Compile Include="Document\Nodes\DocumentTreeNode.cs" />
     <Compile Include="Document\Nodes\InterfaceTreeNode.cs" />
     <Compile Include="Document\Nodes\IReturnableNode.cs" />
+    <Compile Include="Intellisense\EntityToTreeNodeConverter.cs" />
     <Compile Include="Intellisense\ILineView.cs" />
     <Compile Include="Intellisense\IntellisenseVisibleAttribute.cs" />
     <Compile Include="Intellisense\IntellisenseNodeList.cs" />

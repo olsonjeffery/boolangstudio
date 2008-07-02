@@ -83,9 +83,22 @@ namespace Boo.BooLangService
         /// <returns></returns>
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            CompiledDocument document = compiledDocuments.Get(req.FileName, req.Text);
+            string source = CleanseSource(req.Text, req.Line, req.Col);
+            CompiledDocument document = compiledDocuments.Get(req.FileName, source);
 
             return new BooScope(this, document, (BooSource)GetSource(req.View), req.FileName);
+        }
+
+        private string CleanseSource(string text, int line, int column)
+        {
+            string[] source = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+            column -= 1; // because the cursor is going to be after the char we want to trim
+
+            if (source[line].EndsWith("."))
+                source[line] = source[line].Remove(column, 1);
+
+            return string.Join(Environment.NewLine, source);
         }
 
         #endregion

@@ -69,5 +69,10 @@ namespace Boo.BooLangService
         {
             members.Add(member);
         }
+
+        public void Sort()
+        {
+            members.Sort();
+        }
     }
 }

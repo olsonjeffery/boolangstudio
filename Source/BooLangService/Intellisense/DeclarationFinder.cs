@@ -6,6 +6,7 @@ using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.VSInterop;
 using Boo.Lang.Compiler.TypeSystem;
+using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangService.Intellisense
 {
@@ -33,8 +34,9 @@ namespace Boo.BooLangService.Intellisense
         /// </summary>
         /// <param name="lineNum">Caret line</param>
         /// <param name="colNum">Caret column</param>
+        /// <param name="reason">Reason for parse</param>
         /// <returns>IntellisenseDeclarations</returns>
-        public IntellisenseDeclarations Find(int lineNum, int colNum)
+        public IntellisenseDeclarations Find(int lineNum, int colNum, ParseReason reason)
         {
             string line = lineView.GetTextUptoPosition(lineNum, colNum);
 
@@ -49,9 +51,9 @@ namespace Boo.BooLangService.Intellisense
                 return GetImportIntellisenseDeclarations(line);
             }
 
-            if (line.EndsWith("."))
+            if (line.EndsWith(".") || reason == ParseReason.MemberSelect)
             {
-                // Member Lookup: it's easier to check if the line ends in a . rather than checking
+                // Member Select: it's easier to check if the line ends in a . rather than checking
                 // the parse reason, because the parse reason may not technically be correct.
                 // for example "Syst[ctrl+space]" is a complete word, while "System[.]" is
                 // a member lookup; however, "System.[ctrl+space]" is a member lookup but it gets
@@ -95,6 +97,8 @@ namespace Boo.BooLangService.Intellisense
             // remove any static members for instances, and any instance members for types
             members.RemoveAll(e =>
             {
+                if (e is INamespace) return false;
+
                 var member = (IMember)e;
 
                 if (!member.IsPublic) return true;
@@ -103,40 +107,20 @@ namespace Boo.BooLangService.Intellisense
             });
 
             // optimise this so the above is removed, and there's only one loop
+            // this method creates the delcarations from the members brought back by the TypeSystemServices
+            // I'm not too happy with this, as it is big and high maintenance.
+
+            var converter = new EntityToTreeNodeConverter();
+
             members.ForEach(e =>
             {
-                var method = e as IMethod;
-                var property = e as IProperty;
+                IBooParseTreeNode node = converter.ToTreeNode(e);
 
-                if (method != null)
-                {
-                    var member = new MethodTreeNode(method.ReturnType.ToString(), method.DeclaringType.FullName)
-                    {
-                        Name = e.Name
-                    };
-
-                    foreach (var parameter in method.GetParameters())
-                    {
-                        member.Parameters.Add(new MethodParameter
-                        {
-                            Name = parameter.Name,
-                            Type = parameter.Type.ToString()
-                        });
-                    }
-
-                    declarations.Add(member);
-                }
-
-                if (property != null)
-                {
-                    var member = new MethodTreeNode(property.GetGetMethod().ReturnType.ToString(), property.DeclaringType.FullName)
-                    {
-                        Name = e.Name
-                    };
-
-                    declarations.Add(member);
-                }
+                if (node != null)
+                    declarations.Add(node);
             });
+
+            declarations.Sort();
 
             return declarations;
         }
@@ -151,6 +135,8 @@ namespace Boo.BooLangService.Intellisense
             AddKeywords(declarations, scopedParseTree);
             AddImports(declarations);
             AddReferences(declarations);
+
+            declarations.Sort();
 
             return declarations;
         }
