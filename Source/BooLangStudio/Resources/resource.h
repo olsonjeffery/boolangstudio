@@ -2,11 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by BooLangStudio.Resources.rc
 //
-#define BOO_PACKAGE                     5
-#define BOO_VS_LOGO                     101
-#define IDB_BITMAP2                     102
-#define BOO_VS_LOGO_LARGE               102
-#define BOO                             103
 #define BOO_SOURCE_FILE                 104
 #define BOO_PROJ_FILE                   105
 
