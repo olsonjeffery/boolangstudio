@@ -684,11 +684,6 @@
                     DiskId="1"
                     Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.Lang.dll"
                     Vital="yes"/>
-              <File Id="BooLangParser"
-                    Name="Boo.Lang.Parser.dll"
-                    DiskId="1"
-                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.Lang.Parser.dll"
-                    Vital="yes"/>
               <File Id="BooLangStudio.Resources.dll"
                     DiskId="1"
                     Source="$(sys.SOURCEFILEDIR)..\..\Bin\BooLangStudio.Resources.dll"
