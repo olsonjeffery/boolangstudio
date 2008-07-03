@@ -8,7 +8,7 @@
     <AssemblyName>BooPegLexer</AssemblyName>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <Name>BooPegLexer</Name>
-    <BooBinPath>C:\Program Files\BooLangStudio\Bin</BooBinPath>
+    <BooBinPath>dummy2</BooBinPath>
     <AssemblyOriginatorKeyFile>BooLangStudio.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -32,10 +32,6 @@
     <Reference Include="Boo.Lang">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(BooBinPath)\Boo.Lang.dll</HintPath>
-    </Reference>
-    <Reference Include="Boo.Lang.Useful">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(BooBinPath)\Boo.Lang.Useful.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

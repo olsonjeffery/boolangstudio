@@ -688,6 +688,18 @@
                     DiskId="1"
                     Source="$(sys.SOURCEFILEDIR)..\..\Bin\BooLangStudio.Resources.dll"
                     Vital="yes"/>
+              <File Id="BooPegLexer.dll"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\BooPegLexer.dll"
+                    Vital="yes"/>
+              <File Id="Boo.PatternMatching.dll"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.PatternMatching.dll"
+                    Vital="yes"/>
+              <File Id="Boo.Pegs.dll"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.Pegs.dll"
+                    Vital="yes"/>                    
             </Component>
             
           </Directory>
