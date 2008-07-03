@@ -9,6 +9,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <Name>BooPegLexer</Name>
     <BooBinPath>dummy2</BooBinPath>
+    <AssemblyOriginatorKeyFile>BooLangStudio.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(BooBinPath)\Boo.Lang.Useful.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BooLangStudio.snk" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ILexer.boo" />
