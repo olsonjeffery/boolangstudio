@@ -62,10 +62,10 @@ BOO_VS_LOGO_LARGE       BITMAP                  "logo.bmp"
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-BOO_PACKAGE             ICON                    "C:\\Users\\justinc\\Projects\\boo\\boolangstudio\\Source\\BooLangStudio\\Templates\\Boo\\Projects\\ConsoleApplication\\ConsoleApplication.ico"
+BOO_PACKAGE             ICON                    "ConsoleApplication.ico"
 BOO                     ICON                    "Package.ico"
-BOO_SOURCE_FILE         ICON                    "C:\\Users\\justinc\\Projects\\boo\\boolangstudio\\Source\\BooLangStudio\\Templates\\Boo\\Items\\Class\\Class.ico"
-BOO_PROJ_FILE           ICON                    "C:\\Users\\justinc\\Projects\\boo\\boolangstudio\\Source\\BooLangStudio\\Templates\\Boo\\Projects\\ClassLibrary\\ClassLibrary.ico"
+BOO_SOURCE_FILE         ICON                    "Class.ico"
+BOO_PROJ_FILE           ICON                    "ClassLibrary.ico"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

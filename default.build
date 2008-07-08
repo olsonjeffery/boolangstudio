@@ -10,7 +10,7 @@ project templates
 
 <project xmlns="http://nant.sf.net/schemas/nant.xsd" name="BooLangStudio nant script" default="install">
 
-  <property name="BLS_VERSION" value="0.1.3_r2971"/>
+  <property name="BLS_VERSION" value="1.0_r2971"/>
   <property name="CurrentDirectory" value="dummy"/>
   <property name="PostDir" value="Install\Post"/>
   <property name="PreDir" value="Install\Pre"/>
