@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Package;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Boo.BooLangProject
 {
@@ -23,8 +24,8 @@ namespace Boo.BooLangProject
             {
                 this.ImageHandler.AddImage(img);
             }
-
         }
+
 
         private BooVSProject vsProject;
 
@@ -141,5 +142,26 @@ namespace Boo.BooLangProject
         {
             return new BooOAProject(this);
         }
+
+        public override void Load(string fileName, string location, string name, uint flags, ref Guid iidProject, out int canceled)
+        {
+            base.Load(fileName, location, name, flags, ref iidProject, out canceled);
+
+            BooProjectSources.LoadedProjects.Add(new BooProjectSources(InteropSafeHierarchy));
+        }
+
+        IVsHierarchy InteropSafeHierarchy
+        {
+            get
+            {
+                IntPtr unknownPtr = Utilities.QueryInterfaceIUnknown(this);
+
+                if (unknownPtr == IntPtr.Zero)
+                    return null;
+
+                return (IVsHierarchy)Marshal.GetObjectForIUnknown(unknownPtr);
+            }
+        }
+
     }
 }

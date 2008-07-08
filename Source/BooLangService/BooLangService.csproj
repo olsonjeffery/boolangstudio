@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyHelper.cs" />
+    <Compile Include="BooProjectSources.cs" />
     <Compile Include="Document\Nodes\MethodParameter.cs" />
     <Compile Include="Document\ReferencePoint.cs" />
     <Compile Include="Intellisense\DeclarationFinder.cs" />

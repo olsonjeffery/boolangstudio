@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Boo.BooLangProject;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.VSInterop;
@@ -83,8 +84,8 @@ namespace Boo.BooLangService
         /// <returns></returns>
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            string source = CleanseSource(req.Text, req.Line, req.Col);
-            CompiledDocument document = compiledDocuments.Get(req.FileName, source);
+            var project = GetProject(req);
+            CompiledDocument document = project.GetCompiledDocument(req.FileName);
 
             return new BooScope(this, document, (BooSource)GetSource(req.View), req.FileName);
         }
@@ -99,6 +100,16 @@ namespace Boo.BooLangService
                 source[line] = source[line].Remove(column, 1);
 
             return string.Join(Environment.NewLine, source);
+        }
+
+        private BooProjectSources GetProject(ParseRequest request)
+        {
+            BooProjectSources project = BooProjectSources.Find(request.FileName);
+
+            if (project != null)
+                project.Update(request);
+
+            return project;
         }
 
         #endregion
