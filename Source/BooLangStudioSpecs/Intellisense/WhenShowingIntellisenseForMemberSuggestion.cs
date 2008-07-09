@@ -1,11 +1,11 @@
-using MbUnit.Framework;
+
+using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    [TestFixture]
     public class WhenShowingIntellisenseForMemberSuggestion : BaseDisplayIntellisenseContext
     {
-        [Test]
+        [Fact]
         public void ShowPublicMethodsForClass()
         {
             var declarations = GetDeclarations(@"
@@ -25,7 +25,7 @@ class MyClass:
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
         }
 
-        [Test]
+        [Fact]
         public void ExcludeConstructorFromList()
         {
             var declarations = GetDeclarations(@"

@@ -1,4 +1,4 @@
-﻿using Boo.BooLangProject;
+using Boo.BooLangProject;
 using Boo.BooLangService.Intellisense;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;

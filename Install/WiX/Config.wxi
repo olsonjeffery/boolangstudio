@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  
+  <?define BooVersion = 0.8.2 ?>  
+  <?define ProductName = BooLangStudio ?>  
+  <?define ProductVersion = 1.0 ?>
+  <?define CompanyName = Boo ?>
+  <?define RegistryRoot = HKLM ?>
+  <?define VisualStudioRegistryRoot = Software\Microsoft\VisualStudio\9.0 ?>
+  
+  <?define BooLangStudioVersion = 0.1.0.0 ?>
+  <?define BooLangStudioPublicKey = 8e685270f77c1cee ?>
+  <?define BooLangStudioGuid = {55663be2-a969-4279-82c5-a6f27936f4f7} ?>
+  
+  <?define VisualStudioFolder = Microsoft Visual Studio 9.0 ?>
+  
+</Include>

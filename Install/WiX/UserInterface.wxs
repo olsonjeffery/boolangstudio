@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+    <UI Id="UserInterface">
+
+      <!-- FONT DEFINITION -->
+      <Property Id="TitleFont">{&amp;DlgFontBold8}</Property>
+      <Property Id="BigFont">{&amp;VerdanaBold13}</Property>
+      <Property Id="DefaultUIFont">DlgFont8</Property>
+
+      <TextStyle Id="DlgFont8" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="DlgFont8Red" FaceName="Tahoma" Size="8" Red="128" />
+      <TextStyle Id="DlgFont8Green" FaceName="Tahoma" Size="8" Green="128" />
+      <TextStyle Id="DlgFontBold8" FaceName="Tahoma" Size="8" Bold="yes" />
+      <TextStyle Id="VerdanaBold13" FaceName="Verdana" Size="13" Bold="yes" />
+      <!-- END FONT DEFINITION -->
+
+      <!--
+        Default dialog resources for the setup
+      -->
+      <Binary Id="boo_banner.bmp" SourceFile="$(sys.SOURCEFILEDIR)Resources\boo_banner.bmp" />
+      <Binary Id="boo_banner_vert.bmp" SourceFile="$(sys.SOURCEFILEDIR)Resources\boo_banner_vert.bmp" />
+      <Binary Id="up.bmp" SourceFile="$(sys.SOURCEFILEDIR)Resources\up.bmp" />
+      <Binary Id="folder_add.bmp" SourceFile="$(sys.SOURCEFILEDIR)Resources\folder_add.bmp" />
+      <Binary Id="exclamation.bmp" SourceFile="$(sys.SOURCEFILEDIR)Resources\exclamation.bmp" />
+      
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="FatalError" />
+
+      <Property Id="ErrorDialog">FatalError</Property>
+      
+      <!--
+        User interface sequence
+      -->
+      <InstallUISequence>        
+        <Show Dialog="Welcome" After="MigrateFeatureStates" />
+        <Show Dialog="Progress" After="Welcome" />
+        <Show Dialog="UserExit" OnExit="cancel" />
+        <Show Dialog="Exit" OnExit="success" />
+        <Show Dialog="FatalError" OnExit="error" />
+
+      </InstallUISequence>
+
+      <AdminUISequence>        
+        <Show Dialog="Welcome" After="CostFinalize" />
+        <Show Dialog="Progress" After="Welcome" />
+        <Show Dialog="UserExit"   OnExit="cancel" />
+        <Show Dialog="Exit" OnExit="success" />
+        <Show Dialog="FatalError" OnExit="error" />
+      </AdminUISequence>
+    </UI>
+	</Fragment>
+</Wix>

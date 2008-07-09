@@ -6,6 +6,8 @@ using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using Microsoft.Build.BuildEngine;
 using System.Configuration;
 using Microsoft.Win32;
+using System.Reflection;
+using System.IO;
 
 namespace Boo.BooLangProject
 {
@@ -17,8 +19,14 @@ namespace Boo.BooLangProject
         public BooLangProjectFactory(Package package)
             : base(package)
         {
+            RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\BooLangStudio");
+            
+            // The path should be in the registry, but if it's not then do your best by looking
+            // at the location of the current assembly!
+            string booBinPath = (string)(key != null ? 
+                key.GetValue("BooBinPath") : 
+                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\Dependencies\boo\build\"));
 
-            string booBinPath = (string)Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\VisualStudio\9.0Exp\Configuration\Packages\{55663be2-a969-4279-82c5-a6f27936f4f7}").GetValue("BooBinPath");
             this.package = (ProjectPackage)package;
             this.BuildEngine.GlobalProperties["BoocToolPath"] = new BuildProperty("BoocToolPath", booBinPath);
             this.BuildEngine.GlobalProperties["BooBinPath"] = new BuildProperty("BooBinPath",booBinPath);

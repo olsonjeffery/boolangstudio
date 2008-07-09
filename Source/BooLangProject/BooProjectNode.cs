@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using Microsoft.VisualStudio.Shell.Interop;
+using EnvDTE;
+using System.Reflection;
 
 namespace Boo.BooLangProject
 {
@@ -25,7 +27,6 @@ namespace Boo.BooLangProject
                 this.ImageHandler.AddImage(img);
             }
         }
-
 
         private BooVSProject vsProject;
 
@@ -84,7 +85,8 @@ namespace Boo.BooLangProject
         {
             base.Reload();
             // setting the BooBinPath
-            this.SetProjectProperty("BooBinPath", "dummy2");
+            string booBinPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            this.SetProjectProperty("BooBinPath", booBinPath);
             this.Save(this.FileName, 0, 0);         
         }
 
@@ -162,6 +164,5 @@ namespace Boo.BooLangProject
                 return (IVsHierarchy)Marshal.GetObjectForIUnknown(unknownPtr);
             }
         }
-
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+    <UI>
+      <Dialog Id="FatalError" Width="370" Height="270" Title="[ProductName]" NoMinimize="yes" ErrorDialog="yes">
+        <Control Id="ErrorText" Type="Text" X="50" Y="15" Width="200" Height="50" TabSkip="no">
+        </Control>
+        <Control Id="Y" Type="PushButton" X="192" Y="80" Width="66" Height="17" TabSkip="yes" Text="&amp;Yes">
+          <Publish Event="EndDialog" Value="ErrorYes">1</Publish>
+        </Control>
+        <Control Id="N" Type="PushButton" X="192" Y="80" Width="66" Height="17" TabSkip="yes" Text="&amp;No">
+          <Publish Event="EndDialog" Value="ErrorNo">1</Publish>
+        </Control>
+        <Control Id="A" Type="PushButton" X="192" Y="80" Width="66" Height="17" TabSkip="yes" Text="&amp;Abort">
+          <Publish Event="EndDialog" Value="ErrorAbort">1</Publish>
+        </Control>
+        <Control Id="C" Type="PushButton" X="192" Y="80" Width="66" Height="17" Cancel="yes" TabSkip="yes"
+          Text="&amp;Cancel">
+          <Publish Event="EndDialog" Value="ErrorCancel">1</Publish>
+        </Control>
+        <Control Id="I" Type="PushButton" X="192" Y="80" Width="66" Height="17" TabSkip="yes" Text="&amp;Ignore">
+          <Publish Event="EndDialog" Value="ErrorIgnore">1</Publish>
+        </Control>
+        <Control Id="O" Type="PushButton" X="192" Y="80" Width="66" Height="17" Default="yes" TabSkip="yes"
+          Text="&amp;OK">
+          <Publish Event="EndDialog" Value="ErrorOk">1</Publish>
+        </Control>
+        <Control Id="R" Type="PushButton" X="192" Y="80" Width="66" Height="17" TabSkip="yes" Text="&amp;Retry">
+          <Publish Event="EndDialog" Value="ErrorRetry">1</Publish>
+        </Control>
+        <Control Id="WarningIcon" Type="Bitmap" X="15" Y="15" Width="24" Height="24" FixedSize="yes" Text="exclamation.bmp" />
+      </Dialog>
+    </UI>
+	</Fragment>
+</Wix>

@@ -1,39 +1,36 @@
 using System.Collections.Generic;
 using Boo.BooLangService;
 using Boo.BooLangService.Document.Nodes;
-using MbUnit.Framework;
 using Microsoft.VisualStudio.Package;
-using Context = MbUnit.Framework.TestFixtureAttribute;
-using Spec = MbUnit.Framework.TestAttribute;
+using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    [Context]
     public class WhenDisplayingDescriptionsForIntellisense : BaseDisplayIntellisenseContext
     {
-        [Spec]
+        [Fact]
         public void ClassesArePrefixedWithClassAndUseFullNamespaceName()
         {
             var declarations = CreateDeclarations(new ClassTreeNode {Name = "MyClass", FullName = "Some.Namespace.MyClass"});
 
             string description = declarations.GetDescription(0);
 
-            Assert.IsTrue(description == "Class Some.Namespace.MyClass",
+            Assert.True(description == "Class Some.Namespace.MyClass",
                 "Expected: 'Class Some.Namespace.MyClass'\r\nFound: '" + description + "'.");
         }
 
-        [Spec]
+        [Fact]
         public void FieldsStartWithTypeFollowedByDeclaredName()
         {
             var declarations = CreateDeclarations(new LocalTreeNode { Name = "variable", ReturnType = "int" });
 
             string description = declarations.GetDescription(0);
 
-            Assert.IsTrue(description == "int variable",
+            Assert.True(description == "int variable",
                 "Expected: 'int variable'\r\nFound: '" + description + "'.");
         }
 
-        [Spec]
+        [Fact]
         public void MethodsIncludeParameters()
         {
             var declarations = GetDeclarations(@"
@@ -44,7 +41,7 @@ class MyClass:
 ");
             string description = GetDescriptionMatchingName(declarations, "MyMethod");
 
-            Assert.IsTrue(description == "void MyClass.MyMethod(string firstParameter, int secondParameter)",
+            Assert.True(description == "void MyClass.MyMethod(string firstParameter, int secondParameter)",
                 "Expected: 'void MyClass.MyMethod(string firstParameter, int secondParameter)'\r\nFound: '" + description + "'.");
         }
 

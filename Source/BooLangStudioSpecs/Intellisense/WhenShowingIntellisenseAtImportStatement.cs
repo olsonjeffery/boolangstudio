@@ -1,12 +1,11 @@
-using MbUnit.Framework;
 using Microsoft.VisualStudio.Package;
+using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    [TestFixture]
     public class WhenShowingIntellisenseAtImportStatement : BaseDisplayIntellisenseContext
     {
-        [Test]
+        [Fact]
         public void ShowAllReferencedNamespaces()
         {
             string line;

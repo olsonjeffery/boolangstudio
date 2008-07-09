@@ -1,13 +1,11 @@
 using Microsoft.VisualStudio.Package;
-using Context = MbUnit.Framework.TestFixtureAttribute;
-using Spec = MbUnit.Framework.TestAttribute;
+using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    [Context]
     public class WhenShowingIntellisenseInMethodBody : BaseDisplayIntellisenseContext
     {
-        [Spec]
+        [Fact]
         public void ShowLocalVariables()
         {
             string line;
@@ -27,7 +25,7 @@ class MyClass:
             ValidatePresenceOfDeclarations(declarations, "aNumber", "aString");
         }
 
-        [Spec]
+        [Fact]
         public void ShowClassVariables()
         {
             string line;
@@ -49,7 +47,7 @@ class MyClass:
 
         }
 
-        [Spec]
+        [Fact]
         public void ShowAllMethodsFromSameClass()
         {
             string line;
@@ -73,7 +71,7 @@ class MyClass:
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
         }
 
-        [Spec]
+        [Fact]
         public void ShowCurrentMethod()
         {
             string line;
@@ -97,7 +95,7 @@ class MyClass:
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
         }
 
-        [Spec]
+        [Fact]
         public void ShowNamespacesFromReferences()
         {
             string line;

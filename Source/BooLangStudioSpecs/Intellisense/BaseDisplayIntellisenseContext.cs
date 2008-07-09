@@ -4,8 +4,8 @@ using Boo.BooLangService;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Intellisense;
 using Boo.BooLangStudioSpecs.Intellisense.Stubs;
-using MbUnit.Framework;
 using Microsoft.VisualStudio.Package;
+using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
@@ -64,7 +64,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             // found in the list
             foreach (var name in foundDeclarations.Keys)
             {
-                Assert.IsTrue(foundDeclarations[name],
+                Assert.True(foundDeclarations[name],
                               "Expected to find declaration '" + name + "' in list of intellisense declarations, but didn't.");
             }
         }
@@ -77,7 +77,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             // found in the list
             foreach (var name in foundDeclarations.Keys)
             {
-                Assert.IsFalse(foundDeclarations[name],
+                Assert.False(foundDeclarations[name],
                               "Expected to NOT find declaration '" + name + "' in list of intellisense declarations, but did.");
             }
         }

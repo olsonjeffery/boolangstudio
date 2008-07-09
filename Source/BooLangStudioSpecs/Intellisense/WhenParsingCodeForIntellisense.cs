@@ -1,24 +1,23 @@
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
-using MbUnit.Framework;
+using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    [TestFixture]
     public class WhenParsingCodeForIntellisense : BaseCompilerContext
     {
-        [Test]
+        [Fact]
         public void CompiledDocumentShouldAlwaysContainADocumentTreeNode()
         {
             CompiledProject document = Compile(@"
 pass
 ");
 
-            Assert.IsTrue(document.ParseTree is DocumentTreeNode,
+            Assert.True(document.ParseTree is DocumentTreeNode,
                           "Parsed document should always start with a DocumentTreeNode.");
         }
 
-        [Test]
+        [Fact]
         public void ClassesShouldBeParsed()
         {
             CompiledProject document = Compile(@"
@@ -27,18 +26,18 @@ class MyClass:
 ");
             var children = document.ParseTree.Children;
 
-            Assert.IsTrue(children.Count == 1,
+            Assert.True(children.Count == 1,
                           "Should only have one child, the Class, but found: " + children.Count);
 
             var classNode = children[0];
 
-            Assert.IsTrue(classNode is ClassTreeNode,
+            Assert.True(classNode is ClassTreeNode,
                           "First child should be the class.");
-            Assert.IsTrue(classNode.Name == "MyClass",
+            Assert.True(classNode.Name == "MyClass",
                           "Name should match the name in the source.");
         }
 
-        [Test]
+        [Fact]
         public void InterfacesShouldBeParsed()
         {
             CompiledProject document = Compile(@"
@@ -47,18 +46,18 @@ interface MyInterface:
 ");
             var children = document.ParseTree.Children;
 
-            Assert.IsTrue(children.Count == 1,
+            Assert.True(children.Count == 1,
                           "Should only have one child, the Interface, but found: " + children.Count);
 
             var interfaceNode = children[0];
 
-            Assert.IsTrue(interfaceNode is InterfaceTreeNode,
+            Assert.True(interfaceNode is InterfaceTreeNode,
                           "First child should be the interface.");
-            Assert.IsTrue(interfaceNode.Name == "MyInterface",
+            Assert.True(interfaceNode.Name == "MyInterface",
                           "Name should match the name in the source.");
         }
 
-        [Test]
+        [Fact]
         public void MethodParametersShouldBeAddedToMethod()
         {
             CompiledProject document = Compile(@"
@@ -70,10 +69,10 @@ class MyClass:
             //                                       .root     .class      .method
             var methodNode = (MethodTreeNode)document.ParseTree.Children[0].Children[0];
 
-            Assert.IsTrue(methodNode.Parameters.Count == 2, "Should be two parameters.");
-            Assert.IsTrue(methodNode.Parameters[0].Name == "param1", "First parameter should be named param1.");
-            Assert.IsTrue(methodNode.Parameters[0].Type == "string", "First parameter should be a string.");
-            Assert.IsTrue(methodNode.Parameters[1].Name == "param2", "First parameter should be named param2.");
+            Assert.True(methodNode.Parameters.Count == 2, "Should be two parameters.");
+            Assert.True(methodNode.Parameters[0].Name == "param1", "First parameter should be named param1.");
+            Assert.True(methodNode.Parameters[0].Type == "string", "First parameter should be a string.");
+            Assert.True(methodNode.Parameters[1].Name == "param2", "First parameter should be named param2.");
         }
     }
 }

@@ -1,20 +1,21 @@
-using MbUnit.Framework;
+
+using System;
+using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    [TestFixture]
     public class WhenShowingToolTipForMethod : BaseDisplayIntellisenseContext
     {
-        [Test]
+        [Fact]
         public void ShowMethodParametersWhenInsideParenthesis()
         {
-            Assert.Fail("This is not implemented yet.");
+            throw new NotImplementedException();
         }
 
-        [Test]
+        [Fact]
         public void ShowFullDescriptionForMethod()
         {
-            Assert.Fail("This is not implemented yet.");
+            throw new NotImplementedException();
         }
     }
 }

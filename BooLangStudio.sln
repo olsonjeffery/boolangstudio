@@ -1,6 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
+# SharpDevelop 3.0.0.3043
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CCBF4DAC-2449-4EC9-8F4C-264D9A3967D6}"
 	ProjectSection(SolutionItems) = preProject
 		ATTRIBUTION.TXT = ATTRIBUTION.TXT
@@ -12,44 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		WHY.txt = WHY.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooLangProject", "Source\BooLangProject\BooLangProject.csproj", "{35549DBF-BC64-4D4E-904C-7AE3A35B998B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooLangService", "Source\BooLangService\BooLangService.csproj", "{947EAB0F-FEAE-4D39-B08B-55CC0C84BE07}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooLangStudio", "Source\BooLangStudio\BooLangStudio.csproj", "{F269FE5C-0B4B-4DD9-B8CC-46856C434DB3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooLangStudioSpecs", "Source\BooLangStudioSpecs\BooLangStudioSpecs.csproj", "{80136D9A-B3E5-47D6-98A7-6B926FCFFD20}"
+Project("{A33008B1-5DAC-44D5-9060-242E3B6E38F2}") = "BooPegLexer", "Source\BooPegLexer\BooPegLexer.booproj", "{4E326F12-116A-4A83-96E5-6433540E13A1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{CD2E4A38-3DE5-4AB8-9C58-68800A932846}"
 	ProjectSection(SolutionItems) = preProject
 		Install\Pre\BooLangStudio_install.reg = Install\Pre\BooLangStudio_install.reg
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectItems", "ProjectItems", "{71F16E86-4194-4132-8394-5C82BD097709}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Class", "Class", "{7F07274F-E934-4581-9D60-391FE17D9A1C}"
-	ProjectSection(SolutionItems) = preProject
-		Install\Pre\ProjectItems\Class\BooClass.vstemplate = Install\Pre\ProjectItems\Class\BooClass.vstemplate
-		Install\Pre\ProjectItems\Class\Class.boo = Install\Pre\ProjectItems\Class\Class.boo
-		Install\Pre\ProjectItems\Class\Class.ico = Install\Pre\ProjectItems\Class\Class.ico
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TextFile", "TextFile", "{6CB557EA-F472-415C-B662-FD2879D9AF23}"
-	ProjectSection(SolutionItems) = preProject
-		Install\Pre\ProjectItems\TextFile\Text.txt = Install\Pre\ProjectItems\TextFile\Text.txt
-		Install\Pre\ProjectItems\TextFile\TextFile.vstemplate = Install\Pre\ProjectItems\TextFile\TextFile.vstemplate
-		Install\Pre\ProjectItems\TextFile\txt.ico = Install\Pre\ProjectItems\TextFile\txt.ico
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{9EC1E870-6274-4F62-B26F-761AE32FF881}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClassLibrary", "ClassLibrary", "{25FC57D0-6896-4633-A2EF-A1973E668BE2}"
-	ProjectSection(SolutionItems) = preProject
-		Install\Pre\Projects\ClassLibrary\AssemblyInfo.boo = Install\Pre\Projects\ClassLibrary\AssemblyInfo.boo
-		Install\Pre\Projects\ClassLibrary\BooClassLibrary.vstemplate = Install\Pre\Projects\ClassLibrary\BooClassLibrary.vstemplate
-		Install\Pre\Projects\ClassLibrary\Class.boo = Install\Pre\Projects\ClassLibrary\Class.boo
-		Install\Pre\Projects\ClassLibrary\ClassLibrary.booproj = Install\Pre\Projects\ClassLibrary\ClassLibrary.booproj
-		Install\Pre\Projects\ClassLibrary\ClassLibrary.ico = Install\Pre\Projects\ClassLibrary\ClassLibrary.ico
+	ProjectSection(SolutionItems) = postProject
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConsoleApplication", "ConsoleApplication", "{43DC1BD6-7D8F-4FDB-888D-4C5A4C424E4C}"
@@ -60,6 +32,41 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConsoleApplication", "Conso
 		Install\Pre\Projects\ConsoleApplication\ConsoleApplication.ico = Install\Pre\Projects\ConsoleApplication\ConsoleApplication.ico
 		Install\Pre\Projects\ConsoleApplication\Program.boo = Install\Pre\Projects\ConsoleApplication\Program.boo
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClassLibrary", "ClassLibrary", "{25FC57D0-6896-4633-A2EF-A1973E668BE2}"
+	ProjectSection(SolutionItems) = preProject
+		Install\Pre\Projects\ClassLibrary\AssemblyInfo.boo = Install\Pre\Projects\ClassLibrary\AssemblyInfo.boo
+		Install\Pre\Projects\ClassLibrary\BooClassLibrary.vstemplate = Install\Pre\Projects\ClassLibrary\BooClassLibrary.vstemplate
+		Install\Pre\Projects\ClassLibrary\Class.boo = Install\Pre\Projects\ClassLibrary\Class.boo
+		Install\Pre\Projects\ClassLibrary\ClassLibrary.booproj = Install\Pre\Projects\ClassLibrary\ClassLibrary.booproj
+		Install\Pre\Projects\ClassLibrary\ClassLibrary.ico = Install\Pre\Projects\ClassLibrary\ClassLibrary.ico
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectItems", "ProjectItems", "{71F16E86-4194-4132-8394-5C82BD097709}"
+	ProjectSection(SolutionItems) = postProject
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TextFile", "TextFile", "{6CB557EA-F472-415C-B662-FD2879D9AF23}"
+	ProjectSection(SolutionItems) = preProject
+		Install\Pre\ProjectItems\TextFile\Text.txt = Install\Pre\ProjectItems\TextFile\Text.txt
+		Install\Pre\ProjectItems\TextFile\TextFile.vstemplate = Install\Pre\ProjectItems\TextFile\TextFile.vstemplate
+		Install\Pre\ProjectItems\TextFile\txt.ico = Install\Pre\ProjectItems\TextFile\txt.ico
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Class", "Class", "{7F07274F-E934-4581-9D60-391FE17D9A1C}"
+	ProjectSection(SolutionItems) = preProject
+		Install\Pre\ProjectItems\Class\BooClass.vstemplate = Install\Pre\ProjectItems\Class\BooClass.vstemplate
+		Install\Pre\ProjectItems\Class\Class.boo = Install\Pre\ProjectItems\Class\Class.boo
+		Install\Pre\ProjectItems\Class\Class.ico = Install\Pre\ProjectItems\Class\Class.ico
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooLangStudioSpecs", "Source\BooLangStudioSpecs\BooLangStudioSpecs.csproj", "{80136D9A-B3E5-47D6-98A7-6B926FCFFD20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooLangStudio", "Source\BooLangStudio\BooLangStudio.csproj", "{F269FE5C-0B4B-4DD9-B8CC-46856C434DB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooLangService", "Source\BooLangService\BooLangService.csproj", "{947EAB0F-FEAE-4D39-B08B-55CC0C84BE07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooLangProject", "Source\BooLangProject\BooLangProject.csproj", "{35549DBF-BC64-4D4E-904C-7AE3A35B998B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +90,10 @@ Global
 		{80136D9A-B3E5-47D6-98A7-6B926FCFFD20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80136D9A-B3E5-47D6-98A7-6B926FCFFD20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80136D9A-B3E5-47D6-98A7-6B926FCFFD20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,11 +104,12 @@ Global
 		{F269FE5C-0B4B-4DD9-B8CC-46856C434DB3} = {CCBF4DAC-2449-4EC9-8F4C-264D9A3967D6}
 		{80136D9A-B3E5-47D6-98A7-6B926FCFFD20} = {CCBF4DAC-2449-4EC9-8F4C-264D9A3967D6}
 		{CD2E4A38-3DE5-4AB8-9C58-68800A932846} = {CCBF4DAC-2449-4EC9-8F4C-264D9A3967D6}
+		{4E326F12-116A-4A83-96E5-6433540E13A1} = {CCBF4DAC-2449-4EC9-8F4C-264D9A3967D6}
 		{71F16E86-4194-4132-8394-5C82BD097709} = {CD2E4A38-3DE5-4AB8-9C58-68800A932846}
 		{9EC1E870-6274-4F62-B26F-761AE32FF881} = {CD2E4A38-3DE5-4AB8-9C58-68800A932846}
-		{7F07274F-E934-4581-9D60-391FE17D9A1C} = {71F16E86-4194-4132-8394-5C82BD097709}
-		{6CB557EA-F472-415C-B662-FD2879D9AF23} = {71F16E86-4194-4132-8394-5C82BD097709}
 		{25FC57D0-6896-4633-A2EF-A1973E668BE2} = {9EC1E870-6274-4F62-B26F-761AE32FF881}
 		{43DC1BD6-7D8F-4FDB-888D-4C5A4C424E4C} = {9EC1E870-6274-4F62-B26F-761AE32FF881}
+		{7F07274F-E934-4581-9D60-391FE17D9A1C} = {71F16E86-4194-4132-8394-5C82BD097709}
+		{6CB557EA-F472-415C-B662-FD2879D9AF23} = {71F16E86-4194-4132-8394-5C82BD097709}
 	EndGlobalSection
 EndGlobal

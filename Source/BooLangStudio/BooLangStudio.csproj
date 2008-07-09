@@ -8,10 +8,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Boo.BooLangStudio</RootNamespace>
     <AssemblyName>BooLangStudio</AssemblyName>
-    <SignAssembly>False</SignAssembly>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>BooLangStudio.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <ProjectGuid>{F269FE5C-0B4B-4DD9-B8CC-46856C434DB3}</ProjectGuid>
+    <ApplicationIcon>Resources\Package.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -52,28 +53,45 @@
   <ItemGroup>
     <Compile Include="BooLangStudioPackage.cs" />
     <Compile Include="Guids.cs" />
+    <Compile Include="PkgCmdId.cs" />
     <Compile Include="RegisterMsBuildTargetsAttribute.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleFileGeneratorSupportRegistrationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
+      <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+      <MergeWithCTO>true</MergeWithCTO>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx">
-      <MergeWithCTO>true</MergeWithCTO>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\logo.bmp" />
+    <None Include="Resources\200.bmp" />
+    <None Include="Resources\Images_32.bmp" />
     <Content Include="Resources\Package.ico" />
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\BooConsoleApplication.vstemplate" />
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\ConsoleApplication.ico" />
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\BooClassLibrary.vstemplate" />
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\ClassLibrary.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ZipItem Include="Templates\Boo\Items\TextFile\Text.txt" />
+    <ZipItem Include="Templates\Boo\Items\TextFile\TextFile.vstemplate" />
+    <ZipItem Include="Templates\Boo\Items\TextFile\txt.ico" />
+    <ZipItem Include="Templates\Boo\Items\Class\BooClass.vstemplate" />
+    <ZipItem Include="Templates\Boo\Items\Class\Class.ico" />
+    <ZipItem Include="Templates\Boo\Items\Class\Class.boo" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BooLangProject\BooLangProject.csproj">
@@ -84,6 +102,24 @@
       <Project>{947EAB0F-FEAE-4D39-B08B-55CC0C84BE07}</Project>
       <Name>BooLangService</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\AssemblyInfo.boo" />
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\Class.boo" />
+    <ZipProject Include="Templates\Boo\Projects\ClassLibrary\ClassLibrary.booproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\AssemblyInfo.boo" />
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\ConsoleApplication.booproj" />
+    <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\Program.boo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BooLangStudio.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <VSCTCompile Include="commands.vsct">
+      <ResourceName>1000</ResourceName>
+    </VSCTCompile>
   </ItemGroup>
   <PropertyGroup>
     <!--
@@ -103,4 +139,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)obj\$(ConfigurationName)\Class.zip" "$(ProjectDir)..\..\Install\Pre\Class.zip"
+copy "$(ProjectDir)obj\$(ConfigurationName)\TextFile.zip" "$(ProjectDir)..\..\Install\Pre\TextFile.zip"
+copy "$(ProjectDir)obj\$(ConfigurationName)\ClassLibrary.zip" "$(ProjectDir)..\..\Install\Pre\ClassLibrary.zip"
+copy "$(ProjectDir)obj\$(ConfigurationName)\ConsoleApplication.zip" "$(ProjectDir)..\..\Install\Pre\ConsoleApplication.zip"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
