@@ -44,7 +44,6 @@ namespace Boo.BooLangService.Document
 
             return new CompiledProject(
                 visitor.Project,
-                visitor.ImportedNamespaces,
                 visitor.ReferencePoints
             );
         }

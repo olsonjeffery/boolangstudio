@@ -7,26 +7,12 @@ namespace Boo.BooLangService.Document
     public class CompiledProject
     {
         private readonly IBooParseTreeNode root;
-        private readonly string content;
-        private readonly IDictionary<string, IList<IBooParseTreeNode>> imports;
         private readonly IList<ReferencePoint> referencePoints;
 
-        public CompiledProject(IBooParseTreeNode root, IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces, IList<ReferencePoint> referencePoints)
+        public CompiledProject(IBooParseTreeNode root, IList<ReferencePoint> referencePoints)
         {
             this.root = root;
-            this.content = content;
-            this.imports = importedNamespaces;
             this.referencePoints = referencePoints;
-        }
-
-        public string Content
-        {
-            get { return content; }
-        }
-
-        public IDictionary<string, IList<IBooParseTreeNode>> Imports
-        {
-            get { return imports; }
         }
 
         public IBooParseTreeNode ParseTree

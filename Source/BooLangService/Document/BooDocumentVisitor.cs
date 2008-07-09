@@ -12,10 +12,9 @@ namespace Boo.BooLangService.Document
     public class BooDocumentVisitor : AbstractTransformerCompilerStep
     {
         private readonly IBooParseTreeNode project = new ProjectTreeNode();
-        private readonly IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces = new Dictionary<string, IList<IBooParseTreeNode>>();
         private IBooParseTreeNode currentScope;
         private readonly IList<ReferencePoint> referencePoints = new List<ReferencePoint>();
-        private string currentFileName;
+        private DocumentTreeNode currentDocument;
 
         public IList<ReferencePoint> ReferencePoints
         {
@@ -27,11 +26,6 @@ namespace Boo.BooLangService.Document
             get { return project; }
         }
 
-        public IDictionary<string, IList<IBooParseTreeNode>> ImportedNamespaces
-        {
-            get { return importedNamespaces; }
-        }
-
         public override void Run()
         {
             currentScope = project;
@@ -41,8 +35,10 @@ namespace Boo.BooLangService.Document
 
         public override bool EnterModule(Module node)
         {
-            Push(new DocumentTreeNode(), node.LexicalInfo.FileName, 0);
-            currentFileName = node.LexicalInfo.FileName;
+            var document = new DocumentTreeNode();
+
+            Push(document, node.LexicalInfo.FileName, 0);
+            currentDocument = document;
 
             return base.EnterModule(node);
         }
@@ -52,6 +48,7 @@ namespace Boo.BooLangService.Document
             base.LeaveModule(node);
 
             Pop(node.EndSourceLocation.Line);
+            currentDocument = null;
         }
 
         public override void OnImport(Import node)
@@ -61,19 +58,19 @@ namespace Boo.BooLangService.Document
             var ns = (INamespace)TypeSystemServices.GetEntity(node);
             IEntity[] entites = ns.GetMembers();
 
-            importedNamespaces[node.Namespace] = new List<IBooParseTreeNode>();
+            currentDocument.Imports[node.Namespace] = new List<IBooParseTreeNode>();
 
             foreach (var entity in entites)
             {
                 if (entity is IType)
                 {
                     if (((IType)entity).IsInterface)
-                        importedNamespaces[node.Namespace].Add(new InterfaceTreeNode {Name = entity.Name, FullName = entity.FullName});
+                        currentDocument.Imports[node.Namespace].Add(new InterfaceTreeNode { Name = entity.Name, FullName = entity.FullName });
                     else
-                        importedNamespaces[node.Namespace].Add(new ClassTreeNode {Name = entity.Name, FullName = entity.FullName});
+                        currentDocument.Imports[node.Namespace].Add(new ClassTreeNode { Name = entity.Name, FullName = entity.FullName });
                 }
                 else if (entity is INamespace)
-                    importedNamespaces[node.Namespace].Add(new ImportedNamespaceTreeNode { Name = entity.Name });
+                    currentDocument.Imports[node.Namespace].Add(new ImportedNamespaceTreeNode { Name = entity.Name });
             }
 
             base.OnImport(node);
@@ -91,7 +88,7 @@ namespace Boo.BooLangService.Document
             base.LeaveInterfaceDefinition(node);
 
             Pop(node.EndSourceLocation.Line);
-            currentFileName = null;
+            currentDocument = null;
         }
 
         public override bool EnterClassDefinition(ClassDefinition node)
@@ -184,7 +181,7 @@ namespace Boo.BooLangService.Document
                 Entity = entity,
                 Line = node.LexicalInfo.Line,
                 Column = node.LexicalInfo.Column,
-                FileName = currentFileName
+                FileName = currentDocument.Name
             });
         }
 

@@ -133,12 +133,24 @@ namespace Boo.BooLangService.Intellisense
 
             AddMembersFromScopeTree(declarations, scopedParseTree);
             AddKeywords(declarations, scopedParseTree);
-            AddImports(declarations);
+            AddImports(declarations, GetDocument(scopedParseTree));
             AddReferences(declarations);
 
             declarations.Sort();
 
             return declarations;
+        }
+
+        private DocumentTreeNode GetDocument(IBooParseTreeNode node)
+        {
+            var currentNode = node;
+
+            while (!(currentNode is DocumentTreeNode))
+            {
+                currentNode = currentNode.Parent;
+            }
+
+            return currentNode as DocumentTreeNode;
         }
 
         private string GetIntellisenseTarget(string line)
@@ -170,12 +182,12 @@ namespace Boo.BooLangService.Intellisense
         /// <summary>
         /// Adds any types and namespaces, imported at the start of the document, to the declarations.
         /// </summary>
-        private void AddImports(IntellisenseDeclarations declarations)
+        private void AddImports(IntellisenseDeclarations declarations, DocumentTreeNode document)
         {
             // add imports to declarations
-            foreach (var importNamespace in compiledProject.Imports.Keys)
+            foreach (var importNamespace in document.Imports.Keys)
             {
-                var importedNodes = compiledProject.Imports[importNamespace];
+                var importedNodes = document.Imports[importNamespace];
 
                 declarations.Add(importedNodes);
             }
