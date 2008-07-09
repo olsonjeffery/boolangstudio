@@ -38,6 +38,16 @@ namespace Boo.BooLangService.Document
                 foreach (IBooParseTreeNode sibling in parent.Children)
                 {
                     flattened.Add(sibling);
+
+                    // hack to get cross-file intellisense working
+                    // todo: make this better
+                    if (sibling is DocumentTreeNode)
+                    {
+                        foreach (var documentChild in sibling.Children)
+                        {
+                            flattened.Add(documentChild);
+                        }
+                    }
                 }
 
                 flattened.Add(parent);

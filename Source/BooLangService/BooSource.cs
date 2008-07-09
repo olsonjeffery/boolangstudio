@@ -11,12 +11,7 @@ namespace BooLangService
 
         public BooSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)
             : base(service, textLines, colorizer)
-        {
-            project = BooProjectSources.Find(GetFilePath());
-
-            if (project != null)
-                project.AddSource(this);
-        }
+        {}
 
         /// <summary>
         /// Occurs when the changes are committed to the document, typically on save, but more

@@ -3,18 +3,21 @@ using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Intellisense
 {
+    /// <summary>
+    /// Converts between the Boo Antlr entity nodes and our tree-node structure.
+    /// </summary>
     public class EntityToTreeNodeConverter
     {
         public IBooParseTreeNode ToTreeNode(IEntity entity)
         {
             if (entity is IType)
                 return ToTreeNode((IType)entity);
-            if (entity is INamespace)
-                return ToTreeNode((INamespace)entity);
             if (entity is IProperty)
                 return ToTreeNode((IProperty)entity);
             if (entity is IMethod)
                 return ToTreeNode((IMethod)entity);
+            if (entity is INamespace)
+                return ToTreeNode((INamespace)entity);
 
             return null;
         }

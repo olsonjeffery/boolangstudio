@@ -118,6 +118,12 @@
     <EmbeddedResource Include="Resources\BooFileNode.bmp" />
     <EmbeddedResource Include="Resources\imagelis.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BooLangService\BooLangService.csproj">
+      <Project>{947EAB0F-FEAE-4D39-B08B-55CC0C84BE07}</Project>
+      <Name>BooLangService</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(ProjectBasePath)\ProjectBase.Files" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

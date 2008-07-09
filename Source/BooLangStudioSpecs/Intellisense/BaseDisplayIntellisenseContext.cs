@@ -13,7 +13,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
     {
         private const string Caret = "~";
 
-        protected CompiledDocument Compile(out string line, out int lineNum, out int colNum, string text)
+        protected CompiledProject Compile(out string line, out int lineNum, out int colNum, string text)
         {
             // kill off the first newline because of the style of text we're doing
             if (text.StartsWith(Environment.NewLine))
@@ -46,7 +46,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             col = 0;
         }
 
-        protected DeclarationFinder CreateFinder(CompiledDocument document, string line, params string[] referencedNamespaces)
+        protected DeclarationFinder CreateFinder(CompiledProject document, string line, params string[] referencedNamespaces)
         {
             var lineView = new SimpleStubLineView(line);
             var referenceLookup = new SimpleStubProjectReferenceLookup();

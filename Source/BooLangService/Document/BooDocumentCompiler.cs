@@ -12,46 +12,41 @@ namespace Boo.BooLangService.Document
     /// </summary>
     public class BooDocumentCompiler
     {
+        private readonly BooDocumentVisitor visitor;
+        private BooCompiler compiler;
+
+        public BooDocumentCompiler()
+        {
+            visitor = new BooDocumentVisitor();
+            compiler = CreateCompiler(visitor);
+        }
+
         /// <summary>
         /// Compiles a Boo file into a CompiledDocument.
         /// </summary>
-        /// <param name="filename">Name of the file to compile</param>
-        /// <param name="source">Source code to compile</param>
         /// <returns>CompiledDocument from the source</returns>
-        public CompiledDocument Compile(string filename, string source)
+        public CompiledProject Compile()
         {
-            return Compile(filename, source, null);
+            return Compile(null);
         }
 
         /// <summary>
         /// Compiles a Boo file into a CompiledDocument, with a set of referenced assemblies.
         /// </summary>
-        /// <param name="filename">Name of the file to compile</param>
-        /// <param name="source">Source code to compile</param>
         /// <param name="references">Additional assemblies to be referenced by the compiler</param>
         /// <returns>CompiledDocument from the source</returns>
-        public CompiledDocument Compile(string filename, string source, IList<Assembly> references)
+        public CompiledProject Compile(IList<Assembly> references)
         {
-            BooDocumentVisitor visitor = CompileDocument(filename, source, references);
+            if (references != null)
+                compiler.Parameters.References.Extend(references);
 
-            return new CompiledDocument(
-                visitor.Document,
-                visitor.ImportedNamespaces,
-                visitor.ReferencePoints,
-                source
-            );
-        }
-
-        private BooDocumentVisitor CompileDocument(string filename, string source, IList<Assembly> references)
-        {
-            var visitor = new BooDocumentVisitor();
-            BooCompiler compiler = CreateCompiler(visitor);
-
-            compiler.Parameters.Input.Add(new StringInput(filename, source));
-            compiler.Parameters.References.Extend(references);
             compiler.Run();
 
-            return visitor;
+            return new CompiledProject(
+                visitor.Project,
+                visitor.ImportedNamespaces,
+                visitor.ReferencePoints
+            );
         }
 
         private BooCompiler CreateCompiler(BooDocumentVisitor visitor)
@@ -63,6 +58,11 @@ namespace Boo.BooLangService.Document
             compiler.Parameters.Pipeline.Add(visitor);
 
             return compiler;
+        }
+
+        public void AddSource(string fileName, string source)
+        {
+            compiler.Parameters.Input.Add(new StringInput(fileName, source));
         }
     }
 }

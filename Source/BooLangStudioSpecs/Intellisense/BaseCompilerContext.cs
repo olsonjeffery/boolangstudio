@@ -7,7 +7,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
     {
         protected const string NoFileName = "";
 
-        protected CompiledDocument Compile(string text)
+        protected CompiledProject Compile(string text)
         {
             // kill off the first newline because of the style of text we're doing
             if (text.StartsWith(Environment.NewLine))
@@ -15,7 +15,9 @@ namespace Boo.BooLangStudioSpecs.Intellisense
 
             var compiler = new BooDocumentCompiler();
 
-            return compiler.Compile(NoFileName, text);
+            compiler.AddSource(NoFileName, text);
+
+            return compiler.Compile();
         }
     }
 }

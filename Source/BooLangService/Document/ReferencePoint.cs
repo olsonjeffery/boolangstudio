@@ -11,6 +11,7 @@ namespace Boo.BooLangService.Document
         public IEntity Entity { get; set; }
         public int Line { get; set; }
         public int Column { get; set; }
+        public string FileName { get; set; }
 
         public bool WithinBounds(int line, int column)
         {

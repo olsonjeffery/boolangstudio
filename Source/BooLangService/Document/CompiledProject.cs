@@ -4,14 +4,14 @@ using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document
 {
-    public class CompiledDocument
+    public class CompiledProject
     {
         private readonly IBooParseTreeNode root;
         private readonly string content;
         private readonly IDictionary<string, IList<IBooParseTreeNode>> imports;
         private readonly IList<ReferencePoint> referencePoints;
 
-        public CompiledDocument(IBooParseTreeNode root, IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces, IList<ReferencePoint> referencePoints, string content)
+        public CompiledProject(IBooParseTreeNode root, IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces, IList<ReferencePoint> referencePoints)
         {
             this.root = root;
             this.content = content;
@@ -40,29 +40,35 @@ namespace Boo.BooLangService.Document
         /// <param name="line">Line</param>
         /// <param name="column">Column</param>
         /// <returns>Entity </returns>
-        public IEntity GetEntityAt(int line, int column)
+        public IEntity GetEntityAt(string fileName, int line, int column)
         {
             foreach (var referencePoint in referencePoints)
             {
-                if (referencePoint.WithinBounds(line, column))
+                if (referencePoint.FileName == fileName && referencePoint.WithinBounds(line, column))
                     return referencePoint.Entity;
             }
 
             return null;
         }
 
-        public IBooParseTreeNode GetScopeByLine(int line)
+        public IBooParseTreeNode GetScope(string fileName, int line)
         {
-            return GetScopeByLine(root, line);
+            foreach (var document in ((ProjectTreeNode)root).Children)
+            {
+                if (document.Name == fileName)
+                    return GetScope(document, line);
+            }
+
+            return null;
         }
 
-        private IBooParseTreeNode GetScopeByLine(IBooParseTreeNode node, int line)
+        private IBooParseTreeNode GetScope(IBooParseTreeNode node, int line)
         {
             foreach (IBooParseTreeNode child in node.Children)
             {
-                IBooParseTreeNode foundNode = GetScopeByLine(child, line);
+                IBooParseTreeNode foundNode = GetScope(child, line);
 
-                if (foundNode != null)
+                if (foundNode != null) 
                     return foundNode;
             }
 

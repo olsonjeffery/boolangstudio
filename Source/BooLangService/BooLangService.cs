@@ -17,13 +17,10 @@ namespace Boo.BooLangService
     [Guid(GuidList.guidBooLangServiceClassString)]
     public class BooLangService : LanguageService
     {
-        private readonly CompiledDocumentCache compiledDocuments;
-
         #region ctor
         public BooLangService()
             : base()
         {
-            compiledDocuments = new CompiledDocumentCache(this);
             DefineColorableItems();
         }
         #endregion
@@ -85,21 +82,9 @@ namespace Boo.BooLangService
         public override AuthoringScope ParseSource(ParseRequest req)
         {
             var project = GetProject(req);
-            CompiledDocument document = project.GetCompiledDocument(req.FileName);
+            CompiledProject compiledProject = project.GetCompiledProject();
 
-            return new BooScope(this, document, (BooSource)GetSource(req.View), req.FileName);
-        }
-
-        private string CleanseSource(string text, int line, int column)
-        {
-            string[] source = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-
-            column -= 1; // because the cursor is going to be after the char we want to trim
-
-            if (source[line].EndsWith("."))
-                source[line] = source[line].Remove(column, 1);
-
-            return string.Join(Environment.NewLine, source);
+            return new BooScope(this, compiledProject, (BooSource)GetSource(req.View), req.FileName);
         }
 
         private BooProjectSources GetProject(ParseRequest request)

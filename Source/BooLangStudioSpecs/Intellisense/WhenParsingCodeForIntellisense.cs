@@ -10,7 +10,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Test]
         public void CompiledDocumentShouldAlwaysContainADocumentTreeNode()
         {
-            CompiledDocument document = Compile(@"
+            CompiledProject document = Compile(@"
 pass
 ");
 
@@ -21,7 +21,7 @@ pass
         [Test]
         public void ClassesShouldBeParsed()
         {
-            CompiledDocument document = Compile(@"
+            CompiledProject document = Compile(@"
 class MyClass:
   pass
 ");
@@ -41,7 +41,7 @@ class MyClass:
         [Test]
         public void InterfacesShouldBeParsed()
         {
-            CompiledDocument document = Compile(@"
+            CompiledProject document = Compile(@"
 interface MyInterface:
   pass
 ");
@@ -61,7 +61,7 @@ interface MyInterface:
         [Test]
         public void MethodParametersShouldBeAddedToMethod()
         {
-            CompiledDocument document = Compile(@"
+            CompiledProject document = Compile(@"
 class MyClass:
   def MyMethod(param1 as string, param2):
     pass

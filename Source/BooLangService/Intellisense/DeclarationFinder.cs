@@ -13,17 +13,17 @@ namespace Boo.BooLangService.Intellisense
     public class DeclarationFinder
     {
         private const string ImportKeyword = "import";
-        private readonly List<string> excludedMembers = new List<string> {".ctor"};
+        private readonly List<string> excludedMembers = new List<string> {".ctor", "constructor"};
 
-        private readonly CompiledDocument compiledDocument;
+        private readonly CompiledProject compiledProject;
         private readonly Regex IntellisenseTargetRegex = new Regex("[^ (]*$", RegexOptions.Compiled);
         private readonly ILineView lineView;
         private readonly string fileName;
         private readonly IProjectReferenceLookup projectReferences;
 
-        public DeclarationFinder(CompiledDocument compiledDocument, IProjectReferenceLookup projectReferenceLookup, ILineView lineView, string fileName)
+        public DeclarationFinder(CompiledProject compiledProject, IProjectReferenceLookup projectReferenceLookup, ILineView lineView, string fileName)
         {
-            this.compiledDocument = compiledDocument;
+            this.compiledProject = compiledProject;
             this.projectReferences = projectReferenceLookup;
             this.lineView = lineView;
             this.fileName = fileName;
@@ -82,7 +82,7 @@ namespace Boo.BooLangService.Intellisense
         {
             var declarations = new IntellisenseDeclarations();
 
-            IEntity entity = compiledDocument.GetEntityAt(line, column);
+            IEntity entity = compiledProject.GetEntityAt(fileName, line, column);
             var namespaceEntity = entity as INamespace;
             var instance = false;
 
@@ -97,12 +97,12 @@ namespace Boo.BooLangService.Intellisense
             // remove any static members for instances, and any instance members for types
             members.RemoveAll(e =>
             {
+                if (excludedMembers.Contains(e.Name)) return true;
                 if (e is INamespace) return false;
 
                 var member = (IMember)e;
 
                 if (!member.IsPublic) return true;
-                if (excludedMembers.Contains(member.Name)) return true;
                 return (instance && member.IsStatic) || (!instance && !member.IsStatic);
             });
 
@@ -128,7 +128,7 @@ namespace Boo.BooLangService.Intellisense
         private IntellisenseDeclarations GetScopedIntellisenseDeclarations(int lineNum)
         {
             // get the node that the caret is in
-            var scopedParseTree = compiledDocument.GetScopeByLine(lineNum);
+            var scopedParseTree = compiledProject.GetScope(fileName, lineNum);
             var declarations = new IntellisenseDeclarations();
 
             AddMembersFromScopeTree(declarations, scopedParseTree);
@@ -173,9 +173,9 @@ namespace Boo.BooLangService.Intellisense
         private void AddImports(IntellisenseDeclarations declarations)
         {
             // add imports to declarations
-            foreach (var importNamespace in compiledDocument.Imports.Keys)
+            foreach (var importNamespace in compiledProject.Imports.Keys)
             {
-                var importedNodes = compiledDocument.Imports[importNamespace];
+                var importedNodes = compiledProject.Imports[importNamespace];
 
                 declarations.Add(importedNodes);
             }

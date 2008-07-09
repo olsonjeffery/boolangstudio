@@ -11,19 +11,20 @@ namespace Boo.BooLangService.Document
     /// </summary>
     public class BooDocumentVisitor : AbstractTransformerCompilerStep
     {
-        private readonly IBooParseTreeNode document = new DocumentTreeNode();
+        private readonly IBooParseTreeNode project = new ProjectTreeNode();
         private readonly IDictionary<string, IList<IBooParseTreeNode>> importedNamespaces = new Dictionary<string, IList<IBooParseTreeNode>>();
         private IBooParseTreeNode currentScope;
         private readonly IList<ReferencePoint> referencePoints = new List<ReferencePoint>();
+        private string currentFileName;
 
         public IList<ReferencePoint> ReferencePoints
         {
             get { return referencePoints; }
         }
 
-        public IBooParseTreeNode Document
+        public IBooParseTreeNode Project
         {
-            get { return document; }
+            get { return project; }
         }
 
         public IDictionary<string, IList<IBooParseTreeNode>> ImportedNamespaces
@@ -33,9 +34,24 @@ namespace Boo.BooLangService.Document
 
         public override void Run()
         {
-            currentScope = document;
+            currentScope = project;
 
             Visit(CompileUnit);
+        }
+
+        public override bool EnterModule(Module node)
+        {
+            Push(new DocumentTreeNode(), node.LexicalInfo.FileName, 0);
+            currentFileName = node.LexicalInfo.FileName;
+
+            return base.EnterModule(node);
+        }
+
+        public override void LeaveModule(Module node)
+        {
+            base.LeaveModule(node);
+
+            Pop(node.EndSourceLocation.Line);
         }
 
         public override void OnImport(Import node)
@@ -75,6 +91,7 @@ namespace Boo.BooLangService.Document
             base.LeaveInterfaceDefinition(node);
 
             Pop(node.EndSourceLocation.Line);
+            currentFileName = null;
         }
 
         public override bool EnterClassDefinition(ClassDefinition node)
@@ -166,7 +183,8 @@ namespace Boo.BooLangService.Document
             {
                 Entity = entity,
                 Line = node.LexicalInfo.Line,
-                Column = node.LexicalInfo.Column
+                Column = node.LexicalInfo.Column,
+                FileName = currentFileName
             });
         }
 

@@ -12,9 +12,9 @@ namespace BooLangService
     {
         private readonly DeclarationFinder declarations;
 
-        public BooScope(LanguageService service, CompiledDocument compiledDocument, BooSource source, string fileName)
+        public BooScope(LanguageService service, CompiledProject compiledProject, BooSource source, string fileName)
         {
-            declarations = new DeclarationFinder(compiledDocument, new ProjectReferenceLookup(service), source, fileName);
+            declarations = new DeclarationFinder(compiledProject, new ProjectReferenceLookup(service), source, fileName);
         }
 
         public override string GetDataTipText(int line, int col, out TextSpan span)
@@ -24,7 +24,7 @@ namespace BooLangService
 
         public override Declarations GetDeclarations(IVsTextView view, int lineNum, int col, TokenInfo info, ParseReason reason)
         {
-            return declarations.Find(lineNum + 1, col, reason);
+            return declarations.Find(lineNum, col, reason);
         }
 
         public override Methods GetMethods(int line, int col, string name)
