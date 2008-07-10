@@ -53,7 +53,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
 
             referenceLookup.AddFakeNamespaces(referencedNamespaces);
 
-            return new DeclarationFinder(document, referenceLookup, lineView, "fileName");
+            return new DeclarationFinder(document, referenceLookup, lineView, Constants.DocumentFileName);
         }
 
         protected void ValidatePresenceOfDeclarations(IntellisenseDeclarations declarations, params string[] expectedDeclarationNames)

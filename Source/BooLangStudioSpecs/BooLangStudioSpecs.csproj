@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMockingTestFixture.cs" />
+    <Compile Include="Intellisense\Constants.cs" />
     <Compile Include="LineScanner\LexingBaseFixture.cs" />
     <Compile Include="LineScanner\LineCommentLexing.cs" />
     <Compile Include="LineScanner\MalformedStrings.cs" />

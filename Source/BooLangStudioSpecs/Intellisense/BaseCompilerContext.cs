@@ -5,8 +5,6 @@ namespace Boo.BooLangStudioSpecs.Intellisense
 {
     public abstract class BaseCompilerContext
     {
-        protected const string NoFileName = "";
-
         protected CompiledProject Compile(string text)
         {
             // kill off the first newline because of the style of text we're doing
@@ -15,7 +13,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
 
             var compiler = new BooDocumentCompiler();
 
-            compiler.AddSource(NoFileName, text);
+            compiler.AddSource(Constants.DocumentFileName, text);
 
             return compiler.Compile();
         }

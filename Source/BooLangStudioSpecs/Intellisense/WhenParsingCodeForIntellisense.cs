@@ -7,72 +7,70 @@ namespace Boo.BooLangStudioSpecs.Intellisense
     public class WhenParsingCodeForIntellisense : BaseCompilerContext
     {
         [Fact]
-        public void CompiledDocumentShouldAlwaysContainADocumentTreeNode()
+        public void FirstReturnedNodeIsProjectTreeNode()
         {
-            CompiledProject document = Compile(@"
+            var project = Compile(@"
 pass
 ");
+            Assert.IsType<ProjectTreeNode>(project.ParseTree);
+        }
 
-            Assert.True(document.ParseTree is DocumentTreeNode,
-                          "Parsed document should always start with a DocumentTreeNode.");
+        [Fact]
+        public void FirstChildIsDocumentTreeNode()
+        {
+            var project = Compile(@"
+pass
+");
+            Assert.IsType<DocumentTreeNode>(project.ParseTree.Children[0]);
         }
 
         [Fact]
         public void ClassesShouldBeParsed()
         {
-            CompiledProject document = Compile(@"
+            var project = Compile(@"
 class MyClass:
   pass
 ");
-            var children = document.ParseTree.Children;
+            var document = project.ParseTree.Children[0];
+            var classNode = document.Children[0];
 
-            Assert.True(children.Count == 1,
-                          "Should only have one child, the Class, but found: " + children.Count);
-
-            var classNode = children[0];
-
-            Assert.True(classNode is ClassTreeNode,
-                          "First child should be the class.");
-            Assert.True(classNode.Name == "MyClass",
-                          "Name should match the name in the source.");
+            Assert.IsType<ClassTreeNode>(classNode);
+            Assert.Equal("MyClass", classNode.Name);
         }
 
         [Fact]
         public void InterfacesShouldBeParsed()
         {
-            CompiledProject document = Compile(@"
+            var project = Compile(@"
 interface MyInterface:
   pass
 ");
-            var children = document.ParseTree.Children;
+            var document = project.ParseTree.Children[0];
+            var interfaceNode = document.Children[0];
 
-            Assert.True(children.Count == 1,
-                          "Should only have one child, the Interface, but found: " + children.Count);
-
-            var interfaceNode = children[0];
-
-            Assert.True(interfaceNode is InterfaceTreeNode,
-                          "First child should be the interface.");
-            Assert.True(interfaceNode.Name == "MyInterface",
-                          "Name should match the name in the source.");
+            Assert.IsType<InterfaceTreeNode>(interfaceNode);
+            Assert.Equal("MyInterface", interfaceNode.Name);
         }
 
         [Fact]
         public void MethodParametersShouldBeAddedToMethod()
         {
-            CompiledProject document = Compile(@"
+            var project = Compile(@"
 class MyClass:
   def MyMethod(param1 as string, param2):
     pass
 ");
             
-            //                                       .root     .class      .method
-            var methodNode = (MethodTreeNode)document.ParseTree.Children[0].Children[0];
+            //                                       .project .document   .class      .method
+            var methodNode = (MethodTreeNode)project.ParseTree.Children[0].Children[0].Children[0];
+            var numberOfParameters = methodNode.Parameters.Count;
+            var firstParameter = methodNode.Parameters[0];
+            var secondParameter = methodNode.Parameters[1];
 
-            Assert.True(methodNode.Parameters.Count == 2, "Should be two parameters.");
-            Assert.True(methodNode.Parameters[0].Name == "param1", "First parameter should be named param1.");
-            Assert.True(methodNode.Parameters[0].Type == "string", "First parameter should be a string.");
-            Assert.True(methodNode.Parameters[1].Name == "param2", "First parameter should be named param2.");
+            Assert.Equal(2, numberOfParameters);
+            Assert.Equal("param1", firstParameter.Name);
+            Assert.Equal("string", firstParameter.Type);
+            Assert.Equal("param2", secondParameter.Name);
         }
     }
 }
