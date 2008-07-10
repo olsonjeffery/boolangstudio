@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Boo.BooLangService;
@@ -32,6 +33,9 @@ namespace Boo.BooLangService.Intellisense
 
         public IntellisenseDeclarations Find(CaretLocation caretLocation, ParseReason parseReason)
         {
+            if (!caretLocation.IsValid)
+                throw new ArgumentException("Caret location has not been provided, cannot continue.");
+
             return Find(caretLocation.Line.Value, caretLocation.Column.Value, parseReason);
         }
 

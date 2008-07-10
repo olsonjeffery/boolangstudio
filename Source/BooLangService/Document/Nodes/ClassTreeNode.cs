@@ -3,9 +3,10 @@ using Boo.BooLangService.Intellisense;
 namespace Boo.BooLangService.Document.Nodes
 {
     [Scopable, IntellisenseVisible]
-    public class ClassTreeNode : AbstractTreeNode
+    public class ClassTreeNode : TypeDeclarationTreeNode
     {
-        public string FullName { get; set; }
+        public ClassTreeNode(string fullName) : base(fullName)
+        {}
 
         public override string GetIntellisenseDescription()
         {

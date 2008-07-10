@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler.Ast;
 using Boo.Lang.Compiler.Steps;
@@ -47,7 +48,10 @@ namespace Boo.BooLangService.Document
         {
             base.LeaveModule(node);
 
-            Pop(node.EndSourceLocation.Line);
+            // todo: de-nasty this
+            var linesInFile = File.ReadAllLines(node.LexicalInfo.FileName).Length;
+
+            Pop(linesInFile);
             currentDocument = null;
         }
 
@@ -65,9 +69,9 @@ namespace Boo.BooLangService.Document
                 if (entity is IType)
                 {
                     if (((IType)entity).IsInterface)
-                        currentDocument.Imports[node.Namespace].Add(new InterfaceTreeNode { Name = entity.Name, FullName = entity.FullName });
+                        currentDocument.Imports[node.Namespace].Add(new InterfaceTreeNode(entity.FullName) { Name = entity.Name });
                     else
-                        currentDocument.Imports[node.Namespace].Add(new ClassTreeNode { Name = entity.Name, FullName = entity.FullName });
+                        currentDocument.Imports[node.Namespace].Add(new ClassTreeNode(entity.FullName) { Name = entity.Name });
                 }
                 else if (entity is INamespace)
                     currentDocument.Imports[node.Namespace].Add(new ImportedNamespaceTreeNode { Name = entity.Name });
@@ -78,7 +82,7 @@ namespace Boo.BooLangService.Document
 
         public override bool EnterInterfaceDefinition(InterfaceDefinition node)
         {
-            Push(new InterfaceTreeNode(), node.Name, node.LexicalInfo.Line);
+            Push(new InterfaceTreeNode(node.FullName), node.Name, node.LexicalInfo.Line);
 
             return base.EnterInterfaceDefinition(node);
         }
@@ -88,12 +92,11 @@ namespace Boo.BooLangService.Document
             base.LeaveInterfaceDefinition(node);
 
             Pop(node.EndSourceLocation.Line);
-            currentDocument = null;
         }
 
         public override bool EnterClassDefinition(ClassDefinition node)
         {
-            Push(new ClassTreeNode(), node.Name, node.LexicalInfo.Line);
+            Push(new ClassTreeNode(node.FullName), node.Name, node.LexicalInfo.Line);
 
             return base.EnterClassDefinition(node);
         }
@@ -218,7 +221,6 @@ namespace Boo.BooLangService.Document
 
         private void Pop(int endLine)
         {
-            // if the scope is incomplete, then there won't be an end so just use the start
             currentScope.EndLine = endLine;
             currentScope = currentScope.Parent;
         }

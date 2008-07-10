@@ -1,14 +1,16 @@
 using System.Collections.Generic;
+using Boo.BooLangService;
+using Microsoft.VisualStudio.Package;
 using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public class WhenParsingMultipleFilesForIntellisense : BaseCompilerContext
+    public class WhenParsingMultipleFilesForIntellisense : BaseIntellisenseContext
     {
         [Fact]
         public void InstancesAreScopedToFileWhenMethodsHaveSameName()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
+            var declarations = CompiledFixtures.GetDeclarations();
         }
     }
 }

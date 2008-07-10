@@ -47,17 +47,6 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             col = 0;
         }
 
-        protected DeclarationFinder CreateFinder(CompiledProject project, CaretLocation caretLocation, params string[] referencedNamespaces)
-        {
-            var lineView = new SimpleStubLineView(caretLocation.LineSource);
-            var referenceLookup = new SimpleStubProjectReferenceLookup();
-
-            referenceLookup.AddFakeNamespaces(referencedNamespaces);
-
-            return new DeclarationFinder(project, referenceLookup, lineView, caretLocation.FileName);
-
-        }
-
         [Obsolete]
         protected DeclarationFinder CreateFinder(CompiledProject project, string line, params string[] referencedNamespaces)
         {
@@ -116,6 +105,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             return foundDeclarations;
         }
 
+        [Obsolete]
         protected IntellisenseDeclarations GetDeclarations(string code)
         {
             string line;

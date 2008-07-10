@@ -8,11 +8,9 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void ShowAllReferencedNamespaces()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-
-            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation.LineSource,
-                "Boo", "BooLangStudio");
-            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
+            var declarations = CompiledFixtures
+                .SetReferences("Boo", "BooLangStudio")
+                .GetDeclarations();
 
             ValidatePresenceOfDeclarations(declarations, "Boo", "BooLangStudio");
         }

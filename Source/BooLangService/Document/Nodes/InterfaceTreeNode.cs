@@ -2,10 +2,11 @@ using Boo.BooLangService.Intellisense;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [IntellisenseVisible]
-    public class InterfaceTreeNode : AbstractTreeNode
+    [Scopable, IntellisenseVisible]
+    public class InterfaceTreeNode : TypeDeclarationTreeNode
     {
-        public string FullName { get; set; }
+        public InterfaceTreeNode(string fullName) : base(fullName)
+        {}
 
         public override string GetIntellisenseDescription()
         {

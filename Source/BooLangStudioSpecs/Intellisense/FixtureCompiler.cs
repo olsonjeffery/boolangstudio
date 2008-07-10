@@ -65,7 +65,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         private string GetFixturesDirectory()
         {
             var stackTrace = new StackTrace();
-            var callingStackFrame = stackTrace.GetFrame(2);
+            var callingStackFrame = stackTrace.GetFrame(3); // this is flaky
             var method = callingStackFrame.GetMethod();
 
             var methodName = method.Name;

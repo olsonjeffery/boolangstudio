@@ -34,5 +34,10 @@ namespace Boo.BooLangStudioSpecs.Document
         {
             get { return lineSource; }
         }
+
+        public bool IsValid
+        {
+            get { return !(LineSource == null || Line == null || Column == null); }
+        }
     }
 }

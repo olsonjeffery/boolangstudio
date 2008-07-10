@@ -25,9 +25,9 @@ namespace Boo.BooLangService.Intellisense
         private IBooParseTreeNode ToTreeNode(IType type)
         {
             if (type.IsInterface)
-                return new InterfaceTreeNode {Name = type.Name, FullName = type.FullName};
+                return new InterfaceTreeNode(type.FullName) { Name = type.Name };
             if (type.IsClass || type.IsEnum)
-                return new ClassTreeNode { Name = type.Name, FullName = type.FullName };
+                return new ClassTreeNode(type.FullName) { Name = type.Name };
 
             return null;
         }

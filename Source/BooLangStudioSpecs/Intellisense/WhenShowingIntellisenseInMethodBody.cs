@@ -8,9 +8,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void ShowLocalVariables()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation);
-            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
+            var declarations = CompiledFixtures.GetDeclarations();
 
             ValidatePresenceOfDeclarations(declarations, "aNumber", "aString");
         }
@@ -18,9 +16,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void ShowClassVariables()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation);
-            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
+            var declarations = CompiledFixtures.GetDeclarations();
 
             ValidatePresenceOfDeclarations(declarations, "myClassString", "myClassInteger");
         }
@@ -28,9 +24,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void ShowAllMethodsFromSameClass()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation);
-            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
+            var declarations = CompiledFixtures.GetDeclarations();
 
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
         }
@@ -38,9 +32,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void ShowCurrentMethod()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation);
-            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
+            var declarations = CompiledFixtures.GetDeclarations();
 
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
         }
@@ -48,10 +40,9 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void ShowNamespacesFromReferences()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation,
-                "System", "Boo");
-            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
+            var declarations = CompiledFixtures
+                .SetReferences("System", "Boo")
+                .GetDeclarations();
 
             ValidatePresenceOfDeclarations(declarations, "System", "Boo");
         }

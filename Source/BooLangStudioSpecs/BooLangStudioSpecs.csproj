@@ -104,6 +104,7 @@
     <Compile Include="Intellisense\CompilationOutput.cs" />
     <Compile Include="Intellisense\Constants.cs" />
     <Compile Include="Intellisense\FixtureCompiler.cs" />
+    <Compile Include="Intellisense\IntellisenseDeclarationsTestExtensionMethods.cs" />
     <Compile Include="Intellisense\WhenParsingMultipleFilesForIntellisense.cs" />
     <Compile Include="LineScanner\LexingBaseFixture.cs" />
     <Compile Include="LineScanner\LineCommentLexing.cs" />
@@ -143,7 +144,7 @@
     <Compile Include="PegLexer\WhenTranslatingTokens.cs" />
     <Compile Include="Intellisense\BaseCompilerContext.cs" />
     <Compile Include="Intellisense\BaseIntellisenseContext.cs" />
-    <Compile Include="Intellisense\IntellisenseTooltips.cs" />
+    <Compile Include="Intellisense\WhenDisplayingDescriptionsForIntellisense.cs" />
     <Compile Include="Intellisense\Stubs\SimpleStubProjectReferenceLookup.cs" />
     <Compile Include="Intellisense\Stubs\SimpleStubLineView.cs" />
     <Compile Include="Intellisense\WhenParsingSingleFileForIntellisense.cs" />
@@ -164,6 +165,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Intellisense\Fixtures\WhenDisplayingDescriptionsForIntellisense\ClassesArePrefixedWithClassAndUseFullNamespaceName.boo" />
+    <Content Include="Intellisense\Fixtures\WhenDisplayingDescriptionsForIntellisense\InterfacesArePrefixedWithInterfaceAndUseFullNamespaceName.boo" />
     <Content Include="Intellisense\Fixtures\WhenDisplayingDescriptionsForIntellisense\MethodsIncludeParameters.boo" />
     <Content Include="Intellisense\Fixtures\WhenParsingMultipleFilesForIntellisense\InstancesAreScopedToFileWhenMethodsHaveSameName\ClassInFirstFile.boo" />
     <Content Include="Intellisense\Fixtures\WhenParsingMultipleFilesForIntellisense\InstancesAreScopedToFileWhenMethodsHaveSameName\ClassInSecondFile.boo" />

@@ -6,13 +6,15 @@ namespace Boo.BooLangStudioSpecs.Intellisense
 {
     public abstract class BaseCompilerContext
     {
-        private FixtureCompiler fixtures;
+        private readonly FixtureCompiler fixtures = new FixtureCompiler();
+        private CompilationOutput compiledFixtures;
 
-        protected FixtureCompiler Fixtures
+        protected CompilationOutput CompiledFixtures
         {
-            get { return (fixtures = fixtures ?? new FixtureCompiler()); }
+            get { return (compiledFixtures = compiledFixtures ?? fixtures.CompileForCurrentMethod()); }
         }
 
+        [Obsolete]
         protected CompiledProject Compile(string text)
         {
             // kill off the first newline because of the style of text we're doing

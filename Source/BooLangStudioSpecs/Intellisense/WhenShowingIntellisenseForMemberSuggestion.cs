@@ -9,9 +9,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void ShowPublicMethodsForClass()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation);
-            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
+            var declarations = CompiledFixtures.GetDeclarations();
 
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
         }
@@ -19,9 +17,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void ExcludeConstructorFromList()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation);
-            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
+            var declarations = CompiledFixtures.GetDeclarations();
 
             ValidateNonPresenceOfDeclarations(declarations, ".ctor");
         }

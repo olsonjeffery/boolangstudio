@@ -85,6 +85,7 @@
     <Compile Include="Document\CaretLocation.cs" />
     <Compile Include="Document\Nodes\MethodParameter.cs" />
     <Compile Include="Document\Nodes\ProjectTreeNode.cs" />
+    <Compile Include="Document\Nodes\TypeDeclarationTreeNode.cs" />
     <Compile Include="Document\ReferencePoint.cs" />
     <Compile Include="HierarchyEventArgs.cs" />
     <Compile Include="HierarchyListener.cs" />

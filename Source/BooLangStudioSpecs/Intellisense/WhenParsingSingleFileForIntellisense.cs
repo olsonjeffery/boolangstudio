@@ -9,17 +9,13 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void FirstReturnedNodeIsProjectTreeNode()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var project = compilationOutput.Project;
-
-            Assert.IsType<ProjectTreeNode>(project.ParseTree);
+            Assert.IsType<ProjectTreeNode>(CompiledFixtures.Project.ParseTree);
         }
 
         [Fact]
         public void FirstChildIsDocumentTreeNode()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var project = compilationOutput.Project;
+            var project = CompiledFixtures.Project;
 
             Assert.IsType<DocumentTreeNode>(project.ParseTree.Children[0]);
         }
@@ -27,8 +23,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void ClassesShouldBeParsed()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var project = compilationOutput.Project;
+            var project = CompiledFixtures.Project;
 
             var document = project.ParseTree.Children[0];
             var classNode = document.Children[0];
@@ -40,8 +35,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void InterfacesShouldBeParsed()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var project = compilationOutput.Project;
+            var project = CompiledFixtures.Project;
 
             var document = project.ParseTree.Children[0];
             var interfaceNode = document.Children[0];
@@ -53,8 +47,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void MethodParametersShouldBeAddedToMethod()
         {
-            var compilationOutput = Fixtures.CompileForCurrentMethod();
-            var project = compilationOutput.Project;
+            var project = CompiledFixtures.Project;
             
             //                                       .project .document   .class      .method
             var methodNode = (MethodTreeNode)project.ParseTree.Children[0].Children[0].Children[0];
