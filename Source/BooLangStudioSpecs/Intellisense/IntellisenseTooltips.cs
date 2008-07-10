@@ -6,17 +6,24 @@ using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public class WhenDisplayingDescriptionsForIntellisense : BaseDisplayIntellisenseContext
+    public class WhenDisplayingDescriptionsForIntellisense : BaseIntellisenseContext
     {
         [Fact]
         public void ClassesArePrefixedWithClassAndUseFullNamespaceName()
         {
             var declarations = CreateDeclarations(new ClassTreeNode {Name = "MyClass", FullName = "Some.Namespace.MyClass"});
+            var description = declarations.GetDescription(0);
 
-            string description = declarations.GetDescription(0);
+            Assert.Equal("Class Some.Namespace.MyClass", description);
+        }
 
-            Assert.True(description == "Class Some.Namespace.MyClass",
-                "Expected: 'Class Some.Namespace.MyClass'\r\nFound: '" + description + "'.");
+        [Fact]
+        public void InterfacesArePrefixedWithClassAndUseFullNamespaceName()
+        {
+            var declarations = CreateDeclarations(new InterfaceTreeNode { Name = "MyInterface", FullName = "Some.Namespace.MyInterface" });
+            var description = declarations.GetDescription(0);
+
+            Assert.Equal("Interface Some.Namespace.MyInterface", description);
         }
 
         [Fact]
@@ -33,12 +40,10 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void MethodsIncludeParameters()
         {
-            var declarations = GetDeclarations(@"
-class MyClass:
-  def MyMethod(firstParameter as string, secondParameter as int):
-    ~
-    pass
-");
+            var compilationOutput = Fixtures.CompileForCurrentMethod();
+            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation);
+            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
+            
             string description = GetDescriptionMatchingName(declarations, "MyMethod");
 
             Assert.True(description == "void MyClass.MyMethod(string firstParameter, int secondParameter)",

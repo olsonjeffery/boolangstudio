@@ -5,6 +5,7 @@ using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.VSInterop;
+using Boo.BooLangStudioSpecs.Document;
 using Boo.Lang.Compiler.TypeSystem;
 using Microsoft.VisualStudio.Package;
 
@@ -27,6 +28,11 @@ namespace Boo.BooLangService.Intellisense
             this.projectReferences = projectReferenceLookup;
             this.lineView = lineView;
             this.fileName = fileName;
+        }
+
+        public IntellisenseDeclarations Find(CaretLocation caretLocation, ParseReason parseReason)
+        {
+            return Find(caretLocation.Line.Value, caretLocation.Column.Value, parseReason);
         }
 
         /// <summary>

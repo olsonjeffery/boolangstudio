@@ -3,20 +3,16 @@ using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public class WhenShowingIntellisenseAtImportStatement : BaseDisplayIntellisenseContext
+    public class WhenShowingIntellisenseAtImportStatement : BaseIntellisenseContext
     {
         [Fact]
         public void ShowAllReferencedNamespaces()
         {
-            string line;
-            int lineNum, colNum;
-            var document = Compile(out line, out lineNum, out colNum, @"
-import ~
-");
+            var compilationOutput = Fixtures.CompileForCurrentMethod();
 
-            var finder = CreateFinder(document, line,
-                                      "Boo", "BooLangStudio");
-            var declarations = finder.Find(lineNum, colNum, ParseReason.None);
+            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation.LineSource,
+                "Boo", "BooLangStudio");
+            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
 
             ValidatePresenceOfDeclarations(declarations, "Boo", "BooLangStudio");
         }

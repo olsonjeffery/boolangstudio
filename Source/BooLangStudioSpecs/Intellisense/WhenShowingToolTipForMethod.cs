@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public class WhenShowingToolTipForMethod : BaseDisplayIntellisenseContext
+    public class WhenShowingToolTipForMethod : BaseIntellisenseContext
     {
         [Fact(Skip="Not implemented yet.")]
         public void ShowMethodParametersWhenInsideParenthesis()

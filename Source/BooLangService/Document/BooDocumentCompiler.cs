@@ -12,7 +12,7 @@ namespace Boo.BooLangService.Document
     /// </summary>
     public class BooDocumentCompiler
     {
-        private readonly BooDocumentVisitor visitor;
+        private BooDocumentVisitor visitor;
         private BooCompiler compiler;
 
         public BooDocumentCompiler()
@@ -48,20 +48,26 @@ namespace Boo.BooLangService.Document
             );
         }
 
-        private BooCompiler CreateCompiler(BooDocumentVisitor visitor)
-        {
-            var compiler = new BooCompiler();
-
-            compiler.Parameters.OutputWriter = new StringWriter();
-            compiler.Parameters.Pipeline = new ResolveExpressions { BreakOnErrors = false };
-            compiler.Parameters.Pipeline.Add(visitor);
-
-            return compiler;
-        }
-
         public void AddSource(string fileName, string source)
         {
             compiler.Parameters.Input.Add(new StringInput(fileName, source));
+        }
+
+        public void Reset()
+        {
+            visitor = new BooDocumentVisitor();
+            compiler = CreateCompiler(visitor);
+        }
+
+        private BooCompiler CreateCompiler(BooDocumentVisitor visitor)
+        {
+            var newCompiler = compiler ?? new BooCompiler();
+
+            newCompiler.Parameters.OutputWriter = new StringWriter();
+            newCompiler.Parameters.Pipeline = new ResolveExpressions { BreakOnErrors = false };
+            newCompiler.Parameters.Pipeline.Add(visitor);
+
+            return newCompiler;
         }
     }
 }

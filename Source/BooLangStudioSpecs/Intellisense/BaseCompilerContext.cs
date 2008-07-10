@@ -1,10 +1,18 @@
 using System;
+using System.Collections.Generic;
 using Boo.BooLangService.Document;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
     public abstract class BaseCompilerContext
     {
+        private FixtureCompiler fixtures;
+
+        protected FixtureCompiler Fixtures
+        {
+            get { return (fixtures = fixtures ?? new FixtureCompiler()); }
+        }
+
         protected CompiledProject Compile(string text)
         {
             // kill off the first newline because of the style of text we're doing

@@ -1,26 +1,17 @@
 
+using Microsoft.VisualStudio.Package;
 using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public class WhenShowingIntellisenseForMemberSuggestion : BaseDisplayIntellisenseContext
+    public class WhenShowingIntellisenseForMemberSuggestion : BaseIntellisenseContext
     {
         [Fact]
         public void ShowPublicMethodsForClass()
         {
-            var declarations = GetDeclarations(@"
-class TheClassToReference:
-  def FirstMethod():
-    pass
-  
-  def SecondMethod():
-    pass
-
-class MyClass:
-  def MyMethod():
-    instance = TheClassToReference()
-    instance.~
-");
+            var compilationOutput = Fixtures.CompileForCurrentMethod();
+            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation);
+            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
 
             ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
         }
@@ -28,12 +19,9 @@ class MyClass:
         [Fact]
         public void ExcludeConstructorFromList()
         {
-            var declarations = GetDeclarations(@"
-class MyClass:
-  def MyMethod():
-    instance = ""a string""
-    instance.~
-");
+            var compilationOutput = Fixtures.CompileForCurrentMethod();
+            var finder = CreateFinder(compilationOutput.Project, compilationOutput.CaretLocation);
+            var declarations = finder.Find(compilationOutput.CaretLocation, ParseReason.None);
 
             ValidateNonPresenceOfDeclarations(declarations, ".ctor");
         }

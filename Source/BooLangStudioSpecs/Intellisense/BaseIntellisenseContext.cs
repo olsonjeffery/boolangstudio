@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Boo.BooLangService;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Intellisense;
+using Boo.BooLangStudioSpecs.Document;
 using Boo.BooLangStudioSpecs.Intellisense.Stubs;
 using Microsoft.VisualStudio.Package;
 using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public abstract class BaseDisplayIntellisenseContext : BaseCompilerContext
+    public abstract class BaseIntellisenseContext : BaseCompilerContext
     {
         private const string Caret = "~";
 
@@ -46,14 +47,26 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             col = 0;
         }
 
-        protected DeclarationFinder CreateFinder(CompiledProject document, string line, params string[] referencedNamespaces)
+        protected DeclarationFinder CreateFinder(CompiledProject project, CaretLocation caretLocation, params string[] referencedNamespaces)
+        {
+            var lineView = new SimpleStubLineView(caretLocation.LineSource);
+            var referenceLookup = new SimpleStubProjectReferenceLookup();
+
+            referenceLookup.AddFakeNamespaces(referencedNamespaces);
+
+            return new DeclarationFinder(project, referenceLookup, lineView, caretLocation.FileName);
+
+        }
+
+        [Obsolete]
+        protected DeclarationFinder CreateFinder(CompiledProject project, string line, params string[] referencedNamespaces)
         {
             var lineView = new SimpleStubLineView(line);
             var referenceLookup = new SimpleStubProjectReferenceLookup();
 
             referenceLookup.AddFakeNamespaces(referencedNamespaces);
 
-            return new DeclarationFinder(document, referenceLookup, lineView, Constants.DocumentFileName);
+            return new DeclarationFinder(project, referenceLookup, lineView, Constants.DocumentFileName);
         }
 
         protected void ValidatePresenceOfDeclarations(IntellisenseDeclarations declarations, params string[] expectedDeclarationNames)
@@ -108,8 +121,8 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             string line;
             int lineNum, colNum;
 
-            var document = Compile(out line, out lineNum, out colNum, code);
-            var finder = CreateFinder(document, line);
+            var project = Compile(out line, out lineNum, out colNum, code);
+            var finder = CreateFinder(project, line);
 
             return finder.Find(lineNum, colNum, ParseReason.None);
         }
