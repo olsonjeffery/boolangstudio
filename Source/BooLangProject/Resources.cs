@@ -20,7 +20,13 @@ namespace Boo.BooLangProject
         internal const string DefaultNamespaceDescription = "DefaultNamespaceDescription";
         internal const string ApplicationIcon = "ApplicationIcon";
         internal const string ApplicationIconDescription = "ApplicationIconDescription";
-
+        internal const string StartupObject = "StartupObject";
+        internal const string StartupObjectDescription = "StartupObjectDescription";
+        internal const string Ducky = "Ducky";
+        internal const string DuckyDescription = "DuckyDescription";
+        internal const string WhiteSpaceAgnostic = "WhiteSpaceAgnostic";
+        internal const string WhiteSpaceAgnosticDescription = "WhiteSpaceAgnosticDescription";
+        
         static SR loader = null;
         ResourceManager resources;
 

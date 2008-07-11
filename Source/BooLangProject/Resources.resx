@@ -129,4 +129,16 @@
   <data name="DefaultNamespaceDescription" xml:space="preserve">
     <value>Specifies the default namespace for added items, such as classes, that are added via the Add New Item Dialog Box.</value>
   </data>
+  <data name="Ducky" xml:space="preserve">
+    <value>Ducky</value>
+  </data>
+  <data name="DuckyDescription" xml:space="preserve">
+    <value>Turn on or off ducky behavior</value>
+  </data>
+  <data name="WhiteSpaceAgnostic" xml:space="preserve">
+    <value>Whitespace agnostic</value>
+  </data>
+  <data name="WhiteSpaceAgnosticDescription" xml:space="preserve">
+    <value>Turn on or off whitespace agnostic behavior</value>
+  </data>
 </root>

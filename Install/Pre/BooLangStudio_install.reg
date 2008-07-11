@@ -51,4 +51,9 @@ REGEDIT4
 [HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\Services\{bc81f858-0ab5-45a0-985b-c160bcde7390}]
 @="{55663be2-a969-4279-82c5-a6f27936f4f7}"
 "Name"="BooLangService"
-
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\9.0Exp\Configuration\CLSID\{552a4d97-e61d-4551-ae7f-600bd31513af}]
+@="Boo.BooLangProject.GeneralPropertyPage"
+"InprocServer32"="C:\\WINDOWS\\system32\\mscoree.dll"
+"Class"="Boo.BooLangProject.GeneralPropertyPage"
+"CodeBase"="@BLSBINSPATH_REGSAFE@\\BooLangStudio.dll"
+"ThreadingModel"="Both"

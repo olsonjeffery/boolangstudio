@@ -25,7 +25,10 @@ namespace Boo.BooLangProject
                 this.ImageHandler.AddImage(img);
             }
 
+            this.AddCATIDMapping(typeof(BooProjectNodeProperties), typeof(BooProjectNodeProperties).GUID);
+            this.AddCATIDMapping(typeof(GeneralPropertyPage), typeof(GeneralPropertyPage).GUID);
         }
+
 
         /// <summary>
         /// This is a very poor workaround. Until I can figure out how
@@ -92,7 +95,8 @@ namespace Boo.BooLangProject
 
         public override void AddFileFromTemplate(string source, string target)
         {
-            
+            string ns = this.FileTemplateProcessor.GetFileNamespace(target, this);
+            this.FileTemplateProcessor.AddReplace("$nameSpace$", ns);
             this.FileTemplateProcessor.UntokenFile(source, target);
             this.FileTemplateProcessor.Reset();
         }
@@ -115,6 +119,17 @@ namespace Boo.BooLangProject
                 return true;
             else
                 return false;
+        }
+
+        /// <summary>
+        /// Overriding to provide project general property page
+        /// </summary>
+        /// <returns></returns>
+        protected override Guid[] GetConfigurationIndependentPropertyPages()
+        {
+          Guid[] result = new Guid[1];
+          result[0] = typeof(GeneralPropertyPage).GUID;
+          return result;
         }
 
         internal static int booFileNodeImageIndex;

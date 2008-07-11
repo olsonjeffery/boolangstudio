@@ -95,5 +95,41 @@ namespace Boo.BooLangProject {
                 return ResourceManager.GetString("DefaultNamespaceDescription", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ducky.
+        /// </summary>
+        internal static string Ducky {
+            get {
+                return ResourceManager.GetString("Ducky", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turn on or off ducky behavior.
+        /// </summary>
+        internal static string DuckyDescription {
+            get {
+                return ResourceManager.GetString("DuckyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Whitespace agnostic.
+        /// </summary>
+        internal static string WhiteSpaceAgnostic {
+            get {
+                return ResourceManager.GetString("WhiteSpaceAgnostic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turn on or off whitespace agnostic behavior.
+        /// </summary>
+        internal static string WhiteSpaceAgnosticDescription {
+            get {
+                return ResourceManager.GetString("WhiteSpaceAgnosticDescription", resourceCulture);
+            }
+        }
     }
 }

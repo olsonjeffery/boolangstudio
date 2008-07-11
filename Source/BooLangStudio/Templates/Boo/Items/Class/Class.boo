@@ -1,4 +1,4 @@
-namespace $rootnamespace$
+namespace $nameSpace$
 
 import System
 import System.Collections.Generic

@@ -110,13 +110,26 @@
     <Compile Include="BooFileNode.cs" />
     <Compile Include="BooLangProjectFactory.cs" />
     <Compile Include="BooProjectNode.cs" />
+    <Compile Include="BooProjectNodeProperties.cs" />
+    <Compile Include="GeneralPropertyPage.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\BooProjectNode.bmp" />
     <EmbeddedResource Include="Resources\BooFileNode.bmp" />
     <EmbeddedResource Include="Resources\imagelis.bmp" />
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="BooLangStudio.snk" />

@@ -12,26 +12,21 @@ namespace Boo.BooLangProject
 {
     internal enum GeneralPropertyPageTag
     {
-        AssemblyName,
-        OutputType,
-        RootNamespace,
-        StartupObject,
-        ApplicationIcon,
-        TargetPlatform,
-        TargetPlatformLocation
+        AssemblyName,        
+        RootNamespace,        
+        Ducky,
+        WhiteSpaceAgnostic
     }
 
     [ComVisible(true), Guid(GuidList.guidBooProjectPropertyPageClassString)]
     public class GeneralPropertyPage : SettingsPage, EnvDTE80.IInternalExtenderProvider
     {
         #region fields
-        private string assemblyName;
-        private OutputType outputType;
+        private string assemblyName;        
         private string defaultNamespace;
         private string startupObject;
-        private string applicationIcon;
-        private PlatformType targetPlatform = PlatformType.v2;
-        private string targetPlatformLocation;
+        private bool ducky;
+        private bool whiteSpaceAgnostic;
         #endregion
 
         #region ctor
@@ -54,26 +49,11 @@ namespace Boo.BooLangProject
             if (this.ProjectMgr == null)
               return;			
 
-            this.assemblyName = GetProjectProperty(GeneralPropertyPageTag.AssemblyName, true);
-            string outputType = GetProjectProperty(GeneralPropertyPageTag.OutputType);
-
-            if (outputType != null && outputType.Length > 0)
-            {
-              this.outputType = (OutputType)Enum.Parse(typeof(OutputType), outputType);				
-            }
-
+            this.assemblyName = GetProjectProperty(GeneralPropertyPageTag.AssemblyName, true);            
             this.defaultNamespace = GetProjectProperty(GeneralPropertyPageTag.RootNamespace);
-            this.startupObject = GetProjectProperty(GeneralPropertyPageTag.StartupObject);
-            this.applicationIcon = GetProjectProperty(GeneralPropertyPageTag.ApplicationIcon);
-
-            string targetPlatform = GetProjectProperty(GeneralPropertyPageTag.TargetPlatform);
-
-            if (targetPlatform != null && targetPlatform.Length > 0)
-            {
-              this.targetPlatform = (PlatformType)Enum.Parse(typeof(PlatformType), targetPlatform);				
-            }
-
-            this.targetPlatformLocation = GetProjectProperty(GeneralPropertyPageTag.TargetPlatformLocation);		
+            
+            bool.TryParse(GetProjectProperty(GeneralPropertyPageTag.Ducky), out this.ducky);
+            bool.TryParse(GetProjectProperty(GeneralPropertyPageTag.WhiteSpaceAgnostic), out this.whiteSpaceAgnostic);
         }
 
         protected override int ApplyChanges()
@@ -88,6 +68,9 @@ namespace Boo.BooLangProject
 
             this.ProjectMgr.SetProjectProperty(GeneralPropertyPageTag.AssemblyName.ToString(), this.assemblyName);			
             this.ProjectMgr.SetProjectProperty(GeneralPropertyPageTag.RootNamespace.ToString(), this.defaultNamespace);
+            
+            this.ProjectMgr.SetProjectProperty(GeneralPropertyPageTag.Ducky.ToString(), this.ducky.ToString());
+            this.ProjectMgr.SetProjectProperty(GeneralPropertyPageTag.WhiteSpaceAgnostic.ToString(), this.whiteSpaceAgnostic.ToString());
             this.IsDirty = false;
 
             return VSConstants.S_OK;
@@ -113,6 +96,24 @@ namespace Boo.BooLangProject
         {
             get { return this.defaultNamespace; }
             set { this.defaultNamespace = value; this.IsDirty = true; }
+        }        
+
+        [SRCategoryAttribute(SR.Application)]
+        [LocDisplayName(SR.Ducky)]
+        [SRDescriptionAttribute(SR.DuckyDescription)]
+        public bool Ducky
+        {
+            get { return this.ducky; }
+            set { this.ducky = value; this.IsDirty = true; }
+        }
+
+        [SRCategoryAttribute(SR.Application)]
+        [LocDisplayName(SR.WhiteSpaceAgnostic)]
+        [SRDescriptionAttribute(SR.WhiteSpaceAgnosticDescription)]
+        public bool WhiteSpaceAgnostic
+        {
+            get { return this.whiteSpaceAgnostic; }
+            set { this.whiteSpaceAgnostic = value; this.IsDirty = true; }
         }
         
         #endregion
