@@ -3,48 +3,47 @@ using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public class WhenShowingIntellisenseInMethodBody : BaseIntellisenseContext
+    public class WhenShowingIntellisenseInMethodBody : BaseCompilerContext
     {
         [Fact]
         public void ShowLocalVariables()
         {
-            var declarations = CompiledFixtures.GetDeclarations();
-
-            ValidatePresenceOfDeclarations(declarations, "aNumber", "aString");
+            CompiledFixtures
+                .GetDeclarations()
+                .AssertPresenceOf("aNumber", "aString");
         }
 
         [Fact]
         public void ShowClassVariables()
         {
-            var declarations = CompiledFixtures.GetDeclarations();
-
-            ValidatePresenceOfDeclarations(declarations, "myClassString", "myClassInteger");
+            CompiledFixtures
+                .GetDeclarations()
+                .AssertPresenceOf("myClassString", "myClassInteger");
         }
 
         [Fact]
         public void ShowAllMethodsFromSameClass()
         {
-            var declarations = CompiledFixtures.GetDeclarations();
-
-            ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
+            CompiledFixtures
+                .GetDeclarations()
+                .AssertPresenceOf("FirstMethod", "SecondMethod");
         }
 
         [Fact]
         public void ShowCurrentMethod()
         {
-            var declarations = CompiledFixtures.GetDeclarations();
-
-            ValidatePresenceOfDeclarations(declarations, "FirstMethod", "SecondMethod");
+            CompiledFixtures
+                .GetDeclarations()
+                .AssertPresenceOf("FirstMethod", "SecondMethod");
         }
 
         [Fact]
         public void ShowNamespacesFromReferences()
         {
-            var declarations = CompiledFixtures
+            CompiledFixtures
                 .SetReferences("System", "Boo")
-                .GetDeclarations();
-
-            ValidatePresenceOfDeclarations(declarations, "System", "Boo");
+                .GetDeclarations()
+                .AssertPresenceOf("System", "Boo");
         }
     }
 }

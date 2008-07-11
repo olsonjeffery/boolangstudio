@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public class WhenParsingMultipleFilesForIntellisense : BaseIntellisenseContext
+    public class WhenParsingMultipleFilesForIntellisense : BaseCompilerContext
     {
         [Fact]
         public void InstancesAreScopedToFileWhenMethodsHaveSameName()

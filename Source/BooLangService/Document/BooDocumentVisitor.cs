@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Boo.BooLangService.Document.Nodes;
@@ -36,7 +37,7 @@ namespace Boo.BooLangService.Document
 
         public override bool EnterModule(Module node)
         {
-            var document = new DocumentTreeNode();
+            var document = new DocumentTreeNode(GetEntity(node));
 
             Push(document, node.LexicalInfo.FileName, 0);
             currentDocument = document;
@@ -49,7 +50,10 @@ namespace Boo.BooLangService.Document
             base.LeaveModule(node);
 
             // todo: de-nasty this
-            var linesInFile = File.ReadAllLines(node.LexicalInfo.FileName).Length;
+            var linesInFile = -1;
+
+            if (node.LexicalInfo.FileName != null)
+                linesInFile = File.ReadAllLines(node.LexicalInfo.FileName).Length;
 
             Pop(linesInFile);
             currentDocument = null;
@@ -69,9 +73,9 @@ namespace Boo.BooLangService.Document
                 if (entity is IType)
                 {
                     if (((IType)entity).IsInterface)
-                        currentDocument.Imports[node.Namespace].Add(new InterfaceTreeNode(entity.FullName) { Name = entity.Name });
+                        currentDocument.Imports[node.Namespace].Add(new InterfaceTreeNode(entity, entity.FullName) { Name = entity.Name });
                     else
-                        currentDocument.Imports[node.Namespace].Add(new ClassTreeNode(entity.FullName) { Name = entity.Name });
+                        currentDocument.Imports[node.Namespace].Add(new ClassTreeNode(entity, entity.FullName) { Name = entity.Name });
                 }
                 else if (entity is INamespace)
                     currentDocument.Imports[node.Namespace].Add(new ImportedNamespaceTreeNode { Name = entity.Name });
@@ -82,7 +86,7 @@ namespace Boo.BooLangService.Document
 
         public override bool EnterInterfaceDefinition(InterfaceDefinition node)
         {
-            Push(new InterfaceTreeNode(node.FullName), node.Name, node.LexicalInfo.Line);
+            Push(new InterfaceTreeNode(GetEntity(node), node.FullName), node.Name, node.LexicalInfo.Line);
 
             return base.EnterInterfaceDefinition(node);
         }
@@ -96,18 +100,31 @@ namespace Boo.BooLangService.Document
 
         public override bool EnterClassDefinition(ClassDefinition node)
         {
-            Push(new ClassTreeNode(node.FullName), node.Name, node.LexicalInfo.Line);
+            Push(new ClassTreeNode(GetEntity(node), node.FullName), node.Name, node.LexicalInfo.Line);
 
             return base.EnterClassDefinition(node);
         }
 
         public override void OnField(Field node)
         {
-            Push(new LocalTreeNode(), node.Name, node.LexicalInfo.Line);
+            Push(new FieldTreeNode(GetEntity(node)), node.Name, node.LexicalInfo.Line);
 
             base.OnField(node);
 
             Pop(node.LexicalInfo.Line);
+
+            AddReferencePoint(node, ReferenceType.Field);
+        }
+
+        public override void OnProperty(Property node)
+        {
+            Push(new PropertyTreeNode(GetEntity(node)), node.Name, node.LexicalInfo.Line);
+
+            base.OnProperty(node);
+
+            Pop(node.EndSourceLocation.Line);
+
+            AddReferencePoint(node, ReferenceType.Property);
         }
 
         public override bool EnterConstructor(Constructor node)
@@ -132,18 +149,21 @@ namespace Boo.BooLangService.Document
                 });
             }
 
-            var parent = (TypeDefinition)node.ParentNode;
-            var method = new MethodTreeNode(node.ReturnType != null ? node.ReturnType.ToString() : "void", parent != null ? parent.Name : "");
+            //           method in class                   ?? method in property, in class
+            var parent = node.ParentNode as TypeDefinition ?? node.ParentNode.ParentNode as TypeDefinition;
+            var method = new MethodTreeNode(GetEntity(node), node.ReturnType != null ? node.ReturnType.ToString() : "void", parent != null ? parent.Name : "");
             method.Parameters = parameters;
 
             Push(method, node.Name, node.LexicalInfo.Line);
+
+            AddReferencePoint(node, ReferenceType.Method);
 
             return base.EnterMethod(node);
         }
 
         public override bool EnterTryStatement(TryStatement node)
         {
-            Push(new TryTreeNode(), "", node.LexicalInfo.Line);
+            Push(new TryTreeNode(GetEntity(node)), "", node.LexicalInfo.Line);
 
             return base.EnterTryStatement(node);
         }
@@ -159,19 +179,19 @@ namespace Boo.BooLangService.Document
         {
             var local = (ITypedEntity)TypeSystemServices.GetEntity(node);
 
-            Push(new LocalTreeNode { ReturnType = local.Type.ToString() }, node.Name, node.LexicalInfo.Line);
+            Push(new LocalTreeNode(GetEntity(node)) { ReturnType = local.Type.ToString() }, node.Name, node.LexicalInfo.Line);
 
             base.OnLocal(node);
 
             Pop(node.LexicalInfo.Line);
+
+            AddReferencePoint(node, ReferenceType.Local);
         }
 
-        public override void OnReferenceExpression(ReferenceExpression node)
+        private void AddReferencePoint(Node node, ReferenceType referenceType)
         {
-            base.OnReferenceExpression(node);
-
             var refNode = node;
-            
+
             while (refNode.ParentNode.NodeType == NodeType.MemberReferenceExpression)
             {
                 refNode = (ReferenceExpression)refNode.ParentNode;
@@ -182,11 +202,13 @@ namespace Boo.BooLangService.Document
             referencePoints.Add(new ReferencePoint
             {
                 Entity = entity,
-                Line = node.LexicalInfo.Line,
+                Line = node.LexicalInfo.Line - 1, // boo is 1-based, while VS is 0-based
                 Column = node.LexicalInfo.Column,
-                FileName = currentDocument.Name
+                FileName = currentDocument.Name,
+                ReferenceType = referenceType
             });
         }
+
 
         public override void LeaveMethod(Method node)
         {
@@ -225,10 +247,19 @@ namespace Boo.BooLangService.Document
             currentScope = currentScope.Parent;
         }
 
-        private void PushAndPop(IBooParseTreeNode node, string name, int line)
+        public override Node VisitNode(Node node)
         {
-            Push(node, name, line);
-            Pop(line);
+            // handy for breaking into
+            return base.VisitNode(node);
         }
+    }
+
+    [Flags]
+    public enum ReferenceType
+    {
+        Method,
+        Local,
+        Property,
+        Field
     }
 }

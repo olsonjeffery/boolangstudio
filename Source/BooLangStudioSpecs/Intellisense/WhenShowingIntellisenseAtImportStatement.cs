@@ -3,16 +3,15 @@ using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public class WhenShowingIntellisenseAtImportStatement : BaseIntellisenseContext
+    public class WhenShowingIntellisenseAtImportStatement : BaseCompilerContext
     {
         [Fact]
         public void ShowAllReferencedNamespaces()
         {
-            var declarations = CompiledFixtures
+            CompiledFixtures
                 .SetReferences("Boo", "BooLangStudio")
-                .GetDeclarations();
-
-            ValidatePresenceOfDeclarations(declarations, "Boo", "BooLangStudio");
+                .GetDeclarations()
+                .AssertPresenceOf("Boo", "BooLangStudio");
         }
     }
 }

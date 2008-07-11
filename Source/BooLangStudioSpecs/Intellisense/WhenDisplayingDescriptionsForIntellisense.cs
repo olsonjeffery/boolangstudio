@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Boo.BooLangService;
 using Boo.BooLangService.Document.Nodes;
@@ -6,7 +7,7 @@ using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
 {
-    public class WhenDisplayingDescriptionsForIntellisense : BaseIntellisenseContext
+    public class WhenDisplayingDescriptionsForIntellisense : BaseCompilerContext
     {
         [Fact]
         public void ClassesArePrefixedWithClassAndUseFullNamespaceName()
@@ -29,12 +30,10 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         [Fact]
         public void FieldsStartWithTypeFollowedByDeclaredName()
         {
-            var declarations = CreateDeclarations(new LocalTreeNode { Name = "variable", ReturnType = "int" });
+            var declarations = CompiledFixtures.GetDeclarations();
+            var description = declarations.GetDescriptionMatchingName("variable");
 
-            string description = declarations.GetDescription(0);
-
-            Assert.True(description == "int variable",
-                "Expected: 'int variable'\r\nFound: '" + description + "'.");
+            Assert.Equal("int variable", description);
         }
 
         [Fact]

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using Boo.BooLangService.Intellisense;
 using Boo.Lang.Compiler.Ast;
+using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
@@ -12,7 +13,7 @@ namespace Boo.BooLangService.Document.Nodes
         private readonly string containingClass;
         private IList<MethodParameter> parameters = new List<MethodParameter>();
 
-        public MethodTreeNode(string returnType, string containingClass)
+        public MethodTreeNode(IEntity entity, string returnType, string containingClass) : base(entity)
         {
             this.returnType = returnType;
             this.containingClass = containingClass;

@@ -4,9 +4,9 @@ using Boo.Lang.Compiler.TypeSystem;
 namespace Boo.BooLangService.Document.Nodes
 {
     [IntellisenseVisible]
-    public class LocalTreeNode : InstanceDeclarationTreeNode
+    public class PropertyTreeNode : InstanceDeclarationTreeNode
     {
-        public LocalTreeNode(IEntity entity) : base(entity)
+        public PropertyTreeNode(IEntity entity) : base(entity)
         {}
     }
 }

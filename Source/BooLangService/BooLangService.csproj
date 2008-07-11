@@ -83,8 +83,11 @@
     <Compile Include="AssemblyHelper.cs" />
     <Compile Include="BooProjectSources.cs" />
     <Compile Include="Document\CaretLocation.cs" />
+    <Compile Include="Document\Nodes\FieldTreeNode.cs" />
+    <Compile Include="Document\Nodes\InstanceDeclarationTreeNode.cs" />
     <Compile Include="Document\Nodes\MethodParameter.cs" />
     <Compile Include="Document\Nodes\ProjectTreeNode.cs" />
+    <Compile Include="Document\Nodes\PropertyTreeNode.cs" />
     <Compile Include="Document\Nodes\TypeDeclarationTreeNode.cs" />
     <Compile Include="Document\ReferencePoint.cs" />
     <Compile Include="HierarchyEventArgs.cs" />

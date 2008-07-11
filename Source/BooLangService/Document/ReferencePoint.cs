@@ -12,10 +12,11 @@ namespace Boo.BooLangService.Document
         public int Line { get; set; }
         public int Column { get; set; }
         public string FileName { get; set; }
+        public ReferenceType ReferenceType { get; set; }
 
         public bool WithinBounds(int line, int column)
         {
-            return (line >= Line && line <= Line + 1) && (column >= Column && column <= Column + Entity.FullName.Length);
+            return line == Line && (column >= Column && column <= Column + Entity.FullName.Length);
         }
     }
 }

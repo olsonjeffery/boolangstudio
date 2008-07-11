@@ -4,6 +4,7 @@ using System.Reflection;
 using Boo.Lang.Compiler;
 using Boo.Lang.Compiler.IO;
 using Boo.Lang.Compiler.Pipelines;
+using Boo.Lang.Compiler.Steps;
 
 namespace Boo.BooLangService.Document
 {
@@ -64,10 +65,45 @@ namespace Boo.BooLangService.Document
             var newCompiler = compiler ?? new BooCompiler();
 
             newCompiler.Parameters.OutputWriter = new StringWriter();
-            newCompiler.Parameters.Pipeline = new ResolveExpressions { BreakOnErrors = false };
+            newCompiler.Parameters.Pipeline = new Compile { BreakOnErrors = false };
             newCompiler.Parameters.Pipeline.Add(visitor);
 
             return newCompiler;
+        }
+    }
+
+    public class IntellisenseResolveExpressions : Parse
+    {
+        public IntellisenseResolveExpressions()
+        {
+            Add(new InitializeTypeSystemServices());
+            Add(new PreErrorChecking());
+
+            Add(new MergePartialClasses());
+
+            Add(new InitializeNameResolutionService());
+            Add(new IntroduceGlobalNamespaces());
+
+            Add(new BindTypeDefinitions());
+            Add(new BindGenericParameters());
+            Add(new BindNamespaces());
+            Add(new BindBaseTypes());
+
+            Add(new IntroduceModuleClasses());
+
+            Add(new BindTypeDefinitions());
+            Add(new BindGenericParameters());
+            Add(new BindEnumMembers());
+            Add(new BindBaseTypes());
+
+            Add(new BindMethods());
+            Add(new ResolveTypeReferences());
+            Add(new BindTypeMembers());
+
+            Add(new ProcessInheritedAbstractMembers());
+            Add(new CheckMemberNames());
+
+            Add(new ExpandProperties());
         }
     }
 }

@@ -37,6 +37,19 @@ namespace Boo.BooLangService.Document
             return null;
         }
 
+        public IEntity GetEntity(string fileName, string instanceName, List<ReferenceType> referenceTypes)
+        {
+            foreach (var referencePoint in referencePoints)
+            {
+                if (referencePoint.FileName == fileName &&
+                    referencePoint.Entity.Name == instanceName &&
+                    referenceTypes.Contains(referencePoint.ReferenceType))
+                    return referencePoint.Entity;
+            }
+
+            return null;
+        }
+
         public IBooParseTreeNode GetScope(string fileName, int line)
         {
             foreach (var document in ((ProjectTreeNode)root).Children)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -18,6 +19,11 @@ namespace Boo.BooLangService.Document.Nodes
         public int IndexOf(IBooParseTreeNode item)
         {
             return inner.IndexOf(item);
+        }
+
+        public IBooParseTreeNode Find(Predicate<IBooParseTreeNode> match)
+        {
+            return inner.Find(match);
         }
 
         public void Insert(int index, IBooParseTreeNode item)

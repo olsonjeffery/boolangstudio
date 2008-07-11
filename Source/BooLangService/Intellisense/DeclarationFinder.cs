@@ -70,7 +70,7 @@ namespace Boo.BooLangService.Intellisense
                 // reported as a complete word because of the shortcut used.
                 // So it's easier just to say any lines ending in "." are member lookups, and everything
                 // else is complete word.
-                return GetMemberLookupIntellisenseDeclarations(lineNum, colNum);
+                return GetMemberLookupIntellisenseDeclarations(line, lineNum, colNum);
             }
 
             // Everything else (complete word)
@@ -88,17 +88,26 @@ namespace Boo.BooLangService.Intellisense
             return declarations;
         }
 
-        private IntellisenseDeclarations GetMemberLookupIntellisenseDeclarations(int line, int column)
+        private IntellisenseDeclarations GetMemberLookupIntellisenseDeclarations(string lineSource, int line, int column)
         {
             var declarations = new IntellisenseDeclarations();
 
             IEntity entity = compiledProject.GetEntityAt(fileName, line, column);
+
+            if (entity == null)
+                entity = GetEntityFromLine(lineSource, line);
+
             var namespaceEntity = entity as INamespace;
             var instance = false;
 
-            if (namespaceEntity == null && entity is InternalLocal)
+            if (entity is IMethod)
             {
-                namespaceEntity = ((InternalLocal)entity).Type;
+                namespaceEntity = ((IMethod)entity).ReturnType;
+                instance = true;
+            }
+            else if (entity is ITypedEntity)
+            {
+                namespaceEntity = ((ITypedEntity)entity).Type;
                 instance = true;
             }
 
@@ -133,6 +142,28 @@ namespace Boo.BooLangService.Intellisense
             declarations.Sort();
 
             return declarations;
+        }
+
+        private IEntity GetEntityFromLine(string lineSource, int lineNum)
+        {
+            var scopedParseTree = compiledProject.GetScope(fileName, lineNum);
+            var flattener = new BooParseTreeNodeFlatterner();
+            var flattenedScope = flattener.FlattenFrom(scopedParseTree);
+
+            // couldn't find an entity at said line, could be a instance reference
+            var instanceName = lineSource;
+
+            if (instanceName.EndsWith("."))
+                instanceName = instanceName.Substring(0, lineSource.Length - 1);
+
+            instanceName = instanceName.Trim();
+
+            if (instanceName.EndsWith(")"))
+                instanceName = instanceName.Substring(0, instanceName.IndexOf('('));
+
+            IBooParseTreeNode node = flattenedScope.Find(e => e.Name == instanceName);
+
+            return node.Entity;
         }
 
         private IntellisenseDeclarations GetScopedIntellisenseDeclarations(int lineNum)
