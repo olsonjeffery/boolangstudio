@@ -117,7 +117,7 @@ namespace Boo.BooLangService.Intellisense
             members.RemoveAll(e =>
             {
                 if (excludedMembers.Contains(e.Name)) return true;
-                if (e is INamespace) return false;
+                if (e is NamespaceEntity || e is NullNamespace || e is SimpleNamespace) return false;
 
                 var member = (IMember)e;
 
