@@ -91,21 +91,34 @@ namespace Boo.BooLangService.Intellisense
         private IntellisenseDeclarations GetMemberLookupIntellisenseDeclarations(string lineSource, int line, int column)
         {
             var declarations = new IntellisenseDeclarations();
+            var members = GetMembersFromCurrentScope(line, lineSource);
 
-            IEntity entity = compiledProject.GetEntityAt(fileName, line, column);
+            var converter = new EntityToTreeNodeConverter();
 
-            if (entity == null)
-                entity = GetEntityFromLine(lineSource, line);
+            members.ForEach(e =>
+            {
+                IBooParseTreeNode node = converter.ToTreeNode(e);
 
+                if (node != null)
+                    declarations.Add(node);
+            });
+
+            declarations.Sort();
+
+            return declarations;
+        }
+
+        private List<IEntity> GetMembersFromEntity(IEntity entity, bool constructor)
+        {
             var namespaceEntity = entity as INamespace;
-            var instance = false;
+            var instance = constructor;
 
             if (entity is IMethod)
             {
                 namespaceEntity = ((IMethod)entity).ReturnType;
                 instance = true;
             }
-            else if (entity is ITypedEntity)
+            else if (entity is ITypedEntity && !(entity is IType))
             {
                 namespaceEntity = ((ITypedEntity)entity).Type;
                 instance = true;
@@ -125,45 +138,41 @@ namespace Boo.BooLangService.Intellisense
                 return (instance && member.IsStatic) || (!instance && !member.IsStatic);
             });
 
-            // optimise this so the above is removed, and there's only one loop
-            // this method creates the delcarations from the members brought back by the TypeSystemServices
-            // I'm not too happy with this, as it is big and high maintenance.
-
-            var converter = new EntityToTreeNodeConverter();
-
-            members.ForEach(e =>
-            {
-                IBooParseTreeNode node = converter.ToTreeNode(e);
-
-                if (node != null)
-                    declarations.Add(node);
-            });
-
-            declarations.Sort();
-
-            return declarations;
+            return members;
         }
 
-        private IEntity GetEntityFromLine(string lineSource, int lineNum)
+        private List<IEntity> GetMembersFromCurrentScope(int line, string lineSource)
         {
-            var scopedParseTree = compiledProject.GetScope(fileName, lineNum);
-            var flattener = new BooParseTreeNodeFlatterner();
-            var flattenedScope = flattener.FlattenFrom(scopedParseTree);
+            var scopedDeclarations = GetScopedIntellisenseDeclarations(line);
+            var invocationStack = GetInvocationStack(lineSource);
 
-            // couldn't find an entity at said line, could be a instance reference
-            var instanceName = lineSource;
+            IBooParseTreeNode firstNode = scopedDeclarations.Find(e => e.Name.Equals(invocationStack[0].Name, StringComparison.OrdinalIgnoreCase));
+            IEntity entity = firstNode.Entity;
+            var constructor = invocationStack[0].HadParentheses;
 
-            if (instanceName.EndsWith("."))
-                instanceName = instanceName.Substring(0, lineSource.Length - 1);
+            for (int i = 1; i < invocationStack.Length; i++)
+            {
+                var invocation = invocationStack[i];
+                var members = GetMembersFromEntity(entity, constructor);
+                var matchingMember = members.Find(e => e.Name == invocation.Name);
 
-            instanceName = instanceName.Trim();
+                constructor = false;
 
-            if (instanceName.EndsWith(")"))
-                instanceName = instanceName.Substring(0, instanceName.IndexOf('('));
+                if (matchingMember != null)
+                    entity = matchingMember;
+            }
 
-            IBooParseTreeNode node = flattenedScope.Find(e => e.Name == instanceName);
+            return GetMembersFromEntity(entity, constructor);
+        }
 
-            return node.Entity;
+        private Invocation[] GetInvocationStack(string lineSource)
+        {
+            var lineParser = new LineEntityParser();
+
+            if (lineSource.EndsWith("."))
+                lineSource = lineSource.Substring(0, lineSource.Length - 1);
+
+            return lineParser.GetEntityNames(lineSource);
         }
 
         private IntellisenseDeclarations GetScopedIntellisenseDeclarations(int lineNum)

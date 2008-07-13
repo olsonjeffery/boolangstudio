@@ -105,6 +105,8 @@
     <Compile Include="Document\Nodes\TryTreeNode.cs" />
     <Compile Include="Document\ScopableAttribute.cs" />
     <Compile Include="AttributeHelper.cs" />
+    <Compile Include="Intellisense\Invocation.cs" />
+    <Compile Include="Intellisense\LineEntityParser.cs" />
     <Compile Include="VSInterop\IProjectReferenceLookup.cs" />
     <Compile Include="VSInterop\ProjectReferenceLookup.cs" />
     <Compile Include="Intellisense\TypeKeywordResolver.cs" />

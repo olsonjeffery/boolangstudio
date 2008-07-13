@@ -74,5 +74,10 @@ namespace Boo.BooLangService
         {
             members.Sort();
         }
+
+        public IBooParseTreeNode Find(Predicate<IBooParseTreeNode> match)
+        {
+            return members.Find(match);
+        }
     }
 }

@@ -105,7 +105,9 @@
     <Compile Include="Intellisense\Constants.cs" />
     <Compile Include="Intellisense\FixtureCompiler.cs" />
     <Compile Include="Intellisense\IntellisenseDeclarationsTestExtensionMethods.cs" />
+    <Compile Include="Intellisense\LineEntityParserTests.cs" />
     <Compile Include="Intellisense\WhenParsingMultipleFilesForIntellisense.cs" />
+    <Compile Include="Intellisense\WhenShowingIntellisenseForNamespaceSuggestion.cs" />
     <Compile Include="LineScanner\LexingBaseFixture.cs" />
     <Compile Include="LineScanner\LineCommentLexing.cs" />
     <Compile Include="LineScanner\MalformedStrings.cs" />
@@ -176,6 +178,10 @@
     <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\FirstChildIsDocumentTreeNode.boo" />
     <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\FirstReturnedNodeIsProjectTreeNode.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseAtImportStatement\ShowAllReferencedNamespaces.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\IncludeOnlyStaticMethodsForClass.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\IncludePublicMembersForInstanceOfImportedClass.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ReturnTypesOfMethodCallsOnAnObjectCanBeUsed.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ExcludeProtectedMembersOfOtherClasses.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\DirectInstantiationsCanBeUsed.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ReturnTypesOfMethodCallsCanBeUsed.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\PropertiesCanBeUsed.boo" />
@@ -183,7 +189,8 @@
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\LocalVariablesCanBeUsed.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ExcludePrivateMembersOfOtherClasses.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ExcludeConstructorFromList.boo" />
-    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ShowPublicMethodsForClass.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\IncludePublicMethodsForInstanceOfClass.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForNamespaceSuggestion\IncludeSubnamespaces.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowNamespacesFromReferences.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowCurrentMethod.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowAllMethodsFromSameClass.boo" />

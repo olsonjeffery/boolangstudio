@@ -8,11 +8,28 @@ namespace Boo.BooLangStudioSpecs.Intellisense
     public class WhenShowingIntellisenseForMemberSuggestion : BaseCompilerContext
     {
         [Fact]
-        public void ShowPublicMethodsForClass()
+        public void IncludeOnlyStaticMethodsForClass()
+        {
+            CompiledFixtures
+                .GetDeclarations()
+                .AssertPresenceOf("FirstStaticMethod", "SecondStaticMethod")
+                .AssertNonPresenceOf("AnInstanceMethod");
+        }
+
+        [Fact]
+        public void IncludePublicMethodsForInstanceOfClass()
         {
             CompiledFixtures
                 .GetDeclarations()
                 .AssertPresenceOf("FirstMethod", "SecondMethod");
+        }
+
+        [Fact]
+        public void IncludePublicMembersForInstanceOfImportedClass()
+        {
+            CompiledFixtures
+                .GetDeclarations()
+                .AssertPresenceOf("Copy", "Join");
         }
 
         [Fact]
@@ -29,6 +46,14 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             CompiledFixtures
                 .GetDeclarations()
                 .AssertNonPresenceOf("APrivateMethod", "AnotherPrivateMethod");
+        }
+
+        [Fact]
+        public void ExcludeProtectedMembersOfOtherClasses()
+        {
+            CompiledFixtures
+                .GetDeclarations()
+                .AssertNonPresenceOf("AProtectedMethod", "AnotherProtectedMethod");
         }
 
         [Fact]
@@ -61,6 +86,19 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             CompiledFixtures
                 .GetDeclarations()
                 .AssertPresenceOf("TestMethod", "AnotherTestMethod");
+        }
+
+        [Fact]
+        public void ReturnTypesOfMethodCallsOnAnObjectCanBeUsed()
+        {
+            // object.method.
+            // currently trys to find a reference point of the whole thing
+            // (something literally declared as object.method) but it should
+            // really split on "." then find each individually. Find object,
+            // then find method on object.
+            CompiledFixtures
+                .GetDeclarations()
+                .AssertPresenceOf("IndexOf", "Substring");
         }
 
         [Fact]

@@ -20,7 +20,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             return declarations.GetDescription(index);
         }
 
-        public static void AssertPresenceOf(this IntellisenseDeclarations declarations, params string[] expectedDeclarationNames)
+        public static IntellisenseDeclarations AssertPresenceOf(this IntellisenseDeclarations declarations, params string[] expectedDeclarationNames)
         {
             Dictionary<string, bool> foundDeclarations = declarations.GetExpectedDeclarations(expectedDeclarationNames);
 
@@ -31,9 +31,11 @@ namespace Boo.BooLangStudioSpecs.Intellisense
                 Assert.True(foundDeclarations[name],
                     "Expected to find declaration '" + name + "' in list of intellisense declarations, but didn't.");
             }
+
+            return declarations;
         }
 
-        public static void AssertNonPresenceOf(this IntellisenseDeclarations declarations, params string[] expectedDeclarationNames)
+        public static IntellisenseDeclarations AssertNonPresenceOf(this IntellisenseDeclarations declarations, params string[] expectedDeclarationNames)
         {
             Dictionary<string, bool> foundDeclarations = declarations.GetExpectedDeclarations(expectedDeclarationNames);
 
@@ -44,6 +46,8 @@ namespace Boo.BooLangStudioSpecs.Intellisense
                 Assert.False(foundDeclarations[name],
                     "Expected to NOT find declaration '" + name + "' in list of intellisense declarations, but did.");
             }
+
+            return declarations;
         }
 
         private static Dictionary<string, bool> GetExpectedDeclarations(this IntellisenseDeclarations declarations, string[] expectedDeclarationNames)
