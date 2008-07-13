@@ -15,13 +15,7 @@ namespace Boo.BooLangService.Document
     {
         private readonly IBooParseTreeNode project = new ProjectTreeNode();
         private IBooParseTreeNode currentScope;
-        private readonly IList<ReferencePoint> referencePoints = new List<ReferencePoint>();
         private DocumentTreeNode currentDocument;
-
-        public IList<ReferencePoint> ReferencePoints
-        {
-            get { return referencePoints; }
-        }
 
         public IBooParseTreeNode Project
         {
@@ -112,8 +106,6 @@ namespace Boo.BooLangService.Document
             base.OnField(node);
 
             Pop(node.LexicalInfo.Line);
-
-            AddReferencePoint(node, ReferenceType.Field);
         }
 
         public override void OnProperty(Property node)
@@ -123,8 +115,6 @@ namespace Boo.BooLangService.Document
             base.OnProperty(node);
 
             Pop(node.EndSourceLocation.Line);
-
-            AddReferencePoint(node, ReferenceType.Property);
         }
 
         public override bool EnterConstructor(Constructor node)
@@ -156,8 +146,6 @@ namespace Boo.BooLangService.Document
 
             Push(method, node.Name, node.LexicalInfo.Line);
 
-            AddReferencePoint(node, ReferenceType.Method);
-
             return base.EnterMethod(node);
         }
 
@@ -184,31 +172,7 @@ namespace Boo.BooLangService.Document
             base.OnLocal(node);
 
             Pop(node.LexicalInfo.Line);
-
-            AddReferencePoint(node, ReferenceType.Local);
         }
-
-        private void AddReferencePoint(Node node, ReferenceType referenceType)
-        {
-            var refNode = node;
-
-            while (refNode.ParentNode.NodeType == NodeType.MemberReferenceExpression)
-            {
-                refNode = (ReferenceExpression)refNode.ParentNode;
-            }
-
-            IEntity entity = TypeSystemServices.GetEntity(refNode);
-
-            referencePoints.Add(new ReferencePoint
-            {
-                Entity = entity,
-                Line = node.LexicalInfo.Line - 1, // boo is 1-based, while VS is 0-based
-                Column = node.LexicalInfo.Column,
-                FileName = currentDocument.Name,
-                ReferenceType = referenceType
-            });
-        }
-
 
         public override void LeaveMethod(Method node)
         {

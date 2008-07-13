@@ -44,8 +44,7 @@ namespace Boo.BooLangService.Document
             compiler.Run();
 
             return new CompiledProject(
-                visitor.Project,
-                visitor.ReferencePoints
+                visitor.Project
             );
         }
 

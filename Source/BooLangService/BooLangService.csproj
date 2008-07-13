@@ -89,7 +89,6 @@
     <Compile Include="Document\Nodes\ProjectTreeNode.cs" />
     <Compile Include="Document\Nodes\PropertyTreeNode.cs" />
     <Compile Include="Document\Nodes\TypeDeclarationTreeNode.cs" />
-    <Compile Include="Document\ReferencePoint.cs" />
     <Compile Include="HierarchyEventArgs.cs" />
     <Compile Include="HierarchyListener.cs" />
     <Compile Include="Intellisense\DeclarationFinder.cs" />

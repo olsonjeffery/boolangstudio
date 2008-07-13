@@ -7,47 +7,15 @@ namespace Boo.BooLangService.Document
     public class CompiledProject
     {
         private readonly IBooParseTreeNode root;
-        private readonly IList<ReferencePoint> referencePoints;
 
-        public CompiledProject(IBooParseTreeNode root, IList<ReferencePoint> referencePoints)
+        public CompiledProject(IBooParseTreeNode root)
         {
             this.root = root;
-            this.referencePoints = referencePoints;
         }
 
         public IBooParseTreeNode ParseTree
         {
             get { return root; }
-        }
-
-        /// <summary>
-        /// Gets an entity, if one exists, at a specified line and column.
-        /// </summary>
-        /// <param name="line">Line</param>
-        /// <param name="column">Column</param>
-        /// <returns>Entity </returns>
-        public IEntity GetEntityAt(string fileName, int line, int column)
-        {
-            foreach (var referencePoint in referencePoints)
-            {
-                if (referencePoint.FileName == fileName && referencePoint.WithinBounds(line, column))
-                    return referencePoint.Entity;
-            }
-
-            return null;
-        }
-
-        public IEntity GetEntity(string fileName, string instanceName, List<ReferenceType> referenceTypes)
-        {
-            foreach (var referencePoint in referencePoints)
-            {
-                if (referencePoint.FileName == fileName &&
-                    referencePoint.Entity.Name == instanceName &&
-                    referenceTypes.Contains(referencePoint.ReferenceType))
-                    return referencePoint.Entity;
-            }
-
-            return null;
         }
 
         public IBooParseTreeNode GetScope(string fileName, int line)
