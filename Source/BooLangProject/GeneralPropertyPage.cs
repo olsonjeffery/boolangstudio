@@ -15,7 +15,8 @@ namespace Boo.BooLangProject
         AssemblyName,        
         RootNamespace,        
         Ducky,
-        WhiteSpaceAgnostic
+        WhiteSpaceAgnostic,
+        OutputType,
     }
 
     [ComVisible(true), Guid(GuidList.guidBooProjectPropertyPageClassString)]
@@ -23,10 +24,10 @@ namespace Boo.BooLangProject
     {
         #region fields
         private string assemblyName;        
-        private string defaultNamespace;
-        private string startupObject;
+        private string defaultNamespace;        
         private bool ducky;
         private bool whiteSpaceAgnostic;
+        private OutputType outputType;
         #endregion
 
         #region ctor
@@ -51,6 +52,16 @@ namespace Boo.BooLangProject
 
             this.assemblyName = GetProjectProperty(GeneralPropertyPageTag.AssemblyName, true);            
             this.defaultNamespace = GetProjectProperty(GeneralPropertyPageTag.RootNamespace);
+            string outputType = GetProjectProperty(GeneralPropertyPageTag.OutputType);
+            
+            if (!string.IsNullOrEmpty(outputType))
+            {
+                try
+                {
+                    this.outputType = (OutputType)Enum.Parse(typeof(OutputType), outputType);
+                }
+                catch { }
+            }
             
             bool.TryParse(GetProjectProperty(GeneralPropertyPageTag.Ducky), out this.ducky);
             bool.TryParse(GetProjectProperty(GeneralPropertyPageTag.WhiteSpaceAgnostic), out this.whiteSpaceAgnostic);
@@ -71,6 +82,7 @@ namespace Boo.BooLangProject
             
             this.ProjectMgr.SetProjectProperty(GeneralPropertyPageTag.Ducky.ToString(), this.ducky.ToString());
             this.ProjectMgr.SetProjectProperty(GeneralPropertyPageTag.WhiteSpaceAgnostic.ToString(), this.whiteSpaceAgnostic.ToString());
+            this.ProjectMgr.SetProjectProperty(GeneralPropertyPageTag.OutputType.ToString(), this.outputType.ToString());
             this.IsDirty = false;
 
             return VSConstants.S_OK;
@@ -114,6 +126,15 @@ namespace Boo.BooLangProject
         {
             get { return this.whiteSpaceAgnostic; }
             set { this.whiteSpaceAgnostic = value; this.IsDirty = true; }
+        }
+
+        [SRCategoryAttribute(SR.Application)]
+        [LocDisplayName(SR.OutputType)]
+        [SRDescriptionAttribute(SR.OutputTypeDescription)]
+        public OutputType OutputType
+        {
+            get { return this.outputType; }
+            set { this.outputType = value; this.IsDirty = true; }
         }
         
         #endregion

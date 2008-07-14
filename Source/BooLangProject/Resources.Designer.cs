@@ -115,6 +115,24 @@ namespace Boo.BooLangProject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Output Type.
+        /// </summary>
+        internal static string OutputType {
+            get {
+                return ResourceManager.GetString("OutputType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type of application to build..
+        /// </summary>
+        internal static string OutputTypeDescription {
+            get {
+                return ResourceManager.GetString("OutputTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Whitespace agnostic.
         /// </summary>
         internal static string WhiteSpaceAgnostic {

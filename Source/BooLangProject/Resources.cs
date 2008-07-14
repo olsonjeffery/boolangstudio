@@ -26,6 +26,9 @@ namespace Boo.BooLangProject
         internal const string DuckyDescription = "DuckyDescription";
         internal const string WhiteSpaceAgnostic = "WhiteSpaceAgnostic";
         internal const string WhiteSpaceAgnosticDescription = "WhiteSpaceAgnosticDescription";
+        internal const string OutputType = "OutputType";
+        internal const string OutputTypeDescription = "OutputTypeDescription";
+
         
         static SR loader = null;
         ResourceManager resources;

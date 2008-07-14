@@ -135,6 +135,12 @@
   <data name="DuckyDescription" xml:space="preserve">
     <value>Turn on or off ducky behavior</value>
   </data>
+  <data name="OutputType" xml:space="preserve">
+    <value>Output Type</value>
+  </data>
+  <data name="OutputTypeDescription" xml:space="preserve">
+    <value>The type of application to build.</value>
+  </data>
   <data name="WhiteSpaceAgnostic" xml:space="preserve">
     <value>Whitespace agnostic</value>
   </data>
