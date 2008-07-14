@@ -141,5 +141,32 @@ namespace Boo.BooLangService
         }
 
        #endregion
+
+        #region debugging support
+
+        public override int ValidateBreakpointLocation(IVsTextBuffer buffer, int line, int col, TextSpan[] pCodeSpan)
+        {
+            if (pCodeSpan != null)
+            {
+                pCodeSpan[0].iStartLine = line;
+                pCodeSpan[0].iStartIndex = col;
+                pCodeSpan[0].iEndLine = line;
+                pCodeSpan[0].iEndIndex = col;
+                if (buffer != null)
+                {
+                    int length;
+                    buffer.GetLengthOfLine(line, out length);
+                    pCodeSpan[0].iStartIndex = 0;
+                    pCodeSpan[0].iEndIndex = length;
+                }
+                return Microsoft.VisualStudio.VSConstants.S_OK;
+            }
+            else
+            {
+                return Microsoft.VisualStudio.VSConstants.S_FALSE;
+            }
+        }
+
+        #endregion
     }
 }
