@@ -26,7 +26,8 @@ namespace Boo.BooLangProject
             }
 
             this.AddCATIDMapping(typeof(BooProjectNodeProperties), typeof(BooProjectNodeProperties).GUID);
-            this.AddCATIDMapping(typeof(GeneralPropertyPage), typeof(GeneralPropertyPage).GUID);            
+            this.AddCATIDMapping(typeof(GeneralPropertyPage), typeof(GeneralPropertyPage).GUID);
+            this.CanProjectDeleteItems = true;
         }
 
 
