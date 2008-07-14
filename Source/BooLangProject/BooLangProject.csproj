@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BooBuildPropertyPage.cs" />
     <Compile Include="BooFileNode.cs" />
     <Compile Include="BooLangProjectFactory.cs" />
     <Compile Include="BooProjectNode.cs" />

@@ -26,7 +26,7 @@ namespace Boo.BooLangProject
             }
 
             this.AddCATIDMapping(typeof(BooProjectNodeProperties), typeof(BooProjectNodeProperties).GUID);
-            this.AddCATIDMapping(typeof(GeneralPropertyPage), typeof(GeneralPropertyPage).GUID);
+            this.AddCATIDMapping(typeof(GeneralPropertyPage), typeof(GeneralPropertyPage).GUID);            
         }
 
 
@@ -130,6 +130,18 @@ namespace Boo.BooLangProject
           Guid[] result = new Guid[1];
           result[0] = typeof(GeneralPropertyPage).GUID;
           return result;
+        }
+
+        /// <summary>
+        /// provides the guid for configuration dependent settings
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        protected override Guid[] GetConfigurationDependentPropertyPages()
+        {
+            Guid[] result = new Guid[1];
+            result[0] = typeof(BooBuildPropertyPage).GUID;
+            return result;
         }
 
         internal static int booFileNodeImageIndex;

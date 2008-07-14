@@ -8,7 +8,7 @@
     <AssemblyName>BooPegLexer</AssemblyName>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <Name>BooPegLexer</Name>
-    <BooBinPath>dummy2</BooBinPath>
+    <BooBinPath>C:\Program Files\BooLangStudio\Bin</BooBinPath>
     <AssemblyOriginatorKeyFile>BooLangStudio.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
