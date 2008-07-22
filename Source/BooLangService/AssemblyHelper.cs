@@ -21,7 +21,7 @@ namespace BooLangService
 
         public static Assembly FindInCurrentAppDomainOrLoad(string path)
         {
-            return FindAssemblyInCurrentAppDomain(path) ?? Assembly.LoadFile(path);
+            return FindAssemblyInCurrentAppDomain(path) ?? Assembly.LoadFrom(path);
         }
     }
 }

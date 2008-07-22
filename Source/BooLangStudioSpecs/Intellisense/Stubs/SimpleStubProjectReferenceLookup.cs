@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Reflection;
+using Boo.BooLangProject;
+using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.VSInterop;
 
@@ -6,19 +9,48 @@ namespace Boo.BooLangStudioSpecs.Intellisense.Stubs
 {
     internal class SimpleStubProjectReferenceLookup : IProjectReferenceLookup
     {
-        private readonly IList<IBooParseTreeNode> namespaces = new List<IBooParseTreeNode>();
+        private readonly List<IBooParseTreeNode> namespaces = new List<IBooParseTreeNode>();
 
         public IList<IBooParseTreeNode> GetReferencedNamespacesInProjectContaining(string fileName, string namespaceContinuation)
         {
             return namespaces;
         }
 
-        public void AddFakeNamespaces(string[] fakeNamespaces)
+        public void AddAssembliesForReferences(Assembly[] assemblies)
         {
-            foreach (var ns in fakeNamespaces)
-            {
-                namespaces.Add(new ImportedNamespaceTreeNode { Name = ns });
-            }
+            var namespaceFinder = new NamespaceFinder();
+            var references = GetReferencesFromAssemblies(assemblies);
+
+            namespaces.AddRange(namespaceFinder.QueryNamespacesFromReferences(references, ""));
         }
+
+        private List<IReference> GetReferencesFromAssemblies(Assembly[] assemblies)
+        {
+            var references = new List<IReference>();
+
+            foreach (var assembly in assemblies)
+            {
+                references.Add(new AssemblyReferenceFake(assembly));
+            }
+
+            return references;
+        }
+    }
+
+    internal class AssemblyReferenceFake : IReference
+    {
+        private readonly Assembly assembly;
+
+        public AssemblyReferenceFake(Assembly assembly)
+        {
+            this.assembly = assembly;
+        }
+
+        public Assembly GetAssembly()
+        {
+            return assembly;
+        }
+
+        public string Path { get; set; }
     }
 }

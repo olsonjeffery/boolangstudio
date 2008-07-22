@@ -1,3 +1,5 @@
+using System.Reflection;
+using BooLangService;
 using Microsoft.VisualStudio.Package;
 using Xunit;
 
@@ -9,9 +11,10 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         public void ShowAllReferencedNamespaces()
         {
             CompiledFixtures
-                .SetReferences("Boo", "BooLangStudio")
+                .SetReferences(
+                    Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
                 .GetDeclarations()
-                .AssertPresenceOf("Boo", "BooLangStudio");
+                .AssertPresenceOf("Boo");
         }
     }
 }

@@ -106,6 +106,7 @@
     <Compile Include="AttributeHelper.cs" />
     <Compile Include="Intellisense\Invocation.cs" />
     <Compile Include="Intellisense\LineEntityParser.cs" />
+    <Compile Include="IReference.cs" />
     <Compile Include="VSInterop\IProjectReferenceLookup.cs" />
     <Compile Include="VSInterop\ProjectReferenceLookup.cs" />
     <Compile Include="Intellisense\TypeKeywordResolver.cs" />

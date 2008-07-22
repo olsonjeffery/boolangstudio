@@ -1,4 +1,4 @@
-using System;
+using System.Reflection;
 using Boo.BooLangService;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Intellisense;
@@ -12,7 +12,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
     {
         private readonly CompiledProject project;
         private readonly CaretLocation caretLocation;
-        private string[] references;
+        private Assembly[] references;
 
         public CompilationOutput(CompiledProject project, CaretLocation caretLocation)
         {
@@ -30,7 +30,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             get { return caretLocation; }
         }
 
-        public CompilationOutput SetReferences(params string[] references)
+        public CompilationOutput SetReferences(params Assembly[] references)
         {
             this.references = references;
             
@@ -47,21 +47,15 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             return finder.Find(CaretLocation, ParseReason.None);
         }
 
-        protected DeclarationFinder CreateFinder(params string[] referencedNamespaces)
+        protected DeclarationFinder CreateFinder(params Assembly[] assemblies)
         {
             var lineView = new SimpleStubLineView(CaretLocation.LineSource);
             var referenceLookup = new SimpleStubProjectReferenceLookup();
 
-            if (referencedNamespaces != null)
-                referenceLookup.AddFakeNamespaces(referencedNamespaces);
+            if (assemblies != null)
+                referenceLookup.AddAssembliesForReferences(assemblies);
 
             return new DeclarationFinder(Project, referenceLookup, lineView, CaretLocation.FileName);
         }
-    }
-
-    internal class CaretNotFoundException : Exception
-    {
-        public CaretNotFoundException(string message) : base(message)
-        {}
     }
 }

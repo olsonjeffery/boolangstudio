@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler.Ast;
@@ -27,6 +28,14 @@ namespace Boo.BooLangService.Document
             currentScope = project;
 
             Visit(CompileUnit);
+
+            if (Errors.Count > 0)
+            {
+                foreach (Error error in Errors)
+                {
+                    Debug.Write(error.ToString());
+                }
+            }
         }
 
         public override bool EnterModule(Module node)
@@ -193,6 +202,16 @@ namespace Boo.BooLangService.Document
             base.LeaveClassDefinition(node);
 
             Pop(node.EndSourceLocation.Line);
+        }
+
+        public override void OnReferenceExpression(ReferenceExpression node)
+        {
+            base.OnReferenceExpression(node);
+        }
+
+        public override void OnNamespaceDeclaration(NamespaceDeclaration node)
+        {
+            base.OnNamespaceDeclaration(node);
         }
 
         private void Push(IBooParseTreeNode node, string name, int line)

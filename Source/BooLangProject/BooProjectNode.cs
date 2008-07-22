@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using Microsoft.VisualStudio.Package;
 using System.Drawing;
 using System.Windows.Forms;
@@ -133,6 +134,8 @@ namespace Boo.BooLangProject
 
         internal static int booFileNodeImageIndex;
         internal static int imageIndex;
+        private BooProjectSources projectSources;
+
         public override int ImageIndex
         {
 
@@ -147,9 +150,18 @@ namespace Boo.BooLangProject
 
         public override void Load(string fileName, string location, string name, uint flags, ref Guid iidProject, out int canceled)
         {
+            // this needs to be instantiated before the base call, and then start watching
+            // the hierarchy after. This is because the base.Load call hits the AddChild
+            // method of the references, which add to the project sources. The watching
+            // needs to start after the base call because if it's started before, then there
+            // aren't any files added yet!
+            projectSources = new BooProjectSources();
+
             base.Load(fileName, location, name, flags, ref iidProject, out canceled);
 
-            BooProjectSources.LoadedProjects.Add(new BooProjectSources(InteropSafeHierarchy));
+            projectSources.StartWatchingHierarchy(InteropSafeHierarchy);
+
+            BooProjectSources.LoadedProjects.Add(projectSources);
         }
 
         IVsHierarchy InteropSafeHierarchy
@@ -163,6 +175,16 @@ namespace Boo.BooLangProject
 
                 return (IVsHierarchy)Marshal.GetObjectForIUnknown(unknownPtr);
             }
+        }
+
+        public BooProjectSources Sources
+        {
+            get { return projectSources; }
+        }
+
+        protected override ReferenceContainerNode CreateReferenceContainerNode()
+        {
+            return new BooReferenceContainerNode(this);
         }
     }
 }

@@ -17,10 +17,11 @@ namespace Boo.BooLangProject
     {
         private static readonly IList<BooProjectSources> loadedProjects = new List<BooProjectSources>();
         private readonly Dictionary<string, int> files = new Dictionary<string, int>(); // filename, lastUpdate
-        private readonly HierarchyListener hierarchyListener;
+        private readonly List<IReference> references = new List<IReference>();
+        private HierarchyListener hierarchyListener;
         private CompiledProject compiledProject;
 
-        public BooProjectSources(IVsHierarchy hierarchy)
+        public void StartWatchingHierarchy(IVsHierarchy hierarchy)
         {
             hierarchyListener = new HierarchyListener(hierarchy);
             hierarchyListener.ItemAdded += hierarchyListener_ItemAdded;
@@ -119,6 +120,11 @@ namespace Boo.BooLangProject
                 compiler.AddSource(fileName, source);
             }
 
+            foreach (var reference in references)
+            {
+                compiler.AddReference(reference);
+            }
+
             compiledProject = compiler.Compile();
         }
 
@@ -138,6 +144,11 @@ namespace Boo.BooLangProject
         private bool RequiresRecompilation
         {
             get { return compiledProject == null; }
+        }
+
+        public List<IReference> References
+        {
+            get { return references; }
         }
     }
 }

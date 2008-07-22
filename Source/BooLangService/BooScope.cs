@@ -14,7 +14,7 @@ namespace BooLangService
 
         public BooScope(LanguageService service, CompiledProject compiledProject, BooSource source, string fileName)
         {
-            declarations = new DeclarationFinder(compiledProject, new ProjectReferenceLookup(service), source, fileName);
+            declarations = new DeclarationFinder(compiledProject, new ProjectReferenceLookup(), source, fileName);
         }
 
         public override string GetDataTipText(int line, int col, out TextSpan span)

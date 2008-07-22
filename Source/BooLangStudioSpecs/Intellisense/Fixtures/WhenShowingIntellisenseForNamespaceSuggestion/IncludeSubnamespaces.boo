@@ -1,3 +1,3 @@
 class ATestClass:
   def TestMethod():
-    System.~
+    Boo.~

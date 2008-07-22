@@ -1,3 +1,4 @@
+using System.Reflection;
 using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense
@@ -8,8 +9,9 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         public void IncludeSubNamespaces()
         {
             CompiledFixtures
+                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
                 .GetDeclarations()
-                .AssertPresenceOf("Collections", "IO");
+                .AssertPresenceOf("Lang");
         }
     }
 }

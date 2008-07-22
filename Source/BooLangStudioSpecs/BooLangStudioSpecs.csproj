@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMockingTestFixture.cs" />
+    <Compile Include="Intellisense\CaretNotFoundException.cs" />
     <Compile Include="Intellisense\CompilationOutput.cs" />
     <Compile Include="Intellisense\Constants.cs" />
     <Compile Include="Intellisense\FixtureCompiler.cs" />
@@ -190,7 +191,7 @@
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ExcludePrivateMembersOfOtherClasses.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ExcludeConstructorFromList.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\IncludePublicMethodsForInstanceOfClass.boo" />
-    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForNamespaceSuggestion\IncludeSubnamespaces.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForNamespaceSuggestion\IncludeSubNamespaces.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowNamespacesFromReferences.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowCurrentMethod.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowAllMethodsFromSameClass.boo" />

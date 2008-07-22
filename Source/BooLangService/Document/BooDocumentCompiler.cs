@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Boo.BooLangProject;
 using Boo.Lang.Compiler;
 using Boo.Lang.Compiler.IO;
 using Boo.Lang.Compiler.Pipelines;
@@ -28,19 +29,6 @@ namespace Boo.BooLangService.Document
         /// <returns>CompiledDocument from the source</returns>
         public CompiledProject Compile()
         {
-            return Compile(null);
-        }
-
-        /// <summary>
-        /// Compiles a Boo file into a CompiledDocument, with a set of referenced assemblies.
-        /// </summary>
-        /// <param name="references">Additional assemblies to be referenced by the compiler</param>
-        /// <returns>CompiledDocument from the source</returns>
-        public CompiledProject Compile(IList<Assembly> references)
-        {
-            if (references != null)
-                compiler.Parameters.References.Extend(references);
-
             compiler.Run();
 
             return new CompiledProject(
@@ -69,40 +57,10 @@ namespace Boo.BooLangService.Document
 
             return newCompiler;
         }
-    }
 
-    public class IntellisenseResolveExpressions : Parse
-    {
-        public IntellisenseResolveExpressions()
+        public void AddReference(IReference reference)
         {
-            Add(new InitializeTypeSystemServices());
-            Add(new PreErrorChecking());
-
-            Add(new MergePartialClasses());
-
-            Add(new InitializeNameResolutionService());
-            Add(new IntroduceGlobalNamespaces());
-
-            Add(new BindTypeDefinitions());
-            Add(new BindGenericParameters());
-            Add(new BindNamespaces());
-            Add(new BindBaseTypes());
-
-            Add(new IntroduceModuleClasses());
-
-            Add(new BindTypeDefinitions());
-            Add(new BindGenericParameters());
-            Add(new BindEnumMembers());
-            Add(new BindBaseTypes());
-
-            Add(new BindMethods());
-            Add(new ResolveTypeReferences());
-            Add(new BindTypeMembers());
-
-            Add(new ProcessInheritedAbstractMembers());
-            Add(new CheckMemberNames());
-
-            Add(new ExpandProperties());
+            compiler.Parameters.AddAssembly(reference.GetAssembly());
         }
     }
 }
