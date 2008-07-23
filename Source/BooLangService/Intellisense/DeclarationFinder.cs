@@ -58,7 +58,7 @@ namespace Boo.BooLangService.Intellisense
                 // only problem is, the top level namespaces (i.e. System, Boo, Microsoft) should be
                 // usable from within code too, so we need some way of parsing and caching them and
                 // making them available everywhere
-                return GetImportIntellisenseDeclarations(line);
+                return GetImportIntellisenseDeclarations(line, lineNum);
             }
 
             if (line.EndsWith(".") || reason == ParseReason.MemberSelect)
@@ -70,17 +70,21 @@ namespace Boo.BooLangService.Intellisense
                 // reported as a complete word because of the shortcut used.
                 // So it's easier just to say any lines ending in "." are member lookups, and everything
                 // else is complete word.
-                return GetMemberLookupIntellisenseDeclarations(line, lineNum, colNum);
+                return GetMemberLookupIntellisenseDeclarations(line, lineNum);
             }
 
             // Everything else (complete word)
             return GetScopedIntellisenseDeclarations(lineNum);
         }
 
-        private IntellisenseDeclarations GetImportIntellisenseDeclarations(string line)
+        private IntellisenseDeclarations GetImportIntellisenseDeclarations(string line, int lineNum)
         {
             // get any namespace already written (i.e. "Boo.Lang.")
             string intellisenseTarget = GetIntellisenseTarget(line);
+
+            if (!string.IsNullOrEmpty(intellisenseTarget))
+                return GetMemberLookupIntellisenseDeclarations(intellisenseTarget, lineNum);
+
             var declarations = new IntellisenseDeclarations();
 
             AddNamespacesFromReferences(declarations, intellisenseTarget);
@@ -88,7 +92,7 @@ namespace Boo.BooLangService.Intellisense
             return declarations;
         }
 
-        private IntellisenseDeclarations GetMemberLookupIntellisenseDeclarations(string lineSource, int line, int column)
+        private IntellisenseDeclarations GetMemberLookupIntellisenseDeclarations(string lineSource, int line)
         {
             var declarations = new IntellisenseDeclarations();
             var members = GetMembersFromCurrentScope(line, lineSource);

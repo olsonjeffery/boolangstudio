@@ -179,6 +179,7 @@
     <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\ClassesShouldBeParsed.boo" />
     <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\FirstChildIsDocumentTreeNode.boo" />
     <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\FirstReturnedNodeIsProjectTreeNode.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseAtImportStatement\ExcludeExposedTypes.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseAtImportStatement\ShowSubNamespacesForPartialImport.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseAtImportStatement\ShowAllReferencedNamespaces.boo" />
     <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\IncludeOnlyStaticMethodsForClass.boo" />
