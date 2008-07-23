@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using Boo.BooLangService.Document.Origins;
 using Boo.BooLangService.Intellisense;
 using Boo.Lang.Compiler.Ast;
 using Boo.Lang.Compiler.TypeSystem;
@@ -13,7 +14,7 @@ namespace Boo.BooLangService.Document.Nodes
         private readonly string containingClass;
         private IList<MethodParameter> parameters = new List<MethodParameter>();
 
-        public MethodTreeNode(IEntity entity, string returnType, string containingClass) : base(entity)
+        public MethodTreeNode(ISourceOrigin sourceOrigin, string returnType, string containingClass) : base(sourceOrigin)
         {
             this.returnType = returnType;
             this.containingClass = containingClass;

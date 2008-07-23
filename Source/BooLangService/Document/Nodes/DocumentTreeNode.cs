@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Boo.BooLangService.Document.Origins;
 using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
@@ -8,7 +9,7 @@ namespace Boo.BooLangService.Document.Nodes
     {
         private readonly IDictionary<string, IList<IBooParseTreeNode>> imports = new Dictionary<string, IList<IBooParseTreeNode>>();
 
-        public DocumentTreeNode(IEntity entity) : base(entity)
+        public DocumentTreeNode(ISourceOrigin sourceOrigin) : base(sourceOrigin)
         {}
 
         public IDictionary<string, IList<IBooParseTreeNode>> Imports

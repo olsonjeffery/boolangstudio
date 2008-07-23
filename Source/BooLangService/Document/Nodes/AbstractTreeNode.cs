@@ -1,17 +1,18 @@
 using System.Collections.Generic;
+using Boo.BooLangService.Document.Origins;
 using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
     public abstract class AbstractTreeNode : IBooParseTreeNode
     {
-        private readonly IEntity entity;
+        private readonly ISourceOrigin sourceOrigin;
         private readonly IList<IBooParseTreeNode> children;
         private int endLine = -1; // forces generated endline if not set
 
-        public AbstractTreeNode(IEntity entity)
+        protected AbstractTreeNode(ISourceOrigin sourceOrigin)
         {
-            this.entity = entity;
+            this.sourceOrigin = sourceOrigin;
             children = new ParseTreeNodeSet(this);
         }
 
@@ -31,7 +32,7 @@ namespace Boo.BooLangService.Document.Nodes
         }
 
         public IBooParseTreeNode Parent { get; set; }
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
         public int StartLine { get; set; }
 
         public int EndLine
@@ -40,16 +41,16 @@ namespace Boo.BooLangService.Document.Nodes
             set { endLine = value; }
         }
 
-        public IEntity Entity
+        public ISourceOrigin SourceOrigin
         {
-            get { return entity; }
+            get { return sourceOrigin; }
         }
 
         private int GetHighestChildEndLine()
         {
             int end = 0;
 
-            foreach (IBooParseTreeNode child in Children)
+            foreach (var child in Children)
             {
                 if (child.EndLine > end)
                     end = child.EndLine;

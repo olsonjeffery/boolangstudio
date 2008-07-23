@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using Boo.BooLangService.Document.Nodes;
 using Boo.Lang.Compiler.TypeSystem;
 
@@ -8,7 +9,7 @@ namespace Boo.BooLangService.Document
     {
         private readonly IBooParseTreeNode root;
 
-        public CompiledProject(IBooParseTreeNode root)
+        public CompiledProject(IBooParseTreeNode root, List<Assembly> references)
         {
             this.root = root;
         }

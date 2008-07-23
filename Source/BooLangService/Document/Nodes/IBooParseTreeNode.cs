@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Boo.Lang.Compiler.TypeSystem;
+using Boo.BooLangService.Document.Origins;
 
 namespace Boo.BooLangService.Document.Nodes
 {
@@ -10,7 +10,7 @@ namespace Boo.BooLangService.Document.Nodes
         string Name { get; set; }
         int StartLine { get; set; }
         int EndLine { get; set; }
-        IEntity Entity { get; }
+        ISourceOrigin SourceOrigin { get; }
         bool ContainsLine(int line);
 
         // this smells of cross-purposes

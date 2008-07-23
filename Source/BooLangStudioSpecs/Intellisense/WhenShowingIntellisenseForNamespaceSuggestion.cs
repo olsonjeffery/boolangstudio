@@ -13,5 +13,14 @@ namespace Boo.BooLangStudioSpecs.Intellisense
                 .GetDeclarations()
                 .AssertPresenceOf("Lang");
         }
+
+        [Fact]
+        public void IncludeExposedTypes()
+        {
+            CompiledFixtures
+                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
+                .GetDeclarations()
+                .AssertPresenceOf("BooCompiler", "CompilerError");
+        }
     }
 }

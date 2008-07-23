@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using Boo.BooLangProject;
 using Boo.BooLangService.Document.Nodes;
+using Boo.BooLangService.Document.Origins;
+using Boo.BooLangService.Intellisense;
+using Boo.Lang.Compiler.TypeSystem;
 using BooLangService;
 using EnvDTE;
 using VSLangProj;
@@ -29,70 +32,26 @@ namespace Boo.BooLangService.Document
             return namespaces;
         }
 
-        //private IList<IBooParseTreeNode> QueryNamespacesFromProjectReference(Project project, string searchQuery)
-        //{
-        //    var namespaces = new List<IBooParseTreeNode>();
-
-        //    foreach (var ns in GetNamespacesFromCodeElements(project.CodeModel.CodeElements))
-        //    {
-        //        if (!ns.StartsWith(searchQuery)) continue;
-
-        //        var scopedNamespace = ns.Remove(0, searchQuery.Length);
-
-        //        if (scopedNamespace.Contains("."))
-        //            scopedNamespace = scopedNamespace.Substring(0, scopedNamespace.IndexOf("."));
-
-        //        namespaces.Add(new ImportedNamespaceTreeNode { Name = scopedNamespace });
-        //    }
-
-        //    return namespaces;
-        //}
-
-        //private IEnumerable<string> GetNamespacesFromCodeElements(CodeElements codeElements)
-        //{
-        //    var namespaces = new List<string>();
-
-        //    foreach (CodeElement element in codeElements)
-        //    {
-        //        var codeNamespace = element as CodeNamespace;
-
-        //        if (codeNamespace == null) continue;
-
-        //        namespaces.AddRange(GetNamespacesFromCodeElements(codeNamespace.Members));
-
-        //        bool isInternal = false;
-
-        //        foreach (CodeElement member in codeNamespace.Members)
-        //        {
-        //            if (member.InfoLocation == vsCMInfoLocation.vsCMInfoLocationProject)
-        //                isInternal = true;
-        //        }
-
-        //        if (isInternal)
-        //            namespaces.Add(codeNamespace.FullName);
-        //    }
-
-        //    return namespaces;
-        //}
-
         private IList<IBooParseTreeNode> QueryNamespacesFromAssembly(Assembly assembly, string searchQuery)
         {
             var namespaces = new List<IBooParseTreeNode>();
 
             if (assembly == null) return namespaces; // just return empty list
 
+            var exposedNamespaces = new List<string>();
+
             foreach (var type in assembly.GetExportedTypes())
             {
-                if (type.Namespace == null || !type.Namespace.StartsWith(searchQuery)) continue;
+                if (!exposedNamespaces.Contains(type.Namespace))
+                    exposedNamespaces.Add(type.Namespace);
+            }
 
-                string ns = type.Namespace;
+            var treeBuilder = new NamespaceTreeBuilder();
+            var namespaceTree = treeBuilder.Build(exposedNamespaces.ToArray());
 
-                ns = ns.Remove(0, searchQuery.Length);
-
-                if (ns.Contains("."))
-                    ns = ns.Substring(0, ns.IndexOf('.'));
-
-                namespaces.Add(new ImportedNamespaceTreeNode {Name = ns});
+            foreach (var ns in namespaceTree)
+            {
+                namespaces.Add(new ImportedNamespaceTreeNode(new AssemblyNamespaceSourceOrigin(ns)));
             }
 
             return namespaces;

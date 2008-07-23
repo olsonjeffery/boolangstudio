@@ -82,10 +82,14 @@
   <ItemGroup>
     <Compile Include="AssemblyHelper.cs" />
     <Compile Include="BooProjectSources.cs" />
+    <Compile Include="Document\Origins\AssemblyNamespaceSourceOrigin.cs" />
     <Compile Include="Document\CaretLocation.cs" />
+    <Compile Include="Document\Origins\EntitySourceOrigin.cs" />
     <Compile Include="Document\Nodes\FieldTreeNode.cs" />
     <Compile Include="Document\Nodes\InstanceDeclarationTreeNode.cs" />
+    <Compile Include="Document\Origins\ISourceOrigin.cs" />
     <Compile Include="Document\Nodes\MethodParameter.cs" />
+    <Compile Include="Document\Origins\NullSourceOrigin.cs" />
     <Compile Include="Document\Nodes\ProjectTreeNode.cs" />
     <Compile Include="Document\Nodes\PropertyTreeNode.cs" />
     <Compile Include="Document\Nodes\TypeDeclarationTreeNode.cs" />
@@ -106,6 +110,8 @@
     <Compile Include="AttributeHelper.cs" />
     <Compile Include="Intellisense\Invocation.cs" />
     <Compile Include="Intellisense\LineEntityParser.cs" />
+    <Compile Include="Intellisense\NamespaceLeaf.cs" />
+    <Compile Include="Intellisense\NamespaceTreeBuilder.cs" />
     <Compile Include="IReference.cs" />
     <Compile Include="VSInterop\IProjectReferenceLookup.cs" />
     <Compile Include="VSInterop\ProjectReferenceLookup.cs" />

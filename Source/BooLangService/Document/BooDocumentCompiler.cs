@@ -16,6 +16,7 @@ namespace Boo.BooLangService.Document
     {
         private BooDocumentVisitor visitor;
         private BooCompiler compiler;
+        private readonly List<Assembly> references = new List<Assembly>();
 
         public BooDocumentCompiler()
         {
@@ -32,7 +33,8 @@ namespace Boo.BooLangService.Document
             compiler.Run();
 
             return new CompiledProject(
-                visitor.Project
+                visitor.Project,
+                references
             );
         }
 
@@ -60,7 +62,11 @@ namespace Boo.BooLangService.Document
 
         public void AddReference(IReference reference)
         {
-            compiler.Parameters.AddAssembly(reference.GetAssembly());
+            var assembly = reference.GetAssembly();
+            
+            references.Add(assembly);
+            
+            compiler.Parameters.AddAssembly(assembly);
         }
     }
 }

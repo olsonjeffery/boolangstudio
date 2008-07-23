@@ -16,5 +16,15 @@ namespace Boo.BooLangStudioSpecs.Intellisense
                 .GetDeclarations()
                 .AssertPresenceOf("Boo");
         }
+
+        [Fact]
+        public void ShowSubNamespacesForPartialImport()
+        {
+            CompiledFixtures
+                .SetReferences(
+                    Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
+                .GetDeclarations()
+                .AssertPresenceOf("Lang");
+        }
     }
 }

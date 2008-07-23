@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using Boo.BooLangService;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
+using Boo.BooLangService.Document.Origins;
 using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.VSInterop;
 using Boo.BooLangStudioSpecs.Document;
@@ -15,8 +16,7 @@ namespace Boo.BooLangService.Intellisense
     public class DeclarationFinder
     {
         private const string ImportKeyword = "import";
-        private readonly List<string> excludedMembers = new List<string> {".ctor", "constructor"};
-
+        
         private readonly CompiledProject compiledProject;
         private readonly Regex IntellisenseTargetRegex = new Regex("[^ (]*$", RegexOptions.Compiled);
         private readonly ILineView lineView;
@@ -93,11 +93,9 @@ namespace Boo.BooLangService.Intellisense
             var declarations = new IntellisenseDeclarations();
             var members = GetMembersFromCurrentScope(line, lineSource);
 
-            var converter = new EntityToTreeNodeConverter();
-
             members.ForEach(e =>
             {
-                IBooParseTreeNode node = converter.ToTreeNode(e);
+                IBooParseTreeNode node = e.ToTreeNode();
 
                 if (node != null)
                     declarations.Add(node);
@@ -108,52 +106,20 @@ namespace Boo.BooLangService.Intellisense
             return declarations;
         }
 
-        private List<IEntity> GetMembersFromEntity(IEntity entity, bool constructor)
-        {
-            var namespaceEntity = entity as INamespace;
-            var instance = constructor;
 
-            if (entity is IMethod)
-            {
-                namespaceEntity = ((IMethod)entity).ReturnType;
-                instance = true;
-            }
-            else if (entity is ITypedEntity && !(entity is IType))
-            {
-                namespaceEntity = ((ITypedEntity)entity).Type;
-                instance = true;
-            }
-
-            var members = new List<IEntity>(TypeSystemServices.GetAllMembers(namespaceEntity));
-
-            // remove any static members for instances, and any instance members for types
-            members.RemoveAll(e =>
-            {
-                if (excludedMembers.Contains(e.Name)) return true;
-                if (e is NamespaceEntity || e is NullNamespace || e is SimpleNamespace) return false;
-
-                var member = (IMember)e;
-
-                if (!member.IsPublic) return true;
-                return (instance && member.IsStatic) || (!instance && !member.IsStatic);
-            });
-
-            return members;
-        }
-
-        private List<IEntity> GetMembersFromCurrentScope(int line, string lineSource)
+        private List<ISourceOrigin> GetMembersFromCurrentScope(int line, string lineSource)
         {
             var scopedDeclarations = GetScopedIntellisenseDeclarations(line);
             var invocationStack = GetInvocationStack(lineSource);
 
             IBooParseTreeNode firstNode = scopedDeclarations.Find(e => e.Name.Equals(invocationStack[0].Name, StringComparison.OrdinalIgnoreCase));
-            IEntity entity = firstNode.Entity;
+            ISourceOrigin entity = firstNode.SourceOrigin;
             var constructor = invocationStack[0].HadParentheses;
 
             for (int i = 1; i < invocationStack.Length; i++)
             {
                 var invocation = invocationStack[i];
-                var members = GetMembersFromEntity(entity, constructor);
+                var members = entity.GetMembers(constructor);
                 var matchingMember = members.Find(e => e.Name == invocation.Name);
 
                 constructor = false;
@@ -162,7 +128,7 @@ namespace Boo.BooLangService.Intellisense
                     entity = matchingMember;
             }
 
-            return GetMembersFromEntity(entity, constructor);
+            return entity.GetMembers(constructor);
         }
 
         private Invocation[] GetInvocationStack(string lineSource)

@@ -1,4 +1,5 @@
 using Boo.BooLangService.Document.Nodes;
+using Boo.BooLangService.Document.Origins;
 using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Intellisense
@@ -25,9 +26,9 @@ namespace Boo.BooLangService.Intellisense
         private IBooParseTreeNode ToTreeNode(IType type)
         {
             if (type.IsInterface)
-                return new InterfaceTreeNode(type, type.FullName) { Name = type.Name };
+                return new InterfaceTreeNode(new EntitySourceOrigin(type), type.FullName) { Name = type.Name };
             if (type.IsClass || type.IsEnum)
-                return new ClassTreeNode(type, type.FullName) { Name = type.Name };
+                return new ClassTreeNode(new EntitySourceOrigin(type), type.FullName) { Name = type.Name };
 
             return null;
         }
@@ -41,12 +42,12 @@ namespace Boo.BooLangService.Intellisense
             if (name.Contains("."))
                 name = name.Substring(name.LastIndexOf('.') + 1);
 
-            return new ImportedNamespaceTreeNode { Name = name };
+            return new ImportedNamespaceTreeNode(new EntitySourceOrigin((IEntity)@namespace)) { Name = name };
         }
 
         private IBooParseTreeNode ToTreeNode(IMethod method)
         {
-            var member = new MethodTreeNode(method, method.ReturnType.ToString(), method.DeclaringType.FullName)
+            var member = new MethodTreeNode(new EntitySourceOrigin(method), method.ReturnType.ToString(), method.DeclaringType.FullName)
             {
                 Name = method.Name
             };
@@ -65,7 +66,7 @@ namespace Boo.BooLangService.Intellisense
 
         private IBooParseTreeNode ToTreeNode(IProperty property)
         {
-            return new MethodTreeNode(property, property.GetGetMethod().ReturnType.ToString(), property.DeclaringType.FullName)
+            return new MethodTreeNode(new EntitySourceOrigin(property), property.GetGetMethod().ReturnType.ToString(), property.DeclaringType.FullName)
             {
                 Name = property.Name
             };

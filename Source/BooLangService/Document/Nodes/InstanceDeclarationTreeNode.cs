@@ -1,10 +1,12 @@
+using Boo.BooLangService.Document.Origins;
 using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
     public abstract class InstanceDeclarationTreeNode : AbstractTreeNode, IReturnableNode
     {
-        protected InstanceDeclarationTreeNode(IEntity entity) : base(entity)
+        protected InstanceDeclarationTreeNode(ISourceOrigin sourceOrigin)
+            : base(sourceOrigin)
         {}
 
         public string ReturnType { get; set; }
