@@ -16,7 +16,7 @@ namespace Boo.BooLangProject
     public class BooProjectSources
     {
         private static readonly IList<BooProjectSources> loadedProjects = new List<BooProjectSources>();
-        private readonly Dictionary<string, int> files = new Dictionary<string, int>(); // filename, lastUpdate
+        private readonly List<SourceFile> files = new List<SourceFile>();
         private readonly List<IReference> references = new List<IReference>();
         private HierarchyListener hierarchyListener;
         private CompiledProject compiledProject;
@@ -30,7 +30,12 @@ namespace Boo.BooLangProject
 
         void hierarchyListener_ItemAdded(object sender, HierarchyEventArgs e)
         {
-            files.Add(e.FileName, 1);
+            var file = new SourceFile();
+
+            file.Path = e.FileName;
+            file.Source = GetSource(e.FileName);
+
+            files.Add(file);
         }
 
         /// <summary>
@@ -77,14 +82,28 @@ namespace Boo.BooLangProject
         /// <param name="request">Parse request that raised the update.</param>
         public void Update(ParseRequest request)
         {
-            string filePath = request.FileName;
-            int requestTimestamp = request.Timestamp;
-            int lastUpdated = files[filePath];
+            ReloadSources();
 
-            if (requestTimestamp != lastUpdated) // TODO: should check if any files have changed here
-            {
+            if (HasDirtyFiles)
                 ResetCompiledProject();
-                files[filePath] = requestTimestamp;
+        }
+
+        private bool HasDirtyFiles
+        {
+            get { return files.Exists(f => f.IsDirty); }
+        }
+
+        private void ReloadSources()
+        {
+            // TODO: This needs to take into account open but unsaved files
+            foreach (var file in files)
+            {
+                var latestSource = GetSource(file.Path);
+
+                if (latestSource == file.Source) continue;
+
+                file.Source = latestSource;
+                file.IsDirty = true;
             }
         }
 
@@ -95,7 +114,7 @@ namespace Boo.BooLangProject
         /// <returns>Whether a project contains the file.</returns>
         private bool HasFile(string fileName)
         {
-            return files.ContainsKey(fileName);
+            return files.Exists(e => e.Path == fileName);
         }
 
         /// <summary>
@@ -113,19 +132,12 @@ namespace Boo.BooLangProject
         {
             var compiler = new BooDocumentCompiler();
 
-            foreach (var fileName in files.Keys)
-            {
-                var source = GetSource(fileName);
-
-                compiler.AddSource(fileName, source);
-            }
-
-            foreach (var reference in references)
-            {
-                compiler.AddReference(reference);
-            }
+            files.ForEach(f => compiler.AddSource(f.Path, f.Source));
+            references.ForEach(r => compiler.AddReference(r));
 
             compiledProject = compiler.Compile();
+
+            files.ForEach(f => f.IsDirty = false);
         }
 
         /// <summary>
@@ -150,5 +162,12 @@ namespace Boo.BooLangProject
         {
             get { return references; }
         }
+    }
+
+    internal class SourceFile
+    {
+        public string Source { get; set; }
+        public string Path { get; set; }
+        public bool IsDirty { get; set; }
     }
 }
