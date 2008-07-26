@@ -1,3 +1,1 @@
-class ATestClass:
-  def TestMethod():
-    Boo.Lang.~
+import Boo.Lang.~

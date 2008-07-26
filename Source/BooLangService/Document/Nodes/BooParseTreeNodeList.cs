@@ -103,9 +103,7 @@ namespace Boo.BooLangService.Document.Nodes
 
         public void Sort()
         {
-            inner.Sort(delegate(IBooParseTreeNode x, IBooParseTreeNode y) {
-                return x.Name.CompareTo(y.Name);
-            });
+            inner.Sort((x, y) => x.Name.CompareTo(y.Name));
         }
     }
 }

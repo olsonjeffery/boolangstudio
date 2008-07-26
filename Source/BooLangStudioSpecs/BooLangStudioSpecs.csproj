@@ -107,7 +107,6 @@
     <Compile Include="Intellisense\FixtureCompiler.cs" />
     <Compile Include="Intellisense\IntellisenseDeclarationsTestExtensionMethods.cs" />
     <Compile Include="Intellisense\LineEntityParserTests.cs" />
-    <Compile Include="Intellisense\NamespaceTreeBuilderTests.cs" />
     <Compile Include="Intellisense\WhenParsingMultipleFilesForIntellisense.cs" />
     <Compile Include="Intellisense\WhenShowingIntellisenseForNamespaceSuggestion.cs" />
     <Compile Include="LineScanner\LexingBaseFixture.cs" />
@@ -148,7 +147,7 @@
     <Compile Include="PegLexer\WhenTranslatingTokens.cs" />
     <Compile Include="Intellisense\BaseCompilerContext.cs" />
     <Compile Include="Intellisense\WhenDisplayingDescriptionsForIntellisense.cs" />
-    <Compile Include="Intellisense\Stubs\SimpleStubProjectReferenceLookup.cs" />
+    <Compile Include="Intellisense\Stubs\AssemblyReferenceFake.cs" />
     <Compile Include="Intellisense\Stubs\SimpleStubLineView.cs" />
     <Compile Include="Intellisense\WhenParsingSingleFileForIntellisense.cs" />
     <Compile Include="Intellisense\WhenShowingIntellisenseAtImportStatement.cs" />

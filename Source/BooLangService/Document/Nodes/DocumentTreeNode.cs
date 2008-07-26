@@ -7,12 +7,12 @@ namespace Boo.BooLangService.Document.Nodes
     [Scopable]
     public class DocumentTreeNode : AbstractTreeNode
     {
-        private readonly IDictionary<string, IList<IBooParseTreeNode>> imports = new Dictionary<string, IList<IBooParseTreeNode>>();
+        private readonly IDictionary<string, ImportedNamespaceTreeNode> imports = new Dictionary<string, ImportedNamespaceTreeNode>();
 
         public DocumentTreeNode(ISourceOrigin sourceOrigin) : base(sourceOrigin)
         {}
 
-        public IDictionary<string, IList<IBooParseTreeNode>> Imports
+        public IDictionary<string, ImportedNamespaceTreeNode> Imports
         {
             get { return imports; }
         }

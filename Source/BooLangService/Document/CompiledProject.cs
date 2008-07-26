@@ -9,7 +9,7 @@ namespace Boo.BooLangService.Document
     {
         private readonly IBooParseTreeNode root;
 
-        public CompiledProject(IBooParseTreeNode root, List<Assembly> references)
+        public CompiledProject(IBooParseTreeNode root)
         {
             this.root = root;
         }

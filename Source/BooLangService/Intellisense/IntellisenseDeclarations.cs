@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Intellisense;
@@ -44,7 +45,7 @@ namespace Boo.BooLangService
             return GetDisplayText(index);
         }
 
-        public void Add(IList<IBooParseTreeNode> list)
+        public virtual void Add(IList<IBooParseTreeNode> list)
         {
             foreach (var node in list)
             {
@@ -65,7 +66,7 @@ namespace Boo.BooLangService
             members.Sort();
         }
 
-        public void Add(IBooParseTreeNode member)
+        public virtual void Add(IBooParseTreeNode member)
         {
             members.Add(member);
         }
@@ -78,6 +79,15 @@ namespace Boo.BooLangService
         public IBooParseTreeNode Find(Predicate<IBooParseTreeNode> match)
         {
             return members.Find(match);
+        }
+
+        public void RemoveAll(Predicate<IBooParseTreeNode> match)
+        {
+            for (var i = members.Count - 1; i <= 0; i++)
+            {
+                if (match(members[i]))
+                    members.RemoveAt(i);
+            }
         }
     }
 }

@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Document.Origins;
 using Boo.Lang.Compiler.Ast;
 using Boo.Lang.Compiler.Steps;
 using Boo.Lang.Compiler.TypeSystem;
+using Module=Boo.Lang.Compiler.Ast.Module;
 
 namespace Boo.BooLangService.Document
 {
@@ -15,7 +17,7 @@ namespace Boo.BooLangService.Document
     /// </summary>
     public class BooDocumentVisitor : AbstractTransformerCompilerStep
     {
-        private readonly IBooParseTreeNode project = new ProjectTreeNode();
+        private readonly ProjectTreeNode project = new ProjectTreeNode();
         private IBooParseTreeNode currentScope;
         private DocumentTreeNode currentDocument;
 
@@ -30,6 +32,8 @@ namespace Boo.BooLangService.Document
 
             Visit(CompileUnit);
 
+            VisitReferences();
+
             if (Errors.Count > 0)
             {
                 foreach (Error error in Errors)
@@ -38,6 +42,43 @@ namespace Boo.BooLangService.Document
                 }
             }
         }
+
+        private void VisitReferences()
+        {
+            // get references and their types
+            string[] topLevelNamespaces = GetTopLevelNamespacesFromReferences();
+
+            // get INamespaces
+            foreach (var ns in topLevelNamespaces)
+            {
+                INamespace namespaceEntity = NameResolutionService.GetNamespace(ns);
+
+                project.ReferencedNamespaces[ns] = new ReferencedNamespaceTreeNode(new EntitySourceOrigin((IEntity)namespaceEntity));
+            }
+        }
+
+        private string[] GetTopLevelNamespacesFromReferences()
+        {
+            var namespaces = new List<string>();
+
+            foreach (Assembly reference in Context.References)
+            {
+                foreach (var type in reference.GetExportedTypes())
+                {
+                    if (type.Namespace == null) continue;
+
+                    var ns = type.Namespace;
+
+                    if (ns.Contains(".")) ns = ns.Substring(0, ns.IndexOf("."));
+
+                    if (!namespaces.Contains(ns))
+                        namespaces.Add(ns);
+                }
+            }
+
+            return namespaces.ToArray();
+        }
+
 
         public override bool EnterModule(Module node)
         {
@@ -68,22 +109,8 @@ namespace Boo.BooLangService.Document
             // this is a bit nasty - get all the members of the referenced namespace
             // then push them on the tree, so they're referencable
             var ns = (INamespace)TypeSystemServices.GetEntity(node);
-            IEntity[] entites = ns.GetMembers();
 
-            currentDocument.Imports[node.Namespace] = new List<IBooParseTreeNode>();
-
-            foreach (var entity in entites)
-            {
-                if (entity is IType)
-                {
-                    if (((IType)entity).IsInterface)
-                        currentDocument.Imports[node.Namespace].Add(new InterfaceTreeNode(new EntitySourceOrigin(entity), entity.FullName) { Name = entity.Name });
-                    else
-                        currentDocument.Imports[node.Namespace].Add(new ClassTreeNode(new EntitySourceOrigin(entity), entity.FullName) { Name = entity.Name });
-                }
-                else if (entity is INamespace)
-                    currentDocument.Imports[node.Namespace].Add(new ImportedNamespaceTreeNode(new EntitySourceOrigin(entity)) { Name = entity.Name });
-            }
+            currentDocument.Imports[node.Namespace] = new ImportedNamespaceTreeNode(new EntitySourceOrigin((IEntity)ns));
 
             base.OnImport(node);
         }

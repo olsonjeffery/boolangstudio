@@ -33,7 +33,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             CompiledFixtures
                 .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
                 .GetDeclarations()
-                .AssertNonPresenceOf("BooCompiler", "CompilerError");
+                .AssertNonPresenceOf("ICallable", "IQuackFu");
         }
     }
 }

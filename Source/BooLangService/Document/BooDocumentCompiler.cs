@@ -33,8 +33,7 @@ namespace Boo.BooLangService.Document
             compiler.Run();
 
             return new CompiledProject(
-                visitor.Project,
-                references
+                visitor.Project
             );
         }
 

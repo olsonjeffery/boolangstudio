@@ -6,7 +6,6 @@ using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Document.Origins;
 using Boo.BooLangService.Intellisense;
-using Boo.BooLangService.VSInterop;
 using Boo.BooLangStudioSpecs.Document;
 using Boo.Lang.Compiler.TypeSystem;
 using Microsoft.VisualStudio.Package;
@@ -18,15 +17,12 @@ namespace Boo.BooLangService.Intellisense
         private const string ImportKeyword = "import";
         
         private readonly CompiledProject compiledProject;
-        private readonly Regex IntellisenseTargetRegex = new Regex("[^ (]*$", RegexOptions.Compiled);
         private readonly ILineView lineView;
         private readonly string fileName;
-        private readonly IProjectReferenceLookup projectReferences;
 
-        public DeclarationFinder(CompiledProject compiledProject, IProjectReferenceLookup projectReferenceLookup, ILineView lineView, string fileName)
+        public DeclarationFinder(CompiledProject compiledProject, ILineView lineView, string fileName)
         {
             this.compiledProject = compiledProject;
-            this.projectReferences = projectReferenceLookup;
             this.lineView = lineView;
             this.fileName = fileName;
         }
@@ -49,20 +45,13 @@ namespace Boo.BooLangService.Intellisense
         public IntellisenseDeclarations Find(int lineNum, int colNum, ParseReason reason)
         {
             string line = lineView.GetTextUptoPosition(lineNum, colNum);
-
-            if (line.StartsWith(ImportKeyword))
-            {
-                // handle this separately from normal intellisense, because:
-                //  a) the open import statement will have broken the document
-                //  b) we don't need the doc anyway, all imports would be external to the current file
-                // only problem is, the top level namespaces (i.e. System, Boo, Microsoft) should be
-                // usable from within code too, so we need some way of parsing and caching them and
-                // making them available everywhere
-                return GetImportIntellisenseDeclarations(line, lineNum);
-            }
+            bool isImportStatement = line.StartsWith(ImportKeyword);
+            var declarations = (isImportStatement) ? new ImportIntellisenseDeclarations() : new IntellisenseDeclarations();
 
             if (line.EndsWith(".") || reason == ParseReason.MemberSelect)
             {
+                if (isImportStatement) line = line.Remove(0, ImportKeyword.Length).Trim(); // remove import keyword
+
                 // Member Select: it's easier to check if the line ends in a . rather than checking
                 // the parse reason, because the parse reason may not technically be correct.
                 // for example "Syst[ctrl+space]" is a complete word, while "System[.]" is
@@ -70,31 +59,17 @@ namespace Boo.BooLangService.Intellisense
                 // reported as a complete word because of the shortcut used.
                 // So it's easier just to say any lines ending in "." are member lookups, and everything
                 // else is complete word.
-                return GetMemberLookupIntellisenseDeclarations(line, lineNum);
+                AddMemberLookupDeclarations(declarations, line, lineNum);
+
+                return declarations;
             }
 
             // Everything else (complete word)
             return GetScopedIntellisenseDeclarations(lineNum);
         }
 
-        private IntellisenseDeclarations GetImportIntellisenseDeclarations(string line, int lineNum)
+        private void AddMemberLookupDeclarations(IntellisenseDeclarations declarations, string lineSource, int line)
         {
-            // get any namespace already written (i.e. "Boo.Lang.")
-            string intellisenseTarget = GetIntellisenseTarget(line);
-
-            if (!string.IsNullOrEmpty(intellisenseTarget))
-                return GetMemberLookupIntellisenseDeclarations(intellisenseTarget, lineNum);
-
-            var declarations = new IntellisenseDeclarations();
-
-            AddNamespacesFromReferences(declarations, intellisenseTarget);
-
-            return declarations;
-        }
-
-        private IntellisenseDeclarations GetMemberLookupIntellisenseDeclarations(string lineSource, int line)
-        {
-            var declarations = new IntellisenseDeclarations();
             var members = GetMembersFromCurrentScope(line, lineSource);
 
             members.ForEach(e =>
@@ -106,8 +81,6 @@ namespace Boo.BooLangService.Intellisense
             });
 
             declarations.Sort();
-
-            return declarations;
         }
 
 
@@ -154,7 +127,7 @@ namespace Boo.BooLangService.Intellisense
             AddMembersFromScopeTree(declarations, scopedParseTree);
             AddKeywords(declarations, scopedParseTree);
             AddImports(declarations, GetDocument(scopedParseTree));
-            AddReferences(declarations);
+            AddReferences(declarations, (ProjectTreeNode)compiledProject.ParseTree);
 
             declarations.Sort();
 
@@ -171,11 +144,6 @@ namespace Boo.BooLangService.Intellisense
             }
 
             return currentNode as DocumentTreeNode;
-        }
-
-        private string GetIntellisenseTarget(string line)
-        {
-            return IntellisenseTargetRegex.Match(line).Groups[0].Value;
         }
 
         /// <summary>
@@ -207,23 +175,27 @@ namespace Boo.BooLangService.Intellisense
             // add imports to declarations
             foreach (var importNamespace in document.Imports.Keys)
             {
-                var importedNodes = document.Imports[importNamespace];
+                ImportedNamespaceTreeNode importedNodes = document.Imports[importNamespace];
+
+                foreach (var member in importedNodes.SourceOrigin.GetMembers(false))
+                {
+                    declarations.Add(member.ToTreeNode());
+                }
 
                 declarations.Add(importedNodes);
             }
         }
 
-        private void AddReferences(IntellisenseDeclarations declarations)
+        private void AddReferences(IntellisenseDeclarations declarations, ProjectTreeNode project)
         {
-            AddNamespacesFromReferences(declarations, "");
-        }
+            var namespaces = new List<IBooParseTreeNode>();
 
-        /// <summary>
-        /// Adds namespaces from references to the declarations.
-        /// </summary>
-        private void AddNamespacesFromReferences(IntellisenseDeclarations declarations, string namespaceContinuation)
-        {
-            declarations.Add(projectReferences.GetReferencedNamespacesInProjectContaining(fileName, namespaceContinuation));
+            foreach (var ns in project.ReferencedNamespaces.Keys)
+            {
+                namespaces.Add(project.ReferencedNamespaces[ns]);
+            }
+
+            declarations.Add(namespaces);
         }
     }
 }

@@ -10,6 +10,12 @@ namespace Boo.BooLangService.Document.Nodes
         public ClassTreeNode(ISourceOrigin sourceOrigin, string fullName) : base(sourceOrigin, fullName)
         {}
 
+        public override string Name
+        {
+            get { return SourceOrigin.Name; }
+            set {}
+        }
+
         public override string GetIntellisenseDescription()
         {
             return "Class " + FullName;

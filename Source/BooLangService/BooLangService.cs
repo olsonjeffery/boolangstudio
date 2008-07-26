@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using Boo.BooLangProject;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
-using Boo.BooLangService.VSInterop;
 using BooLangService;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Package;
@@ -85,7 +84,7 @@ namespace Boo.BooLangService
             var project = GetProject(req);
             CompiledProject compiledProject = project.GetCompiledProject();
 
-            return new BooScope(this, compiledProject, (BooSource)GetSource(req.View), req.FileName);
+            return new BooScope(compiledProject, (BooSource)GetSource(req.View), req.FileName);
         }
 
         private BooProjectSources GetProject(ParseRequest request)

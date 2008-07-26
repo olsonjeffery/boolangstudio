@@ -1,13 +1,12 @@
 using Boo.BooLangService.Document.Origins;
 using Boo.BooLangService.Intellisense;
-using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
     [IntellisenseVisible]
-    public class ImportedNamespaceTreeNode : NamespaceTreeNode
+    public class ReferencedNamespaceTreeNode : NamespaceTreeNode
     {
-        public ImportedNamespaceTreeNode(ISourceOrigin sourceOrigin) : base(sourceOrigin)
+        public ReferencedNamespaceTreeNode(ISourceOrigin sourceOrigin) : base(sourceOrigin)
         {}
 
         public override string Name

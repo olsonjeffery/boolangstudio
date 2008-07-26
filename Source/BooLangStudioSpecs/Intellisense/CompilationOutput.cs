@@ -50,12 +50,8 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         protected DeclarationFinder CreateFinder(params Assembly[] assemblies)
         {
             var lineView = new SimpleStubLineView(CaretLocation.LineSource);
-            var referenceLookup = new SimpleStubProjectReferenceLookup();
 
-            if (assemblies != null)
-                referenceLookup.AddAssembliesForReferences(assemblies);
-
-            return new DeclarationFinder(Project, referenceLookup, lineView, CaretLocation.FileName);
+            return new DeclarationFinder(Project, lineView, CaretLocation.FileName);
         }
     }
 }

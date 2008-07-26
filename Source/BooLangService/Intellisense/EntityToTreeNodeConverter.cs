@@ -20,7 +20,8 @@ namespace Boo.BooLangService.Intellisense
             if (entity is INamespace)
                 return ToTreeNode((INamespace)entity);
 
-            return null;
+            // fallback for unhandled types
+            return new ClassTreeNode(new EntitySourceOrigin(entity), entity.FullName);
         }
 
         private IBooParseTreeNode ToTreeNode(IType type)
@@ -29,8 +30,8 @@ namespace Boo.BooLangService.Intellisense
                 return new InterfaceTreeNode(new EntitySourceOrigin(type), type.FullName) { Name = type.Name };
             if (type.IsClass || type.IsEnum)
                 return new ClassTreeNode(new EntitySourceOrigin(type), type.FullName) { Name = type.Name };
-
-            return null;
+            
+            return new ValueTypeTreeNode(new EntitySourceOrigin(type), type.FullName) { Name = type.Name };
         }
 
         private IBooParseTreeNode ToTreeNode(INamespace @namespace)

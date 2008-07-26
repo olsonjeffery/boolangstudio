@@ -47,6 +47,7 @@ namespace Boo.BooLangService.Document.Origins
             {
                 if (excludedMembers.Contains(e.Name)) return true;
                 if (e is NamespaceEntity || e is NullNamespace || e is SimpleNamespace) return false;
+                if (e is ExternalType) return false;
 
                 var member = (IMember)e;
 

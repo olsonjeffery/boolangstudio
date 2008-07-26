@@ -1,7 +1,6 @@
 ﻿using System;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Intellisense;
-using Boo.BooLangService.VSInterop;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -12,9 +11,9 @@ namespace BooLangService
     {
         private readonly DeclarationFinder declarations;
 
-        public BooScope(LanguageService service, CompiledProject compiledProject, BooSource source, string fileName)
+        public BooScope(CompiledProject compiledProject, BooSource source, string fileName)
         {
-            declarations = new DeclarationFinder(compiledProject, new ProjectReferenceLookup(), source, fileName);
+            declarations = new DeclarationFinder(compiledProject, source, fileName);
         }
 
         public override string GetDataTipText(int line, int col, out TextSpan span)
