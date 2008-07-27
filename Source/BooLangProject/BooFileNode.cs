@@ -13,7 +13,7 @@ namespace Boo.BooLangProject
         public BooFileNode(ProjectNode project, ProjectElement element, int imageIndex)
             : base(project, element)
         {
-            _imageIndex = imageIndex;            
+            _imageIndex = imageIndex;
         }
 
         internal static int _imageIndex;

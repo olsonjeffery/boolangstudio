@@ -8,8 +8,8 @@
     <AssemblyName>BooPegLexer</AssemblyName>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <Name>BooPegLexer</Name>
-    <BooBinPath>C:\Program Files\BooLangStudio\Bin</BooBinPath>
     <AssemblyOriginatorKeyFile>BooLangStudio.snk</AssemblyOriginatorKeyFile>
+    <BooBinPath>C:\Program Files\BooLangStudio\Bin</BooBinPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,5 +49,5 @@
     <Compile Include="PegToken.boo" />
     <Compile Include="PegTokenType.boo" />
   </ItemGroup>
-  <Import Project="$(BooBinPath)\Boo.Microsoft.Build.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Boo\Boo.Microsoft.Build.targets" />
 </Project>

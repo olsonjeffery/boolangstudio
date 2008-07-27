@@ -19,17 +19,7 @@ namespace Boo.BooLangProject
         public BooLangProjectFactory(Package package)
             : base(package)
         {
-            RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\BooLangStudio");
-            
-            // The path should be in the registry, but if it's not then do your best by looking
-            // at the location of the current assembly!
-            string booBinPath = (string)(key != null ? 
-                key.GetValue("BooBinPath") : 
-                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\Dependencies\boo\build\"));
-
             this.package = (ProjectPackage)package;
-            this.BuildEngine.GlobalProperties["BoocToolPath"] = new BuildProperty("BoocToolPath", booBinPath);
-            this.BuildEngine.GlobalProperties["BooBinPath"] = new BuildProperty("BooBinPath",booBinPath);
 			this.BuildEngine.GlobalProperties["GenerateFullPaths"] = new BuildProperty("GenerateFullPaths", "True");
         }
 
