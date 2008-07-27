@@ -40,5 +40,5 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Boo\Boo.Microsoft.Build.targets" />
+  <Import Project="$(BooBinPath)\Boo.Microsoft.Build.targets" />
 </Project>

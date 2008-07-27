@@ -30,7 +30,6 @@ namespace Boo.BooLangProject
             this.CanProjectDeleteItems = true;
         }
 
-
         /// <summary>
         /// This is a very poor workaround. Until I can figure out how
         /// to get our GlobalProperies into the ProjectShim that the
@@ -43,6 +42,7 @@ namespace Boo.BooLangProject
         }
 
         private static ImageList imageList;
+        
         static BooProjectNode()
         {
             imageList =

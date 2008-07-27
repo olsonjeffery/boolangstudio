@@ -885,18 +885,6 @@
             </Directory>
           </Directory>
 		    </Directory>
-
-        <Directory Id="MSBuild" Name="MSBuild">
-          <Directory Id="BooMSBuild" Name="Boo">
-            <Component Id="BooBuild" Guid="82B78AD2-EAB6-4b9d-A37D-0224CBCD9D61">
-              <File Id="BooBuildTargets"
-                    Name="Boo.Microsoft.Build.targets"
-                    DiskId="1"
-                    Source="$(sys.SOURCEFILEDIR)..\Pre\Boo.Microsoft.Build.targets"
-                    Vital="yes"/>
-            </Component>
-          </Directory>
-        </Directory>
         
       </Directory>
 
@@ -951,7 +939,6 @@
 
       <ComponentRef Id="BooProjects" />
       <ComponentRef Id="BooItems" />
-      <ComponentRef Id="BooBuild" />
     </Feature>
 
     <!--

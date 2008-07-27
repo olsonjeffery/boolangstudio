@@ -20,16 +20,32 @@ namespace Boo.BooLangProject
             : base(package)
         {
             this.package = (ProjectPackage)package;
-			this.BuildEngine.GlobalProperties["GenerateFullPaths"] = new BuildProperty("GenerateFullPaths", "True");
+            this.BuildEngine.GlobalProperties["GenerateFullPaths"] = new BuildProperty("GenerateFullPaths", "True");
+
+            RegistryKey booBinPathKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\BooLangStudio");
+            if (booBinPathKey != null)
+            {
+                string booBinPath = booBinPathKey.GetValue("BooBinPath") as string;
+
+                if(!string.IsNullOrEmpty(booBinPath))
+                    this.BuildEngine.GlobalProperties["BooBinPath"] = new BuildProperty("BooBinPath", booBinPath);
+            }
         }
 
         protected override ProjectNode CreateProject()
         {
             BooProjectNode project = new BooProjectNode(this.package);
             project.SetSite((IOleServiceProvider)
-                (((IServiceProvider)this.Package).GetService(typeof(IOleServiceProvider)))
-                );
+                (((IServiceProvider)this.Package).GetService(typeof(IOleServiceProvider))));
+
             return project;
+        }
+
+        protected override object PreCreateForOuter(IntPtr outerProjectIUnknown)
+        {
+            object ret = base.PreCreateForOuter(outerProjectIUnknown);
+
+            return ret;
         }
 
         protected override string ProjectTypeGuids(string file)
