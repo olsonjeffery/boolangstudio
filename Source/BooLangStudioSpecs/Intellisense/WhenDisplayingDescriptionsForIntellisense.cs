@@ -46,14 +46,5 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             Assert.True(description == "void MyClass.MyMethod(string firstParameter, int secondParameter)",
                 "Expected: 'void MyClass.MyMethod(string firstParameter, int secondParameter)'\r\nFound: '" + description + "'.");
         }
-
-        private IntellisenseDeclarations CreateDeclarations(params IBooParseTreeNode[] nodes)
-        {
-            var declarations = new IntellisenseDeclarations();
-
-            declarations.Add(new List<IBooParseTreeNode>(nodes));
-
-            return declarations;
-        }
     }
 }

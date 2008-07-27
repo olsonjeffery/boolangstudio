@@ -4,10 +4,23 @@ using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [IntellisenseVisible]
     public class KeywordTreeNode : AbstractTreeNode
     {
-        public KeywordTreeNode() : base(new NullSourceOrigin())
-        {}
+        private readonly string name;
+
+        public KeywordTreeNode(string name) : base(new NullSourceOrigin())
+        {
+            this.name = name;
+        }
+
+        public override string Name
+        {
+            get { return name; }
+        }
+
+        public override bool IntellisenseVisible
+        {
+            get { return true; }
+        }
     }
 }

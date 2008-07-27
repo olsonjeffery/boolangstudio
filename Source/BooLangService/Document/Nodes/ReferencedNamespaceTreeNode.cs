@@ -3,16 +3,14 @@ using Boo.BooLangService.Intellisense;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [IntellisenseVisible]
     public class ReferencedNamespaceTreeNode : NamespaceTreeNode
     {
         public ReferencedNamespaceTreeNode(ISourceOrigin sourceOrigin) : base(sourceOrigin)
         {}
 
-        public override string Name
+        public override bool IntellisenseVisible
         {
-            get { return SourceOrigin.Name; }
-            set { base.Name = value; }
+            get { return true; }
         }
     }
 }

@@ -4,10 +4,15 @@ using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [Scopable, IntellisenseVisible]
+    [Scopable]
     public class NamespaceDeclarationTreeNode : NamespaceTreeNode
     {
         public NamespaceDeclarationTreeNode(ISourceOrigin sourceOrigin) : base(sourceOrigin)
         {}
+
+        public override bool IntellisenseVisible
+        {
+            get { return true; }
+        }
     }
 }

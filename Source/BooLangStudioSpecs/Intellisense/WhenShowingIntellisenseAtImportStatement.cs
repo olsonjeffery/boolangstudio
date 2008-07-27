@@ -11,8 +11,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         public void ShowAllReferencedNamespaces()
         {
             CompiledFixtures
-                .SetReferences(
-                    Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
+                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
                 .GetDeclarations()
                 .AssertPresenceOf("Boo");
         }
@@ -21,8 +20,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         public void ShowSubNamespacesForPartialImport()
         {
             CompiledFixtures
-                .SetReferences(
-                    Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
+                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
                 .GetDeclarations()
                 .AssertPresenceOf("Lang");
         }

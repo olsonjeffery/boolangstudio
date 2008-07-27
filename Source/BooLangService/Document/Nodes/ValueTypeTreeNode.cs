@@ -3,10 +3,15 @@ using Boo.BooLangService.Intellisense;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [Scopable, IntellisenseVisible]
+    [Scopable]
     public class ValueTypeTreeNode : TypeDeclarationTreeNode
     {
         public ValueTypeTreeNode(ISourceOrigin sourceOrigin, string fullName) : base(sourceOrigin, fullName)
         {}
+
+        public override bool IntellisenseVisible
+        {
+            get { return true; }
+        }
     }
 }

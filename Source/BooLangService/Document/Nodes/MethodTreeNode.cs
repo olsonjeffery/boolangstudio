@@ -7,7 +7,7 @@ using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [Scopable, IntellisenseVisible]
+    [Scopable]
     public class MethodTreeNode : AbstractTreeNode, IReturnableNode
     {
         private readonly string returnType;
@@ -39,6 +39,11 @@ namespace Boo.BooLangService.Document.Nodes
         public override string GetIntellisenseDescription()
         {
             return ReturnType + " " + ContainingClass + "." + Name + GetParametersIntellisenseDescription();
+        }
+
+        public override bool IntellisenseVisible
+        {
+            get { return true; }
         }
 
         private string GetParametersIntellisenseDescription()

@@ -45,14 +45,9 @@ namespace Boo.BooLangService
             return GetDisplayText(index);
         }
 
-        public virtual void Add(IList<IBooParseTreeNode> list)
+        public virtual void AddRange(IList<IBooParseTreeNode> list)
         {
-            foreach (var node in list)
-            {
-                Add(node);
-            }
-
-            members.Sort();
+            members.AddRange(list);
         }
 
         public void Add(string[] keywords)
@@ -60,10 +55,8 @@ namespace Boo.BooLangService
             // still a bit hacky
             foreach (var keyword in keywords)
             {
-                Add(new KeywordTreeNode { Name = keyword });
+                Add(new KeywordTreeNode(keyword));
             }
-
-            members.Sort();
         }
 
         public virtual void Add(IBooParseTreeNode member)

@@ -20,14 +20,9 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             return _compiler;
         }
 
-        private string GetSource(string file, out int? caretColumn, out int? caretLine, out string caretLineSource, out string caretFileName)
+        private string GetSource(string file, ref int? caretColumn, ref int? caretLine, ref string caretLineSource, ref string caretFileName)
         {
             var source = File.ReadAllText(file);
-
-            caretColumn = null;
-            caretLine = null;
-            caretLineSource = null;
-            caretFileName = null;
 
             if (source.Contains(Caret))
             {
@@ -94,7 +89,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
 
             if (File.Exists(fixturesPath + ".boo"))
             {
-                string source = GetSource(fixturesPath + ".boo", out caretColumn, out caretLine, out caretLineSource, out caretFileName);
+                string source = GetSource(fixturesPath + ".boo", ref caretColumn, ref caretLine, ref caretLineSource, ref caretFileName);
 
                 compiler.AddSource(fixturesPath + ".boo", source);
             }
@@ -102,7 +97,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             {
                 foreach (var file in Directory.GetFiles(fixturesPath))
                 {
-                    string source = GetSource(file, out caretColumn, out caretLine, out caretLineSource, out caretFileName);
+                    string source = GetSource(file, ref caretColumn, ref caretLine, ref caretLineSource, ref caretFileName);
 
                     compiler.AddSource(file, source);
                 }

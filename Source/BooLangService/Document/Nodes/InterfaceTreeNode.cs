@@ -4,7 +4,7 @@ using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [Scopable, IntellisenseVisible]
+    [Scopable]
     public class InterfaceTreeNode : TypeDeclarationTreeNode
     {
         public InterfaceTreeNode(ISourceOrigin sourceOrigin, string fullName) : base(sourceOrigin, fullName)
@@ -13,6 +13,11 @@ namespace Boo.BooLangService.Document.Nodes
         public override string GetIntellisenseDescription()
         {
             return "Interface " + FullName;
+        }
+
+        public override bool IntellisenseVisible
+        {
+            get { return true; }
         }
     }
 }

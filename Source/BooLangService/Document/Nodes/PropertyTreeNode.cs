@@ -4,10 +4,14 @@ using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [IntellisenseVisible]
     public class PropertyTreeNode : InstanceDeclarationTreeNode
     {
         public PropertyTreeNode(ISourceOrigin sourceOrigin) : base(sourceOrigin)
         {}
+
+        public override bool IntellisenseVisible
+        {
+            get { return true; }
+        }
     }
 }

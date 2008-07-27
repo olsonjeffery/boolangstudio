@@ -82,9 +82,9 @@ namespace Boo.BooLangService.Document
 
         public override bool EnterModule(Module node)
         {
-            var document = new DocumentTreeNode(new EntitySourceOrigin(GetEntity(node)));
+            var document = new DocumentTreeNode(new EntitySourceOrigin(GetEntity(node)), node.LexicalInfo.FileName);
 
-            Push(document, node.LexicalInfo.FileName, 0);
+            Push(document, 0);
             currentDocument = document;
 
             return base.EnterModule(node);
@@ -117,7 +117,7 @@ namespace Boo.BooLangService.Document
 
         public override bool EnterInterfaceDefinition(InterfaceDefinition node)
         {
-            Push(new InterfaceTreeNode(new EntitySourceOrigin(GetEntity(node)), node.FullName), node.Name, node.LexicalInfo.Line);
+            Push(new InterfaceTreeNode(new EntitySourceOrigin(GetEntity(node)), node.FullName), node.LexicalInfo.Line);
 
             return base.EnterInterfaceDefinition(node);
         }
@@ -131,14 +131,14 @@ namespace Boo.BooLangService.Document
 
         public override bool EnterClassDefinition(ClassDefinition node)
         {
-            Push(new ClassTreeNode(new EntitySourceOrigin(GetEntity(node)), node.FullName), node.Name, node.LexicalInfo.Line);
+            Push(new ClassTreeNode(new EntitySourceOrigin(GetEntity(node)), node.FullName), node.LexicalInfo.Line);
 
             return base.EnterClassDefinition(node);
         }
 
         public override void OnField(Field node)
         {
-            Push(new FieldTreeNode(new EntitySourceOrigin(GetEntity(node))), node.Name, node.LexicalInfo.Line);
+            Push(new FieldTreeNode(new EntitySourceOrigin(GetEntity(node))), node.LexicalInfo.Line);
 
             base.OnField(node);
 
@@ -147,7 +147,7 @@ namespace Boo.BooLangService.Document
 
         public override void OnProperty(Property node)
         {
-            Push(new PropertyTreeNode(new EntitySourceOrigin(GetEntity(node))), node.Name, node.LexicalInfo.Line);
+            Push(new PropertyTreeNode(new EntitySourceOrigin(GetEntity(node))), node.LexicalInfo.Line);
 
             base.OnProperty(node);
 
@@ -181,14 +181,14 @@ namespace Boo.BooLangService.Document
             var method = new MethodTreeNode(new EntitySourceOrigin(GetEntity(node)), node.ReturnType != null ? node.ReturnType.ToString() : "void", parent != null ? parent.Name : "");
             method.Parameters = parameters;
 
-            Push(method, node.Name, node.LexicalInfo.Line);
+            Push(method, node.LexicalInfo.Line);
 
             return base.EnterMethod(node);
         }
 
         public override bool EnterTryStatement(TryStatement node)
         {
-            Push(new TryTreeNode(new EntitySourceOrigin(GetEntity(node))), "", node.LexicalInfo.Line);
+            Push(new TryTreeNode(new EntitySourceOrigin(GetEntity(node))), node.LexicalInfo.Line);
 
             return base.EnterTryStatement(node);
         }
@@ -204,7 +204,7 @@ namespace Boo.BooLangService.Document
         {
             var local = (ITypedEntity)TypeSystemServices.GetEntity(node);
 
-            Push(new LocalTreeNode(new EntitySourceOrigin(GetEntity(node))) { ReturnType = local.Type.ToString() }, node.Name, node.LexicalInfo.Line);
+            Push(new LocalTreeNode(new EntitySourceOrigin(GetEntity(node))) { ReturnType = local.Type.ToString() }, node.LexicalInfo.Line);
 
             base.OnLocal(node);
 
@@ -242,10 +242,9 @@ namespace Boo.BooLangService.Document
             base.OnNamespaceDeclaration(node);
         }
 
-        private void Push(IBooParseTreeNode node, string name, int line)
+        private void Push(IBooParseTreeNode node, int line)
         {
             node.Parent = currentScope;
-            node.Name = name;
             node.StartLine = line;
 
             currentScope.Children.Add(node);

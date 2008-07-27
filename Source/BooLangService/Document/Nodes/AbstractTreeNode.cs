@@ -9,11 +9,23 @@ namespace Boo.BooLangService.Document.Nodes
         private readonly ISourceOrigin sourceOrigin;
         private readonly IList<IBooParseTreeNode> children;
         private int endLine = -1; // forces generated endline if not set
+        private readonly string name;
 
         protected AbstractTreeNode(ISourceOrigin sourceOrigin)
         {
             this.sourceOrigin = sourceOrigin;
+            this.name = sourceOrigin.Name;
             children = new ParseTreeNodeSet(this);
+        }
+
+        public virtual bool IntellisenseVisible
+        {
+            get { return false; }
+        }
+
+        public virtual string Name
+        {
+            get { return name; }
         }
 
         public bool ContainsLine(int line)
@@ -32,7 +44,6 @@ namespace Boo.BooLangService.Document.Nodes
         }
 
         public IBooParseTreeNode Parent { get; set; }
-        public virtual string Name { get; set; }
         public int StartLine { get; set; }
 
         public int EndLine

@@ -19,18 +19,17 @@ namespace Boo.BooLangService.Document
             BooParseTreeNodeList flattened = new IntellisenseNodeList();
 
             // add anything "below" the scope (e.g. locals in a method, methods in a class)
-            flattened.AddRange(FlattenDown(node.Children));
+            FlattenDown(node.Children, ref flattened);
 
             // add anything "above" the scope (e.g. classes in a method)
             // also walks sideways (e.g. other methods in same class if scope is a method)
-            flattened.AddRange(FlattenUp(node));
+            FlattenUp(node, ref flattened);
 
             return flattened;
         }
 
-        private IList<IBooParseTreeNode> FlattenUp(IBooParseTreeNode node)
+        private void FlattenUp(IBooParseTreeNode node, ref BooParseTreeNodeList flattened)
         {
-            IList<IBooParseTreeNode> flattened = new IntellisenseNodeList();
             IBooParseTreeNode parent = node;
 
             while ((parent = parent.Parent) != null)
@@ -52,21 +51,16 @@ namespace Boo.BooLangService.Document
 
                 flattened.Add(parent);
             }
-
-            return flattened;
         }
 
-        private IList<IBooParseTreeNode> FlattenDown(IList<IBooParseTreeNode> nodes)
+        private void FlattenDown(IList<IBooParseTreeNode> nodes, ref BooParseTreeNodeList flattened)
         {
-            BooParseTreeNodeList flattened = new IntellisenseNodeList();
-
             foreach (IBooParseTreeNode node in nodes)
             {
                 flattened.Add(node);
-                flattened.AddRange(FlattenDown(node.Children));
+                
+                FlattenDown(node.Children, ref flattened);
             }
-
-            return flattened;
         }
     }
 }

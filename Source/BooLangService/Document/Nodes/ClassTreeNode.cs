@@ -4,21 +4,20 @@ using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [Scopable, IntellisenseVisible]
+    [Scopable]
     public class ClassTreeNode : TypeDeclarationTreeNode
     {
         public ClassTreeNode(ISourceOrigin sourceOrigin, string fullName) : base(sourceOrigin, fullName)
         {}
 
-        public override string Name
-        {
-            get { return SourceOrigin.Name; }
-            set {}
-        }
-
         public override string GetIntellisenseDescription()
         {
             return "Class " + FullName;
+        }
+
+        public override bool IntellisenseVisible
+        {
+            get { return true;}
         }
     }
 }

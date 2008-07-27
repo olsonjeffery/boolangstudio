@@ -154,7 +154,7 @@ namespace Boo.BooLangService.Intellisense
         {
             var parseTreeFlattener = new BooParseTreeNodeFlatterner();
 
-            declarations.Add(parseTreeFlattener.FlattenFrom(scopedParseTree));
+            declarations.AddRange(parseTreeFlattener.FlattenFrom(scopedParseTree));
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace Boo.BooLangService.Intellisense
                 namespaces.Add(project.ReferencedNamespaces[ns]);
             }
 
-            declarations.Add(namespaces);
+            declarations.AddRange(namespaces);
         }
     }
 }

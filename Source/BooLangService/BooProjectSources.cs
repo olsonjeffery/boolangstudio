@@ -25,10 +25,11 @@ namespace Boo.BooLangProject
         {
             hierarchyListener = new HierarchyListener(hierarchy);
             hierarchyListener.ItemAdded += hierarchyListener_ItemAdded;
+            hierarchyListener.Complete += hierarchyListener_Completed;
             hierarchyListener.StartListening();
         }
 
-        void hierarchyListener_ItemAdded(object sender, HierarchyEventArgs e)
+        private void hierarchyListener_ItemAdded(object sender, HierarchyEventArgs e)
         {
             var file = new SourceFile();
 
@@ -36,6 +37,16 @@ namespace Boo.BooLangProject
             file.Source = GetSource(e.FileName);
 
             files.Add(file);
+        }
+
+        private void hierarchyListener_Completed(object sender, EventArgs e)
+        {
+            // do the first time compile
+            // this is done while the project is loading because the user is already waiting for
+            // the project to finish loading, an extra second or two won't be noticable. However,
+            // if the first compile is done when they trigger intellisense for the first time, then
+            // it's very noticable.
+            Compile();
         }
 
         /// <summary>

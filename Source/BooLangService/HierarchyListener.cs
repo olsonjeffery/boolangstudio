@@ -26,6 +26,8 @@ namespace Boo.BooLangProject
         public void StartListening()
         {
             Scan(RootItem);
+
+            RaiseCompleteEvent();
         }
 
         /// <summary>
@@ -63,6 +65,13 @@ namespace Boo.BooLangProject
             if (ItemAdded == null || !IsBooFile(item, out itemName)) return;
 
             ItemAdded(hierarchy, new HierarchyEventArgs(item, itemName));
+        }
+
+        private void RaiseCompleteEvent()
+        {
+            if (Complete == null) return;
+
+            Complete(hierarchy, EventArgs.Empty);
         }
 
         /// <summary>
@@ -193,5 +202,6 @@ namespace Boo.BooLangProject
         #endregion
 
         public event EventHandler<HierarchyEventArgs> ItemAdded;
+        public event EventHandler<EventArgs> Complete;
     }
 }

@@ -4,16 +4,14 @@ using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [IntellisenseVisible]
     public class ImportedNamespaceTreeNode : NamespaceTreeNode
     {
         public ImportedNamespaceTreeNode(ISourceOrigin sourceOrigin) : base(sourceOrigin)
         {}
 
-        public override string Name
+        public override bool IntellisenseVisible
         {
-            get { return SourceOrigin.Name; }
-            set { base.Name = value; }
+            get { return true; }
         }
     }
 }

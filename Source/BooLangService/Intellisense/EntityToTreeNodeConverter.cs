@@ -27,31 +27,21 @@ namespace Boo.BooLangService.Intellisense
         private IBooParseTreeNode ToTreeNode(IType type)
         {
             if (type.IsInterface)
-                return new InterfaceTreeNode(new EntitySourceOrigin(type), type.FullName) { Name = type.Name };
+                return new InterfaceTreeNode(new EntitySourceOrigin(type), type.FullName);
             if (type.IsClass || type.IsEnum)
-                return new ClassTreeNode(new EntitySourceOrigin(type), type.FullName) { Name = type.Name };
+                return new ClassTreeNode(new EntitySourceOrigin(type), type.FullName);
             
-            return new ValueTypeTreeNode(new EntitySourceOrigin(type), type.FullName) { Name = type.Name };
+            return new ValueTypeTreeNode(new EntitySourceOrigin(type), type.FullName);
         }
 
         private IBooParseTreeNode ToTreeNode(INamespace @namespace)
         {
-            var name = @namespace.ToString();
-
-            // get the last part of the namespace name, because it's returned as
-            // fully qualified
-            if (name.Contains("."))
-                name = name.Substring(name.LastIndexOf('.') + 1);
-
-            return new ImportedNamespaceTreeNode(new EntitySourceOrigin((IEntity)@namespace)) { Name = name };
+            return new ImportedNamespaceTreeNode(new EntitySourceOrigin((IEntity)@namespace));
         }
 
         private IBooParseTreeNode ToTreeNode(IMethod method)
         {
-            var member = new MethodTreeNode(new EntitySourceOrigin(method), method.ReturnType.ToString(), method.DeclaringType.FullName)
-            {
-                Name = method.Name
-            };
+            var member = new MethodTreeNode(new EntitySourceOrigin(method), method.ReturnType.ToString(), method.DeclaringType.FullName);
 
             foreach (var parameter in method.GetParameters())
             {
@@ -67,10 +57,7 @@ namespace Boo.BooLangService.Intellisense
 
         private IBooParseTreeNode ToTreeNode(IProperty property)
         {
-            return new MethodTreeNode(new EntitySourceOrigin(property), property.GetGetMethod().ReturnType.ToString(), property.DeclaringType.FullName)
-            {
-                Name = property.Name
-            };
+            return new MethodTreeNode(new EntitySourceOrigin(property), property.GetGetMethod().ReturnType.ToString(), property.DeclaringType.FullName);
         }
     }
 }
