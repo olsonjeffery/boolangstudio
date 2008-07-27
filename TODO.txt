@@ -17,4 +17,4 @@
 * #region detection
 * 'comment-region' functionality
 * any refactoring functionality
-* resolve functionality
+* resolve functionality 
