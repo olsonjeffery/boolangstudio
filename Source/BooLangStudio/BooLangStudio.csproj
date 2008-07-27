@@ -83,6 +83,10 @@
     <None Include="Resources\logo.bmp" />
     <None Include="Resources\200.bmp" />
     <None Include="Resources\Images_32.bmp" />
+    <Content Include="Resources\boofile.bmp" />
+    <Content Include="Resources\BooOverlay.png" />
+    <Content Include="Resources\booproj.bmp" />
+    <Content Include="Resources\booterminal.bmp" />
     <Content Include="Resources\Package.ico" />
     <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\BooConsoleApplication.vstemplate" />
     <ZipProject Include="Templates\Boo\Projects\ConsoleApplication\ConsoleApplication.ico" />

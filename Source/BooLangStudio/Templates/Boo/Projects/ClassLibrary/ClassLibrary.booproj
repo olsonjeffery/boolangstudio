@@ -18,7 +18,6 @@
     <OutputPath>bin\Release\</OutputPath>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System" />

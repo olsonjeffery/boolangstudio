@@ -49,23 +49,29 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Bitmap
-//
-
-BOO_VS_LOGO             BITMAP                  "200.bmp"
-BOO_VS_LOGO_LARGE       BITMAP                  "logo.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Icon
 //
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-BOO_PACKAGE             ICON                    "..\\Templates\\Boo\\Projects\\ConsoleApplication\\ConsoleApplication.ico"
-BOO                     ICON                    "Package.ico"
 BOO_SOURCE_FILE         ICON                    "..\\Templates\\Boo\\Items\\Class\\Class.ico"
 BOO_PROJ_FILE           ICON                    "..\\Templates\\Boo\\Projects\\ClassLibrary\\ClassLibrary.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP                  "boofile.bmp"
+IDB_BITMAP2             BITMAP                  "booproj.bmp"
+IDB_BITMAP3             BITMAP                  "booterminal.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_PNG1                PNG                     "BooOverlay.png"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

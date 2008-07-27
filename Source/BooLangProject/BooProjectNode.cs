@@ -71,15 +71,6 @@ namespace Boo.BooLangProject
             
         }
 
-        protected override void Reload()
-        {
-            base.Reload();
-            // setting the BooBinPath
-            string booBinPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            this.SetProjectProperty("BooBinPath", booBinPath);
-            this.Save(this.FileName, 0, 0);         
-        }
-
         public override Guid ProjectGuid
         {
             get { return typeof(BooLangProjectFactory).GUID; }
