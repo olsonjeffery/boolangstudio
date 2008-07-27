@@ -30,16 +30,45 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Boo.Lang.Parser, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\boo\build\Boo.Lang.Parser.dll</HintPath>
     </Reference>
-    <Reference Include="MbUnit.Framework, Version=2.41.232.0, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5">
+    <Reference Include="Boo.Pegs">
+      <HintPath>..\..\Dependencies\boo-extensions\build\Boo.Pegs.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependencies\MbUnit\MbUnit.Framework.dll</HintPath>
+      <HintPath>..\..\Dependencies\Rhino\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Rhino\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MicroKernel, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Rhino\Castle.MicroKernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Rhino\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Package.LanguageService.9.0, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0" />
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.9.0" />
+    <Reference Include="Rhino.Mocks, Version=3.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Rhino\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Testing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Rhino\Rhino.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -52,18 +81,59 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="xunit, Version=1.0.0.1267, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\xunit\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LineCommentLexing.cs" />
-    <Compile Include="MiscParseIssues.cs" />
-    <Compile Include="MultiLineCommentLexing.cs" />
-    <Compile Include="StringLexing.cs" />
+    <Compile Include="AutoMockingTestFixture.cs" />
+    <Compile Include="LineScanner\LexingBaseFixture.cs" />
+    <Compile Include="LineScanner\LineCommentLexing.cs" />
+    <Compile Include="LineScanner\MalformedStrings.cs" />
+    <Compile Include="LineScanner\MultiLineCommentLexing.cs" />
+    <Compile Include="LineScanner\StringInterpolation.cs" />
+    <Compile Include="LineScanner\StringLexing.cs" />
+    <Compile Include="PegLexer\LexerPartialMockFixture.cs" />
+    <Compile Include="PegLexer\Tokens\AdditionSign.cs" />
+    <Compile Include="PegLexer\Tokens\Comma.cs" />
+    <Compile Include="PegLexer\Tokens\CurlyBraces.cs" />
+    <Compile Include="PegLexer\Tokens\DivisionSign.cs" />
+    <Compile Include="PegLexer\Tokens\DoubleQuoteString.cs" />
+    <Compile Include="PegLexer\Tokens\DoubleWhackLineComment.cs" />
+    <Compile Include="PegLexer\Tokens\EqualSign.cs" />
+    <Compile Include="PegLexer\Tokens\Exclamation.cs" />
+    <Compile Include="PegLexer\Tokens\FloatLiteral.cs" />
+    <Compile Include="PegLexer\Tokens\Identifier.cs" />
+    <Compile Include="PegLexer\Tokens\IntegerLiteral.cs" />
+    <Compile Include="PegLexer\Tokens\Keyword.cs" />
+    <Compile Include="PegLexer\Tokens\Macro.cs" />
+    <Compile Include="PegLexer\Tokens\MalformedStrings.cs" />
+    <Compile Include="PegLexer\Tokens\MlComment.cs" />
+    <Compile Include="PegLexer\Tokens\MultiplicationSign.cs" />
+    <Compile Include="PegLexer\Tokens\NumberSignLineComment.cs" />
+    <Compile Include="PegLexer\Tokens\Parens.cs" />
+    <Compile Include="PegLexer\Tokens\Period.cs" />
+    <Compile Include="PegLexer\Tokens\Splice.cs" />
+    <Compile Include="PegLexer\Tokens\SquareBrackets.cs" />
+    <Compile Include="PegLexer\Tokens\SubtractionSign.cs" />
+    <Compile Include="PegLexer\Tokens\TripleQuoteString.cs" />
+    <Compile Include="PegLexer\Tokens\Whitespace.cs" />
+    <Compile Include="PegLexer\Tokens\SingleQuoteString.cs" />
+    <Compile Include="PegLexer\Tokens\TokenTestFixture.cs" />
+    <Compile Include="PegLexer\WhenAttemptingToGetATokenFromThePegLexer.cs" />
+    <Compile Include="PegLexer\WhenProcessingALineWithBooScanner.cs" />
+    <Compile Include="PegLexer\WhenTranslatingTokens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BooLangService\BooLangService.csproj">
       <Project>{947EAB0F-FEAE-4D39-B08B-55CC0C84BE07}</Project>
       <Name>BooLangService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BooPegLexer\BooPegLexer.booproj">
+      <Project>{4E326F12-116A-4A83-96E5-6433540E13A1}</Project>
+      <Name>BooPegLexer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

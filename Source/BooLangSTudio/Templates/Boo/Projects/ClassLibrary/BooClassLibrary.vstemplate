@@ -1,0 +1,19 @@
+<VSTemplate Version="2.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name>Class Library</Name>
+    <Description>A project for creating a Boo class library (.dll)</Description>
+    <Icon>ClassLibrary.ico</Icon>
+    <ProjectType>Boo</ProjectType>
+    <SortOrder>50</SortOrder>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>ClassLibrary</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ClassLibrary.booproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">Class.boo</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="false">AssemblyInfo.boo</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

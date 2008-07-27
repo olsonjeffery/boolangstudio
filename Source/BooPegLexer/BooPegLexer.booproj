@@ -1,0 +1,53 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4e326f12-116a-4a83-96e5-6433540e13a1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>BooPegLexer</RootNamespace>
+    <AssemblyName>BooPegLexer</AssemblyName>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <Name>BooPegLexer</Name>
+    <BooBinPath>C:\Program Files\BooLangStudio\Bin</BooBinPath>
+    <AssemblyOriginatorKeyFile>BooLangStudio.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Boo.Pegs">
+      <HintPath>..\..\Dependencies\boo-extensions\build\Boo.Pegs.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Boo.Lang">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BooBinPath)\Boo.Lang.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BooLangStudio.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ILexer.boo" />
+    <Compile Include="PegLexer.boo">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.boo">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PegLexerContext.boo" />
+    <Compile Include="PegToken.boo" />
+    <Compile Include="PegTokenType.boo" />
+  </ItemGroup>
+  <Import Project="$(BooBinPath)\Boo.Microsoft.Build.targets" />
+</Project>

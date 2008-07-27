@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooLangStudio", "..\Source\BooLangStudio\BooLangStudio.csproj", "{F269FE5C-0B4B-4DD9-B8CC-46856C434DB3}"
@@ -24,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Splash", "Splash\Splash.csp
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BooLangStudio.Resources", "..\Source\BooLangStudio\Resources\Resources.vcproj", "{38086784-D8B1-441F-ABDE-3144DAB096FE}"
+EndProject
+Project("{E71B5727-96E4-4B08-8561-88ECB56E9AE5}") = "BooPegLexer", "..\Source\BooPegLexer\BooPegLexer.booproj", "{4E326F12-116A-4A83-96E5-6433540E13A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +106,18 @@ Global
 		{38086784-D8B1-441F-ABDE-3144DAB096FE}.Release|Win32.ActiveCfg = Release|Win32
 		{38086784-D8B1-441F-ABDE-3144DAB096FE}.Release|Win32.Build.0 = Release|Win32
 		{38086784-D8B1-441F-ABDE-3144DAB096FE}.Release|x86.ActiveCfg = Release|Win32
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Release|Win32.ActiveCfg = Release|Any CPU
+		{4E326F12-116A-4A83-96E5-6433540E13A1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

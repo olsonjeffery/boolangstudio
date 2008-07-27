@@ -511,6 +511,56 @@
                          Value="[INSTALLLOCATION]Bin\BooLangStudio.dll" />
         </RegistryKey>
 
+				<RegistryKey Action="create"
+                    Root="HKLM"
+                    Key="$(var.VisualStudioRegistryRoot)\CLSID\{552A4D97-E61D-4551-AE7F-600BD31513AF}">
+					
+					<RegistryValue Action="write"
+											 Type="string"											
+											 Value="Boo.BooLangProject.GeneralPropertyPage" />
+					<RegistryValue Action="write"
+                         Type="string"
+                         Name="InprocServer32"
+                         Value="C:\\WINDOWS\\system32\\mscoree.dll" />
+					<RegistryValue Action="write"
+                         Type="string"
+                         Name="Class"
+                         Value="Boo.BooLangProject.GeneralPropertyPage" />					
+					<RegistryValue Action="write"
+                         Type="string"
+                         Name="CodeBase"
+                         Value="[INSTALLLOCATION]Bin\BooLangProject.dll" />
+					<RegistryValue Action="write"
+													 Type="string"
+													 Name="ThreadingModel"
+													 Value="Both" />
+				</RegistryKey>
+
+        <RegistryKey Action="create"
+                    Root="HKLM"
+                    Key="$(var.VisualStudioRegistryRoot)\CLSID\{7E21B08E-43F6-4e5d-9407-D5711CA3618C}">
+
+          <RegistryValue Action="write"
+											 Type="string"
+											 Value="Boo.BooLangProject.BooBuildPropertyPage" />
+          <RegistryValue Action="write"
+                         Type="string"
+                         Name="InprocServer32"
+                         Value="C:\\WINDOWS\\system32\\mscoree.dll" />
+          <RegistryValue Action="write"
+                         Type="string"
+                         Name="Class"
+                         Value="Boo.BooLangProject.BooBuildPropertyPage" />
+          <RegistryValue Action="write"
+                         Type="string"
+                         Name="CodeBase"
+                         Value="[INSTALLLOCATION]Bin\BooLangProject.dll" />
+          <RegistryValue Action="write"
+													 Type="string"
+													 Name="ThreadingModel"
+													 Value="Both" />
+        </RegistryKey>
+
         <!--
               [HKEY_LOCAL_MACHINE\Software\Microsoft\VisualStudio\9.0Exp\Projects\{e71b5727-96e4-4b08-8561-88ecb56e9ae5}]
               @="BooLangProjectFactory"
@@ -679,19 +729,31 @@
                     DiskId="1"
                     Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.Lang.Compiler.dll"
                     Vital="yes"/>
-              <File Id="BooLang"
-                    Name="Boo.Lang.dll"
-                    DiskId="1"
-                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.Lang.dll"
-                    Vital="yes"/>
               <File Id="BooLangParser"
                     Name="Boo.Lang.Parser.dll"
                     DiskId="1"
                     Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.Lang.Parser.dll"
                     Vital="yes"/>
+              <File Id="BooLang"
+                    Name="Boo.Lang.dll"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.Lang.dll"
+                    Vital="yes"/>
               <File Id="BooLangStudio.Resources.dll"
                     DiskId="1"
                     Source="$(sys.SOURCEFILEDIR)..\..\Bin\BooLangStudio.Resources.dll"
+                    Vital="yes"/>
+              <File Id="BooPegLexer.dll"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\BooPegLexer.dll"
+                    Vital="yes"/>
+              <File Id="Boo.PatternMatching.dll"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.PatternMatching.dll"
+                    Vital="yes"/>
+              <File Id="Boo.Pegs.dll"
+                    DiskId="1"
+                    Source="$(sys.SOURCEFILEDIR)..\..\Bin\Boo.Pegs.dll"
                     Vital="yes"/>
             </Component>
             

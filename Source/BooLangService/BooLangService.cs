@@ -1,4 +1,4 @@
-﻿using System;
+﻿                                        using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Boo.BooLangService.Document;
@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
 using VSLangProj;
+using BooPegLexer;
 
 namespace Boo.BooLangService
 {
@@ -63,7 +64,7 @@ namespace Boo.BooLangService
             if (_scanner == null)
             {
                 //_scanner = new RegularExpressionScanner();
-                _scanner = new BooScanner();
+                _scanner = new BooScanner(new PegLexer());
             }
             return _scanner;
         }
@@ -140,5 +141,32 @@ namespace Boo.BooLangService
         }
 
        #endregion
+
+        #region debugging support
+
+        public override int ValidateBreakpointLocation(IVsTextBuffer buffer, int line, int col, TextSpan[] pCodeSpan)
+        {
+            if (pCodeSpan != null)
+            {
+                pCodeSpan[0].iStartLine = line;
+                pCodeSpan[0].iStartIndex = col;
+                pCodeSpan[0].iEndLine = line;
+                pCodeSpan[0].iEndIndex = col;
+                if (buffer != null)
+                {
+                    int length;
+                    buffer.GetLengthOfLine(line, out length);
+                    pCodeSpan[0].iStartIndex = 0;
+                    pCodeSpan[0].iEndIndex = length;
+                }
+                return Microsoft.VisualStudio.VSConstants.S_OK;
+            }
+            else
+            {
+                return Microsoft.VisualStudio.VSConstants.S_FALSE;
+            }
+        }
+
+        #endregion
     }
 }
