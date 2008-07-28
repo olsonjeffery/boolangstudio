@@ -123,6 +123,9 @@
   <data name="AssemblyNameDescription" xml:space="preserve">
     <value>The name of the dll or exe file</value>
   </data>
+  <data name="BooBinPathMissing" xml:space="preserve">
+    <value>ERROR: BooBinPath registry key is not set. Please create the registry key 'HKLM\SOFTWARE\BooLangStudio@BooBinPath', and set the value to be the path to your installation of Boo.</value>
+  </data>
   <data name="DefaultNamespace" xml:space="preserve">
     <value>Default Namespace</value>
   </data>

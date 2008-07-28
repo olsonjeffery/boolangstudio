@@ -8,6 +8,8 @@ using System.Configuration;
 using Microsoft.Win32;
 using System.Reflection;
 using System.IO;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Boo.BooLangProject
 {
@@ -22,14 +24,23 @@ namespace Boo.BooLangProject
             this.package = (ProjectPackage)package;
             this.BuildEngine.GlobalProperties["GenerateFullPaths"] = new BuildProperty("GenerateFullPaths", "True");
 
+            string booBinPath = "";
+
             RegistryKey booBinPathKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\BooLangStudio");
             if (booBinPathKey != null)
+                booBinPath = booBinPathKey.GetValue("BooBinPath") as string;
+            
+            if(string.IsNullOrEmpty(booBinPath))
             {
-                string booBinPath = booBinPathKey.GetValue("BooBinPath") as string;
-
-                if(!string.IsNullOrEmpty(booBinPath))
-                    this.BuildEngine.GlobalProperties["BooBinPath"] = new BuildProperty("BooBinPath", booBinPath);
+                IVsOutputWindowPane generalOut = Package.GetOutputPane(
+                    VSConstants.GUID_OutWindowGeneralPane,
+                    "Error List");
+                
+                if(generalOut!=null)
+                    generalOut.OutputStringThreadSafe(Resources.BooBinPathMissing);
             }
+
+            this.BuildEngine.GlobalProperties["BooBinPath"] = new BuildProperty("BooBinPath", booBinPath);
         }
 
         protected override ProjectNode CreateProject()
