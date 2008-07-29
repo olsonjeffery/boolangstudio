@@ -22,9 +22,16 @@ namespace Boo.BooLangProject
             {
                 reference = new AssemblyReference();
                 reference.Path = ((OAAssemblyReference)node.Object).Path;
-            }
 
-            project.Sources.References.Add(reference);
+                project.Sources.References.Add(reference);
+            }
+            else if (node is ProjectReferenceNode)
+            {
+                reference = new ProjectReference();
+                reference.Path = ((OAProjectReference)node.Object).Path;
+
+                project.Sources.References.Add(reference);
+            }
         }
 
     }

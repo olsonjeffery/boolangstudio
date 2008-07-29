@@ -116,6 +116,7 @@
     <Compile Include="BooReferenceContainerNode.cs" />
     <Compile Include="BooVSProject.cs" />
     <Compile Include="Guids.cs" />
+    <Compile Include="ProjectReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
