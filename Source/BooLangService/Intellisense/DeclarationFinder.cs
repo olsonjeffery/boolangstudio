@@ -83,7 +83,6 @@ namespace Boo.BooLangService.Intellisense
             declarations.Sort();
         }
 
-
         private List<ISourceOrigin> GetMembersFromCurrentScope(int line, string lineSource)
         {
             var scopedDeclarations = GetScopedIntellisenseDeclarations(line);

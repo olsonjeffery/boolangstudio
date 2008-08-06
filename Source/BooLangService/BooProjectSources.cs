@@ -15,11 +15,17 @@ namespace Boo.BooLangProject
     /// </summary>
     public class BooProjectSources
     {
+        private readonly BooLangService.BooLangService languageService;
         private static readonly IList<BooProjectSources> loadedProjects = new List<BooProjectSources>();
         private readonly List<SourceFile> files = new List<SourceFile>();
         private readonly List<IReference> references = new List<IReference>();
         private HierarchyListener hierarchyListener;
         private CompiledProject compiledProject;
+
+        public BooProjectSources(BooLangService.BooLangService languageService)
+        {
+            this.languageService = languageService;
+        }
 
         public void StartWatchingHierarchy(IVsHierarchy hierarchy)
         {
@@ -106,9 +112,9 @@ namespace Boo.BooLangProject
 
         private void ReloadSources()
         {
-            // TODO: This needs to take into account open but unsaved files
             foreach (var file in files)
             {
+                // compare the current source to the source that was last compiled
                 var latestSource = GetSource(file.Path);
 
                 if (latestSource == file.Source) continue;
@@ -158,6 +164,14 @@ namespace Boo.BooLangProject
         /// <returns></returns>
         private string GetSource(string fileName)
         {
+            var source = languageService.GetSource(fileName);
+
+            if (source != null)
+            {
+                // file is already open, get the unsaved source from there
+                return source.GetText();
+            }
+
             return File.ReadAllText(fileName);
         }
 

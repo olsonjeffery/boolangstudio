@@ -17,19 +17,56 @@ namespace Boo.BooLangProject
     [Guid(GuidList.guidBooProjectClassString)]
     public class BooProjectNode : ProjectNode
     {
+        private static ImageList imageList;
+        internal static int booFileNodeImageIndex;
+        internal static int imageIndex;
+
         private ProjectPackage package;
-        public BooProjectNode(ProjectPackage package)
+        private BooVSProject vsProject;
+        private BooProjectSources projectSources;
+        private readonly BooLangService.BooLangService languageService;
+
+        static BooProjectNode()
+        {
+            imageList =
+                Utilities.GetImageList(
+                typeof(BooProjectNode).Assembly.GetManifestResourceStream(
+                "Boo.BooLangProject.Resources.BooProjectNode.bmp"));
+
+            ImageList booFileNodeImageList;
+            string booFileResourceString = "Boo.BooLangProject.Resources.BooFileNode.bmp";
+            try
+            {
+
+                booFileNodeImageList =
+                    Utilities.GetImageList(
+                    typeof(BooProjectNode).Assembly.GetManifestResourceStream(
+                    booFileResourceString));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+            if (booFileNodeImageList.Images.Count != 1)
+                throw new FileNotFoundException("Cannot find Boo FileNode Icon at: " + booFileResourceString);
+            else
+                imageList.Images.Add(booFileNodeImageList.Images[0]);
+
+        }
+
+        public BooProjectNode(ProjectPackage package, BooLangService.BooLangService languageService)
         {
             this.package = package;
+            this.languageService = languageService;
             imageIndex = this.ImageHandler.ImageList.Images.Count;
             booFileNodeImageIndex = imageIndex + 1;
+
             foreach (Image img in imageList.Images)
             {
                 this.ImageHandler.AddImage(img);
             }
         }
-
-        private BooVSProject vsProject;
 
         internal override object Object
         {
@@ -51,35 +88,6 @@ namespace Boo.BooLangProject
         protected override ProjectLoadOption IsProjectSecure()
         {
             return ProjectLoadOption.LoadNormally;
-        }
-
-        private static ImageList imageList;
-        static BooProjectNode()
-        {
-            imageList =
-                Utilities.GetImageList(
-                typeof(BooProjectNode).Assembly.GetManifestResourceStream(
-                "Boo.BooLangProject.Resources.BooProjectNode.bmp"));
-
-            ImageList booFileNodeImageList;
-            string booFileResourceString = "Boo.BooLangProject.Resources.BooFileNode.bmp";
-            try
-            {
-                
-                booFileNodeImageList =
-                    Utilities.GetImageList(
-                    typeof(BooProjectNode).Assembly.GetManifestResourceStream(
-                    booFileResourceString));
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            if (booFileNodeImageList.Images.Count != 1)
-                throw new FileNotFoundException("Cannot find Boo FileNode Icon at: " + booFileResourceString);
-            else
-                imageList.Images.Add(booFileNodeImageList.Images[0]);
-            
         }
 
         protected override void Reload()
@@ -132,10 +140,6 @@ namespace Boo.BooLangProject
                 return false;
         }
 
-        internal static int booFileNodeImageIndex;
-        internal static int imageIndex;
-        private BooProjectSources projectSources;
-
         public override int ImageIndex
         {
 
@@ -155,7 +159,7 @@ namespace Boo.BooLangProject
             // method of the references, which add to the project sources. The watching
             // needs to start after the base call because if it's started before, then there
             // aren't any files added yet!
-            projectSources = new BooProjectSources();
+            projectSources = new BooProjectSources(languageService);
 
             base.Load(fileName, location, name, flags, ref iidProject, out canceled);
 
