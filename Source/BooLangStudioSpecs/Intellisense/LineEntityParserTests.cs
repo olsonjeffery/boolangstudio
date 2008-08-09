@@ -128,5 +128,28 @@ namespace Boo.BooLangStudioSpecs.Intellisense
             Assert.Equal("Property", entityNames[1].Name);
             Assert.Equal("Second", entityNames[2].Name);
         }
+
+        [Fact]
+        public void ReturnAtStartOfLineAreIgnored()
+        {
+            var lineParser = new LineEntityParser();
+            var entityNames = lineParser.GetEntityNames("return MethodName().Property.Second()");
+
+            Assert.Equal(3, entityNames.Length);
+            Assert.Equal("MethodName", entityNames[0].Name);
+            Assert.Equal("Property", entityNames[1].Name);
+        }
+
+        [Fact]
+        public void ImportAtStartOfLineAreIgnored()
+        {
+            var lineParser = new LineEntityParser();
+            var entityNames = lineParser.GetEntityNames("import MethodName().Property.Second()");
+
+            Assert.Equal(3, entityNames.Length);
+            Assert.Equal("MethodName", entityNames[0].Name);
+            Assert.Equal("Property", entityNames[1].Name);
+        }
+
     }
 }

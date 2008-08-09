@@ -4,6 +4,9 @@ namespace Boo.BooLangService.Intellisense
 {
     public class LineEntityParser
     {
+        private const string InsideString = "in string";
+        private const string InsideParentheses = "in paren";
+
         public Invocation[] GetEntityNames(string line)
         {
             var mode = new Stack<string>();
@@ -16,19 +19,27 @@ namespace Boo.BooLangService.Intellisense
             {
                 var currentChar = line[currentIndex];
 
+                if (currentChar == ' ' && !Currently(InsideString, mode) && !Currently(InsideParentheses, mode))
+                {
+                    // have a space that isn't inside a string, which probably means the line
+                    // started with a keyword (import or return). So we'll remove everything
+                    // before the space and start again
+                    return GetEntityNames(line.Substring(currentIndex));
+                }
+
                 if (currentChar == '(')
                 {
-                    mode.Push("in paren");
+                    mode.Push(InsideParentheses);
                     continue;
                 }
 
-                if (currentChar == ')' && mode.Peek() == "in paren")
+                if (currentChar == ')' && Currently(InsideParentheses, mode))
                 {
                     mode.Pop();
                     continue;
                 }
 
-                if (currentChar == '"' && mode.Peek() == "in string")
+                if (currentChar == '"' && Currently(InsideString, mode))
                 {
                     mode.Pop();
                     continue;
@@ -36,11 +47,12 @@ namespace Boo.BooLangService.Intellisense
 
                 if (currentChar == '"')
                 {
-                    mode.Push("in string");
+                    mode.Push(InsideString);
                     continue;
                 }
 
-                if (currentChar == '\\' && mode.Peek() == "in string")
+                // escaped character
+                if (currentChar == '\\' && Currently(InsideString, mode))
                 {
                     currentIndex += 1; // skip next (escaped) char
                     continue;
@@ -56,6 +68,13 @@ namespace Boo.BooLangService.Intellisense
             Enqueue(entities, line.Substring(startIndex));
 
             return entities.ToArray();
+        }
+
+        private bool Currently(string state, Stack<string> mode)
+        {
+            if (mode.Count == 0) return false;
+
+            return mode.Peek() == state;
         }
 
         private void Enqueue(Queue<Invocation> entities, string line)
