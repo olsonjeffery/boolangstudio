@@ -1,9 +1,9 @@
-﻿                                        using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Boo.BooLangProject;
 using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
-using Boo.BooLangService.VSInterop;
 using BooLangService;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Package;
@@ -81,10 +81,20 @@ namespace Boo.BooLangService
         /// <returns></returns>
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            BooDocumentCompiler compiler = new BooDocumentCompiler();
-            CompiledDocument document = compiler.Compile(req.FileName, req.Text);
+            var project = GetProject(req);
+            CompiledProject compiledProject = project.GetCompiledProject();
 
-            return new BooScope(this, document, GetSource(req.View), req.FileName);
+            return new BooScope(compiledProject, (BooSource)GetSource(req.View), req.FileName);
+        }
+
+        private BooProjectSources GetProject(ParseRequest request)
+        {
+            BooProjectSources project = BooProjectSources.Find(request.FileName);
+
+            if (project != null)
+                project.Update(request);
+
+            return project;
         }
 
         #endregion

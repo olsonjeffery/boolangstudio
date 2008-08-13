@@ -7,9 +7,7 @@ namespace Boo.BooLangService.Intellisense
     {
         public override void Add(IBooParseTreeNode item)
         {
-            bool intellisenseVisible = AttributeHelper.Has<IntellisenseVisibleAttribute>(item.GetType());
-            
-            if (intellisenseVisible)
+            if (item.IntellisenseVisible)
                 base.Add(item);
         }
     }

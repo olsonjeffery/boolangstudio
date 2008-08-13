@@ -1,18 +1,31 @@
 using System.Collections.Generic;
+using Boo.BooLangService.Document.Origins;
+using Boo.Lang.Compiler.TypeSystem;
 
 namespace Boo.BooLangService.Document.Nodes
 {
     public abstract class AbstractTreeNode : IBooParseTreeNode
     {
-        private IBooParseTreeNode parent;
+        private readonly ISourceOrigin sourceOrigin;
         private readonly IList<IBooParseTreeNode> children;
-        private string name;
-        private int startLine;
         private int endLine = -1; // forces generated endline if not set
+        private readonly string name;
 
-        public AbstractTreeNode()
+        protected AbstractTreeNode(ISourceOrigin sourceOrigin)
         {
+            this.sourceOrigin = sourceOrigin;
+            this.name = sourceOrigin.Name;
             children = new ParseTreeNodeSet(this);
+        }
+
+        public virtual bool IntellisenseVisible
+        {
+            get { return false; }
+        }
+
+        public virtual string Name
+        {
+            get { return name; }
         }
 
         public bool ContainsLine(int line)
@@ -20,10 +33,9 @@ namespace Boo.BooLangService.Document.Nodes
             return StartLine <= line && EndLine >= line;
         }
 
-        public IBooParseTreeNode Parent
+        public virtual string GetIntellisenseDescription()
         {
-            get { return parent; }
-            set { parent = value; }
+            return Name;
         }
 
         public IList<IBooParseTreeNode> Children
@@ -31,17 +43,8 @@ namespace Boo.BooLangService.Document.Nodes
             get { return children; }
         }
 
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        public int StartLine
-        {
-            get { return startLine; }
-            set { startLine = value; }
-        }
+        public IBooParseTreeNode Parent { get; set; }
+        public int StartLine { get; set; }
 
         public int EndLine
         {
@@ -49,11 +52,16 @@ namespace Boo.BooLangService.Document.Nodes
             set { endLine = value; }
         }
 
+        public ISourceOrigin SourceOrigin
+        {
+            get { return sourceOrigin; }
+        }
+
         private int GetHighestChildEndLine()
         {
             int end = 0;
 
-            foreach (IBooParseTreeNode child in Children)
+            foreach (var child in Children)
             {
                 if (child.EndLine > end)
                     end = child.EndLine;

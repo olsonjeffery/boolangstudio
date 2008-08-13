@@ -45,9 +45,11 @@ namespace Boo.BooLangProject
 
         protected override ProjectNode CreateProject()
         {
-            BooProjectNode project = new BooProjectNode(this.package);
-            project.SetSite((IOleServiceProvider)
-                (((IServiceProvider)this.Package).GetService(typeof(IOleServiceProvider))));
+            var provider = (IServiceProvider)Package;
+
+            BooProjectNode project = new BooProjectNode(package, (BooLangService.BooLangService)provider.GetService(typeof(BooLangService.BooLangService)));
+
+            project.SetSite((IOleServiceProvider)provider.GetService(typeof(IOleServiceProvider)));
 
             return project;
         }

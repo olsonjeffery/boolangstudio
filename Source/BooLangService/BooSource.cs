@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using Boo.BooLangProject;
+using Boo.BooLangService.Intellisense;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace BooLangService
 {
-    public class BooSource : Source
+    public class BooSource : Source, ILineView
     {
+        private readonly BooProjectSources project;
+
         public BooSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)
             : base(service, textLines, colorizer)
         {}
@@ -27,7 +29,7 @@ namespace BooLangService
                 if (changedArea.Length > 0)
                 {
                     // and its actually changed the doc
-                    LineIndenter indenter = new LineIndenter(this);
+                    var indenter = new LineIndenter(this);
 
                     // change the indentation, if necessary
                     indenter.ChangeIndentation(changedArea[0]);
@@ -41,7 +43,7 @@ namespace BooLangService
         /// <param name="line"></param>
         /// <param name="col"></param>
         /// <returns></returns>
-        public string GetLineUptoPosition(int line, int col)
+        public string GetTextUptoPosition(int line, int col)
         {
             TextSpan span = new TextSpan();
 

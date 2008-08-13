@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using Microsoft.VisualStudio.Package;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.VisualStudio.Shell.Interop;
 using EnvDTE;
 using System.Reflection;
 
@@ -14,35 +17,15 @@ namespace Boo.BooLangProject
     [Guid(GuidList.guidBooProjectClassString)]
     public class BooProjectNode : ProjectNode
     {
-        private ProjectPackage package;
-        public BooProjectNode(ProjectPackage package)
-        {
-            this.package = package;
-            imageIndex = this.ImageHandler.ImageList.Images.Count;
-            booFileNodeImageIndex = imageIndex + 1;
-            foreach (Image img in imageList.Images)
-            {
-                this.ImageHandler.AddImage(img);
-            }
-
-            this.AddCATIDMapping(typeof(BooProjectNodeProperties), typeof(BooProjectNodeProperties).GUID);
-            this.AddCATIDMapping(typeof(GeneralPropertyPage), typeof(GeneralPropertyPage).GUID);
-            this.CanProjectDeleteItems = true;
-        }
-
-        /// <summary>
-        /// This is a very poor workaround. Until I can figure out how
-        /// to get our GlobalProperies into the ProjectShim that the
-        /// base version uses...
-        /// </summary>
-        /// <returns></returns>
-        protected override ProjectLoadOption IsProjectSecure()
-        {
-            return ProjectLoadOption.LoadNormally;
-        }
-
         private static ImageList imageList;
-        
+        internal static int booFileNodeImageIndex;
+        internal static int imageIndex;
+
+        private ProjectPackage package;
+        private BooVSProject vsProject;
+        private BooProjectSources projectSources;
+        private readonly BooLangService.BooLangService languageService;
+
         static BooProjectNode()
         {
             imageList =
@@ -54,7 +37,7 @@ namespace Boo.BooLangProject
             string booFileResourceString = "Boo.BooLangProject.Resources.BooFileNode.bmp";
             try
             {
-                
+
                 booFileNodeImageList =
                     Utilities.GetImageList(
                     typeof(BooProjectNode).Assembly.GetManifestResourceStream(
@@ -62,13 +45,49 @@ namespace Boo.BooLangProject
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
+
             if (booFileNodeImageList.Images.Count != 1)
                 throw new FileNotFoundException("Cannot find Boo FileNode Icon at: " + booFileResourceString);
             else
                 imageList.Images.Add(booFileNodeImageList.Images[0]);
-            
+
+        }
+
+        public BooProjectNode(ProjectPackage package, BooLangService.BooLangService languageService)
+        {
+            this.package = package;
+            this.languageService = languageService;
+            imageIndex = this.ImageHandler.ImageList.Images.Count;
+            booFileNodeImageIndex = imageIndex + 1;
+
+            foreach (Image img in imageList.Images)
+            {
+                this.ImageHandler.AddImage(img);
+            }
+        }
+
+        internal override object Object
+        {
+            get
+            {
+                if (vsProject == null)
+                    vsProject = new BooVSProject(this);
+
+                return vsProject;
+            }
+        }
+
+        /// <summary>
+        /// This is a very poor workaround. Until I can figure out how
+        /// to get our GlobalProperies into the ProjectShim that the
+        /// base version uses...
+        /// </summary>
+        /// <returns></returns>
+        protected override ProjectLoadOption IsProjectSecure()
+        {
+            return ProjectLoadOption.LoadNormally;
         }
 
         public override Guid ProjectGuid
@@ -145,5 +164,48 @@ namespace Boo.BooLangProject
 
         }
 
+        public override object GetAutomationObject()
+        {
+            return new BooOAProject(this);
+        }
+
+        public override void Load(string fileName, string location, string name, uint flags, ref Guid iidProject, out int canceled)
+        {
+            // this needs to be instantiated before the base call, and then start watching
+            // the hierarchy after. This is because the base.Load call hits the AddChild
+            // method of the references, which add to the project sources. The watching
+            // needs to start after the base call because if it's started before, then there
+            // aren't any files added yet!
+            projectSources = new BooProjectSources(languageService);
+
+            base.Load(fileName, location, name, flags, ref iidProject, out canceled);
+
+            projectSources.StartWatchingHierarchy(InteropSafeHierarchy);
+
+            BooProjectSources.LoadedProjects.Add(projectSources);
+        }
+
+        IVsHierarchy InteropSafeHierarchy
+        {
+            get
+            {
+                IntPtr unknownPtr = Utilities.QueryInterfaceIUnknown(this);
+
+                if (unknownPtr == IntPtr.Zero)
+                    return null;
+
+                return (IVsHierarchy)Marshal.GetObjectForIUnknown(unknownPtr);
+            }
+        }
+
+        public BooProjectSources Sources
+        {
+            get { return projectSources; }
+        }
+
+        protected override ReferenceContainerNode CreateReferenceContainerNode()
+        {
+            return new BooReferenceContainerNode(this);
+        }
     }
 }

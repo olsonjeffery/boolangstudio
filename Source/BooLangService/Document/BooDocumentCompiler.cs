@@ -1,32 +1,71 @@
+using System.Collections.Generic;
 using System.IO;
-using Boo.BooLangService.Document.Nodes;
+using System.Reflection;
+using Boo.BooLangProject;
 using Boo.Lang.Compiler;
 using Boo.Lang.Compiler.IO;
 using Boo.Lang.Compiler.Pipelines;
-using BooLangService;
+using Boo.Lang.Compiler.Steps;
 
 namespace Boo.BooLangService.Document
 {
+    /// <summary>
+    /// Compiles Boo documents into a format usable by the intellisense provider.
+    /// </summary>
     public class BooDocumentCompiler
     {
-        private readonly BooCompiler compiler = new BooCompiler();
-        private readonly BooDocumentVisitor visitor = new BooDocumentVisitor();
+        private BooDocumentVisitor visitor;
+        private BooCompiler compiler;
+        private readonly List<Assembly> references = new List<Assembly>();
 
         public BooDocumentCompiler()
         {
-            compiler.Parameters.OutputWriter = new StringWriter();
-            compiler.Parameters.Pipeline = new ResolveExpressions();
-            compiler.Parameters.Pipeline.BreakOnErrors = false;
-            compiler.Parameters.Pipeline.Add(visitor);
+            visitor = new BooDocumentVisitor();
+            compiler = CreateCompiler(visitor);
         }
 
-        public CompiledDocument Compile(string filename, string source)
+        /// <summary>
+        /// Compiles a Boo file into a CompiledDocument.
+        /// </summary>
+        /// <returns>CompiledDocument from the source</returns>
+        public CompiledProject Compile()
         {
-            compiler.Parameters.Input.Add(new StringInput(filename, source));
-            
             compiler.Run();
 
-            return new CompiledDocument(visitor.Document);
+            return new CompiledProject(
+                visitor.Project
+            );
+        }
+
+        public void AddSource(string fileName, string source)
+        {
+            compiler.Parameters.Input.Add(new StringInput(fileName, source));
+        }
+
+        public void Reset()
+        {
+            visitor = new BooDocumentVisitor();
+            compiler = CreateCompiler(visitor);
+        }
+
+        private BooCompiler CreateCompiler(BooDocumentVisitor visitor)
+        {
+            var newCompiler = compiler ?? new BooCompiler();
+
+            newCompiler.Parameters.OutputWriter = new StringWriter();
+            newCompiler.Parameters.Pipeline = new Compile { BreakOnErrors = false };
+            newCompiler.Parameters.Pipeline.Add(visitor);
+
+            return newCompiler;
+        }
+
+        public void AddReference(IReference reference)
+        {
+            var assembly = reference.GetAssembly();
+            
+            references.Add(assembly);
+            
+            compiler.Parameters.AddAssembly(assembly);
         }
     }
 }

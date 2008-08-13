@@ -1,8 +1,10 @@
-using Boo.BooLangService.Intellisense;
+using Boo.BooLangService.Document.Origins;
 
 namespace Boo.BooLangService.Document.Nodes
 {
-    [Scopable, IntellisenseVisible]
     public class NamespaceTreeNode : AbstractTreeNode
-    {}
+    {
+        public NamespaceTreeNode(ISourceOrigin sourceOrigin) : base(sourceOrigin)
+        {}
+    }
 }

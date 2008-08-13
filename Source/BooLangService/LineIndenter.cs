@@ -29,7 +29,7 @@ namespace BooLangService
         {
             TextSpan area = changedArea;
             string text = source.GetText(area);
-            string line = source.GetLineUptoPosition(area.iStartLine, area.iStartIndex);
+            string line = source.GetTextUptoPosition(area.iStartLine, area.iStartIndex);
 
             if (!line.EndsWith(text))
             {

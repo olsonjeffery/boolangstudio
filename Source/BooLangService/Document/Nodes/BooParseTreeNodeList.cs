@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,6 +7,7 @@ namespace Boo.BooLangService.Document.Nodes
     public class BooParseTreeNodeList : IList<IBooParseTreeNode>
     {
         private readonly List<IBooParseTreeNode> inner = new List<IBooParseTreeNode>();
+        private readonly IList<string> addedNames = new List<string>();
 
         private bool IsValidForAdding(IBooParseTreeNode item)
         {
@@ -20,10 +22,18 @@ namespace Boo.BooLangService.Document.Nodes
             return inner.IndexOf(item);
         }
 
+        public IBooParseTreeNode Find(Predicate<IBooParseTreeNode> match)
+        {
+            return inner.Find(match);
+        }
+
         public void Insert(int index, IBooParseTreeNode item)
         {
             if (IsValidForAdding(item))
+            {
+                addedNames.Add(item.Name);
                 inner.Insert(index, item);
+            }
         }
 
         public void RemoveAt(int index)
@@ -48,21 +58,23 @@ namespace Boo.BooLangService.Document.Nodes
         public virtual void Add(IBooParseTreeNode item)
         {
             if (IsValidForAdding(item))
+            {
                 inner.Add(item);
+                addedNames.Add(item.Name);
+            }
         }
 
         public void Clear()
         {
             inner.Clear();
+            addedNames.Clear();
         }
 
         public bool Contains(IBooParseTreeNode item)
         {
             // this is sub-optimal because we might have two items that
             // have the same name, class and namespace for example.
-            return inner.Exists(delegate(IBooParseTreeNode x) {
-                return x.Name == item.Name;
-            });
+            return addedNames.Contains(item.Name);
         }
 
         public void CopyTo(IBooParseTreeNode[] array, int arrayIndex)
@@ -97,9 +109,7 @@ namespace Boo.BooLangService.Document.Nodes
 
         public void Sort()
         {
-            inner.Sort(delegate(IBooParseTreeNode x, IBooParseTreeNode y) {
-                return x.Name.CompareTo(y.Name);
-            });
+            inner.Sort((x, y) => x.Name.CompareTo(y.Name));
         }
     }
 }

@@ -34,6 +34,10 @@
     <StartAction>Project</StartAction>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Boo.Lang.Compiler, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\boo\bin\Boo.Lang.Compiler.dll</HintPath>
+    </Reference>
     <Reference Include="Boo.Lang.Parser, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\boo\build\Boo.Lang.Parser.dll</HintPath>
@@ -53,13 +57,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\Rhino\Castle.MicroKernel.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Windsor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Windsor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL" />
+    <Reference Include="MbUnit.AddIn, Version=2.41.232.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\MbUnit\MbUnit.AddIn.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit.Framework, Version=2.41.232.0, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\Rhino\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.Package.LanguageService.9.0, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop.9.0" />
     <Reference Include="Rhino.Mocks, Version=3.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -69,10 +77,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\Rhino\Rhino.Testing.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -88,6 +101,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMockingTestFixture.cs" />
+    <Compile Include="Intellisense\CaretNotFoundException.cs" />
+    <Compile Include="Intellisense\CompilationOutput.cs" />
+    <Compile Include="Intellisense\Constants.cs" />
+    <Compile Include="Intellisense\FixtureCompiler.cs" />
+    <Compile Include="Intellisense\IntellisenseDeclarationsTestExtensionMethods.cs" />
+    <Compile Include="Intellisense\LineEntityParserTests.cs" />
+    <Compile Include="Intellisense\WhenParsingMultipleFilesForIntellisense.cs" />
+    <Compile Include="Intellisense\WhenShowingIntellisenseForNamespaceSuggestion.cs" />
     <Compile Include="LineScanner\LexingBaseFixture.cs" />
     <Compile Include="LineScanner\LineCommentLexing.cs" />
     <Compile Include="LineScanner\MalformedStrings.cs" />
@@ -124,6 +145,15 @@
     <Compile Include="PegLexer\WhenAttemptingToGetATokenFromThePegLexer.cs" />
     <Compile Include="PegLexer\WhenProcessingALineWithBooScanner.cs" />
     <Compile Include="PegLexer\WhenTranslatingTokens.cs" />
+    <Compile Include="Intellisense\BaseCompilerContext.cs" />
+    <Compile Include="Intellisense\WhenDisplayingDescriptionsForIntellisense.cs" />
+    <Compile Include="Intellisense\Stubs\AssemblyReferenceFake.cs" />
+    <Compile Include="Intellisense\Stubs\SimpleStubLineView.cs" />
+    <Compile Include="Intellisense\WhenParsingSingleFileForIntellisense.cs" />
+    <Compile Include="Intellisense\WhenShowingIntellisenseAtImportStatement.cs" />
+    <Compile Include="Intellisense\WhenShowingIntellisenseForMemberSuggestion.cs" />
+    <Compile Include="Intellisense\WhenShowingIntellisenseInMethodBody.cs" />
+    <Compile Include="Intellisense\WhenShowingToolTipForMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +165,41 @@
       <Project>{4E326F12-116A-4A83-96E5-6433540E13A1}</Project>
       <Name>BooPegLexer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Intellisense\Fixtures\WhenDisplayingDescriptionsForIntellisense\ClassesArePrefixedWithClassAndUseFullNamespaceName.boo" />
+    <Content Include="Intellisense\Fixtures\WhenDisplayingDescriptionsForIntellisense\FieldsStartWithTypeFollowedByDeclaredName.boo" />
+    <Content Include="Intellisense\Fixtures\WhenDisplayingDescriptionsForIntellisense\InterfacesArePrefixedWithInterfaceAndUseFullNamespaceName.boo" />
+    <Content Include="Intellisense\Fixtures\WhenDisplayingDescriptionsForIntellisense\MethodsIncludeParameters.boo" />
+    <Content Include="Intellisense\Fixtures\WhenParsingMultipleFilesForIntellisense\InstancesAreScopedToFileWhenMethodsHaveSameName\ClassInFirstFile.boo" />
+    <Content Include="Intellisense\Fixtures\WhenParsingMultipleFilesForIntellisense\InstancesAreScopedToFileWhenMethodsHaveSameName\ClassInSecondFile.boo" />
+    <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\MethodParametersShouldBeAddedToMethod.boo" />
+    <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\InterfacesShouldBeParsed.boo" />
+    <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\ClassesShouldBeParsed.boo" />
+    <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\FirstChildIsDocumentTreeNode.boo" />
+    <Content Include="Intellisense\Fixtures\WhenParsingSingleFileForIntellisense\FirstReturnedNodeIsProjectTreeNode.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseAtImportStatement\ExcludeExposedTypes.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseAtImportStatement\ShowSubNamespacesForPartialImport.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseAtImportStatement\ShowAllReferencedNamespaces.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\IncludeOnlyStaticMethodsForClass.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\IncludePublicMembersForInstanceOfImportedClass.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ReturnTypesOfMethodCallsOnAnObjectCanBeUsed.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ExcludeProtectedMembersOfOtherClasses.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\DirectInstantiationsCanBeUsed.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ReturnTypesOfMethodCallsCanBeUsed.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\PropertiesCanBeUsed.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\FieldsCanBeUsed.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\LocalVariablesCanBeUsed.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ExcludePrivateMembersOfOtherClasses.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\ExcludeConstructorFromList.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForMemberSuggestion\IncludePublicMethodsForInstanceOfClass.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForNamespaceSuggestion\IncludeExposedTypes.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseForNamespaceSuggestion\IncludeSubnamespaces.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowNamespacesFromReferences.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowCurrentMethod.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowAllMethodsFromSameClass.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowClassVariables.boo" />
+    <Content Include="Intellisense\Fixtures\WhenShowingIntellisenseInMethodBody\ShowLocalVariables.boo" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
