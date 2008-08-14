@@ -688,26 +688,6 @@
           
           <Directory Id="Bin" Name="Bin">
             
-            <Directory Id="it" Name="it">
-              <Component Id="ItResources" Guid="D4066050-57FF-4a8b-A51A-6874692EA7DD">
-                <File Id="BooLangStudioResourcesIt" 
-                      Name="Boo.Lang.Resources.dll" 
-                      DiskId="1"
-                      Source="$(sys.SOURCEFILEDIR)..\..\Bin\it\Boo.Lang.Resources.dll"
-                      Vital="yes"/>
-              </Component>
-            </Directory>
-            
-            <Directory Id="pt" Name="pt">
-              <Component Id="PtResources" Guid="C00ECFD2-D443-4755-ACB2-6F01D1679CB1">
-                <File Id="BooLangStudioResourcesPt"
-                      Name="Boo.Lang.Resources.dll"
-                      DiskId="1"
-                      Source="$(sys.SOURCEFILEDIR)..\..\Bin\pt\Boo.Lang.Resources.dll"
-                      Vital="yes"/>
-              </Component>
-            </Directory>
-
             <Component Id="BooComponent" Guid="6f52a39f-3374-41c1-a8df-df2eb12a8309">
               <File Id="BooLangStudio"
                     Name="BooLangStudio.dll"
@@ -768,7 +748,7 @@
                     <File Id="BooLangResourcesIt"
                           Name="Boo.Lang.Resources.dll"
                           DiskId="1"
-                          Source="$(sys.SOURCEFILEDIR)..\..\Dependencies\boo\build\it\Boo.Lang.Resources.dll"
+                          Source="$(sys.SOURCEFILEDIR)..\..\Dependencies\boo\build\it\strings.it.resources"
                           Vital="yes"/>
                   </Component>
                 </Directory>
@@ -778,7 +758,7 @@
                     <File Id="BooLangResourcesPt"
                           Name="Boo.Lang.Resources.dll"
                           DiskId="1"
-                          Source="$(sys.SOURCEFILEDIR)..\..\Dependencies\boo\build\pt\Boo.Lang.Resources.dll"
+                          Source="$(sys.SOURCEFILEDIR)..\..\Dependencies\boo\build\pt\strings.pt.resources"
                           Vital="yes"/>
                   </Component>
                 </Directory>
@@ -932,8 +912,6 @@
       <ComponentRef Id="FileAssociations" />
       <ComponentRef Id="UserFileAssociations" />
       
-      <ComponentRef Id="ItResources" />
-      <ComponentRef Id="PtResources" />
       <ComponentRef Id="BooItResources" />
       <ComponentRef Id="BooPtResources" />
 

@@ -155,8 +155,6 @@ namespace Boo.BooLangProject
             return result;
         }
 
-        internal static int booFileNodeImageIndex;
-        internal static int imageIndex;
         public override int ImageIndex
         {
 

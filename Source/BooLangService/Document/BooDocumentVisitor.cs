@@ -34,13 +34,6 @@ namespace Boo.BooLangService.Document
 
             VisitReferences();
 
-            if (Errors.Count > 0)
-            {
-                foreach (Error error in Errors)
-                {
-                    Debug.Write(error.ToString());
-                }
-            }
         }
 
         private void VisitReferences()
