@@ -743,22 +743,12 @@
             <Directory Id="boo" Name="boo">
               <Directory Id="build" Name="build">
 
-                <Directory Id="BooIt" Name="it">
-                  <Component Id="BooItResources" Guid="5541554D-CF2E-4f77-A06C-E29EDA26B605">
-                    <File Id="BooLangResourcesIt"
-                          Name="Boo.Lang.Resources.dll"
-                          DiskId="1"
-                          Source="$(sys.SOURCEFILEDIR)..\..\Dependencies\boo\build\it\strings.it.resources"
-                          Vital="yes"/>
-                  </Component>
-                </Directory>
-
                 <Directory Id="BooPt" Name="pt">
                   <Component Id="BooPtResources" Guid="A3849206-3671-4735-8E04-47A513A78D87">
                     <File Id="BooLangResourcesPt"
                           Name="Boo.Lang.Resources.dll"
                           DiskId="1"
-                          Source="$(sys.SOURCEFILEDIR)..\..\Dependencies\boo\build\pt\strings.pt.resources"
+                          Source="$(sys.SOURCEFILEDIR)..\..\Dependencies\boo\build\pt\Boo.Lang.Resources.dll"
                           Vital="yes"/>
                   </Component>
                 </Directory>
@@ -854,11 +844,6 @@
                         DiskId="1"
                         Source="$(sys.SOURCEFILEDIR)..\..\Dependencies\boo\build\Boo.NAnt.Tasks.dll"
                         Vital="yes"/>
-                  <File Id="strings.resources"
-                        Name="strings.resources"
-                        DiskId="1"
-                        Source="$(sys.SOURCEFILEDIR)..\..\Dependencies\boo\build\strings.resources"
-                        Vital="yes"/>
                 </Component>
                 
               </Directory>
@@ -912,7 +897,6 @@
       <ComponentRef Id="FileAssociations" />
       <ComponentRef Id="UserFileAssociations" />
       
-      <ComponentRef Id="BooItResources" />
       <ComponentRef Id="BooPtResources" />
 
       <ComponentRef Id="BooProjects" />
