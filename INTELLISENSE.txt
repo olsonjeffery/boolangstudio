@@ -1,9 +1,0 @@
-Outstanding intellisense bugs
-
-1. get_ set_ methods in list
-2. Assemblies get locked
-3. No parameter intellisense
-4. No generics support
-5. Overloaded methods
-
-To get parameter intellisense working it looks like we need to get the scanner to call StartParameter (and others) on an AuthoringSink when it encounters the right tokens in the file. This is because the sink is used when getting the list of signatures for a method, and without us manually calling those methods its internal view of the source remains empty.
