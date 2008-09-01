@@ -34,8 +34,14 @@ namespace Boo.BooLangService.StringParsing
                 else if (currentChar == BackSlash && StateIs(StringWalkerState.InsideString))
                     currentIndex += 1; // skip next (escaped) char
 
-                yield return new StringPosition(currentChar, currentIndex);
+                if (ShouldYield(currentChar))
+                    yield return new StringPosition(currentChar, currentIndex);
             }
+        }
+
+        protected virtual bool ShouldYield(char currentChar)
+        {
+            return true;
         }
 
         public bool StateIs(StringWalkerState expectedState)

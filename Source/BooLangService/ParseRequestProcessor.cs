@@ -134,30 +134,21 @@ namespace Boo.BooLangService
         {
             Debug.WriteLine("HighlightBraces");
 
-            var pairs = new Dictionary<char, char>
-            {
-                {'(', ')'},
-                {'{', '}'},
-                {'[', ']'}
-            };
             var source = languageService.GetSource(request.View);
+            var indexOfOriginal = source.GetPositionOfLineIndex(request.Line, request.Col - 1);
 
-            var stringMatcher = new ExcludeStringMatcher(request.Text);
+            var bracketFinder = new BracketPairFinder(BracketPairType.FromChar(request.Text[indexOfOriginal]));
+            var bracketPairs = bracketFinder.FindPairs(request.Text);
 
-            int indexOfOriginal = source.GetPositionOfLineIndex(request.Line, request.Col - 1);
-            char original = request.Text[indexOfOriginal];
+            int? partner = bracketPairs.FindPartnerIndex(indexOfOriginal);
 
-            stringMatcher.SetStartIndex(indexOfOriginal);
-
-            int? nextIndex = stringMatcher.FindNextIndex(pairs[original]);
-
-            if (nextIndex != null)
+            if (partner != null)
             {
                 request.Sink.FoundMatchingBrace = true;
 
                 int nextLine, nextCol;
 
-                source.GetLineIndexOfPosition(nextIndex.Value, out nextLine, out nextCol);
+                source.GetLineIndexOfPosition(partner.Value, out nextLine, out nextCol);
 
                 request.Sink.MatchPair(
                     new TextSpan

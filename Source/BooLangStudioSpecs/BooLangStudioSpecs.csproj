@@ -104,7 +104,6 @@
     <Compile Include="Intellisense\CaretNotFoundException.cs" />
     <Compile Include="Intellisense\CompilationOutput.cs" />
     <Compile Include="Intellisense\Constants.cs" />
-    <Compile Include="Intellisense\FakeAuthoringSink.cs" />
     <Compile Include="Intellisense\FixtureCompiler.cs" />
     <Compile Include="Intellisense\IntellisenseDeclarationsTestExtensionMethods.cs" />
     <Compile Include="Intellisense\LineEntityParserTests.cs" />
@@ -156,6 +155,7 @@
     <Compile Include="Intellisense\WhenShowingIntellisenseInMethodBody.cs" />
     <Compile Include="Intellisense\WhenShowingToolTipForMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringParsing\BracketPairFinderTests.cs" />
     <Compile Include="StringParsing\ExcludeStringMatcherTests.cs" />
   </ItemGroup>
   <ItemGroup>
