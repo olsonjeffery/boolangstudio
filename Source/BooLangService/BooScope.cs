@@ -10,6 +10,13 @@ namespace BooLangService
     public class BooScope : AuthoringScope
     {
         private readonly DeclarationFinder declarations;
+        private Methods methods;
+
+        public BooScope(CompiledProject compiledProject, BooSource source, string fileName, Methods methods)
+            : this(compiledProject, source, fileName)
+        {
+            this.methods = methods;
+        }
 
         public BooScope(CompiledProject compiledProject, BooSource source, string fileName)
         {
@@ -28,7 +35,7 @@ namespace BooLangService
 
         public override Methods GetMethods(int line, int col, string name)
         {
-            throw new NotImplementedException();
+            return methods;
         }
 
         public override string Goto(VSConstants.VSStd97CmdID cmd, IVsTextView textView, int line, int col, out TextSpan span)

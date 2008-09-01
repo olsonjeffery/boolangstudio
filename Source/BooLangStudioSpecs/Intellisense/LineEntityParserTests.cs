@@ -1,4 +1,5 @@
 using Boo.BooLangService.Intellisense;
+using Boo.BooLangService.StringParsing;
 using Xunit;
 
 namespace Boo.BooLangStudioSpecs.Intellisense

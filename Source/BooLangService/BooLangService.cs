@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Boo.BooLangProject;
-using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
 using BooLangService;
 using Microsoft.VisualStudio.OLE.Interop;
@@ -21,8 +19,10 @@ namespace Boo.BooLangService
         public BooLangService()
             : base()
         {
+            requestProcessor = new ParseRequestProcessor(this);
             DefineColorableItems();
         }
+
         #endregion
 
         #region config crap
@@ -32,6 +32,7 @@ namespace Boo.BooLangService
 
         private IScanner _scanner;
         private LanguagePreferences _languagePreferences;
+        private readonly ParseRequestProcessor requestProcessor;
 
         public override string GetFormatFilterList()
         {
@@ -81,25 +82,13 @@ namespace Boo.BooLangService
         /// <returns></returns>
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            var project = GetProject(req);
-            CompiledProject compiledProject = project.GetCompiledProject();
-
-            return new BooScope(compiledProject, (BooSource)GetSource(req.View), req.FileName);
-        }
-
-        private BooProjectSources GetProject(ParseRequest request)
-        {
-            BooProjectSources project = BooProjectSources.Find(request.FileName);
-
-            if (project != null)
-                project.Update(request);
-
-            return project;
+            return requestProcessor.GetAuthoringScopeForRequest(req);
         }
 
         #endregion
 
         #region color stuff
+
 
         private Dictionary<int,Microsoft.VisualStudio.TextManager.Interop.IVsColorableItem> _colorableItems = 
             new Dictionary<int,Microsoft.VisualStudio.TextManager.Interop.IVsColorableItem>();

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{947EAB0F-FEAE-4D39-B08B-55CC0C84BE07}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -73,6 +73,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -85,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyHelper.cs" />
+    <Compile Include="BooMethods.cs" />
     <Compile Include="BooProjectSources.cs" />
     <Compile Include="Document\Nodes\NamespaceTreeNode.cs" />
     <Compile Include="Document\Nodes\ReferencedNamespaceTreeNode.cs" />
@@ -116,7 +118,9 @@
     <Compile Include="Document\ScopableAttribute.cs" />
     <Compile Include="AttributeHelper.cs" />
     <Compile Include="Intellisense\Invocation.cs" />
-    <Compile Include="Intellisense\LineEntityParser.cs" />
+    <Compile Include="StringParsing\LineEntityParser.cs" />
+    <Compile Include="StringParsing\StringPosition.cs" />
+    <Compile Include="StringParsing\StringWalker.cs" />
     <Compile Include="IReference.cs" />
     <Compile Include="Intellisense\TypeKeywordResolver.cs" />
     <Compile Include="Document\Nodes\AbstractTreeNode.cs" />
@@ -143,14 +147,19 @@
     <Compile Include="BooSource.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="ColorableItem.cs" />
+    <Compile Include="ParseRequestProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringParsing\ExcludeStringMatcher.cs" />
+    <Compile Include="StringParsing\StringWalkerState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BooLangStudio.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BooPegLexer\BooPegLexer.booproj">
       <Project>{4E326F12-116A-4A83-96E5-6433540E13A1}</Project>
       <Name>BooPegLexer</Name>
     </ProjectReference>
-    <None Include="BooLangStudio.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

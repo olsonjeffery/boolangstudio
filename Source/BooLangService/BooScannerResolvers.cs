@@ -48,6 +48,7 @@ namespace Boo.BooLangService
                 case PegTokenType.Comma:
                     ideToken.Type = TokenType.Text;
                     ideToken.Color = TokenColor.Text;
+                    ideToken.Trigger = TokenTriggers.ParameterNext;
                     break;
                 case PegTokenType.DoubleWhackLineComment:
                     ideToken.Type = TokenType.Comment;
@@ -60,10 +61,12 @@ namespace Boo.BooLangService
                 case PegTokenType.LeftParen:
                     ideToken.Type = TokenType.Delimiter;
                     ideToken.Color = TokenColor.Text;
+                    ideToken.Trigger = TokenTriggers.MatchBraces | TokenTriggers.ParameterStart;
                     break;
                 case PegTokenType.RightParen:
                     ideToken.Type = TokenType.Delimiter;
                     ideToken.Color = TokenColor.Text;
+                    ideToken.Trigger = TokenTriggers.MatchBraces | TokenTriggers.ParameterEnd;
                     break;
                 case PegTokenType.AdditionSign:
                     ideToken.Type = TokenType.Operator;

@@ -6,6 +6,7 @@ using Boo.BooLangService.Document;
 using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Document.Origins;
 using Boo.BooLangService.Intellisense;
+using Boo.BooLangService.StringParsing;
 using Boo.BooLangStudioSpecs.Document;
 using Boo.Lang.Compiler.TypeSystem;
 using Microsoft.VisualStudio.Package;
