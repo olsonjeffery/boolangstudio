@@ -26,6 +26,18 @@ namespace Boo.BooLangProject
     private BooProjectSources projectSources;
     private readonly BooLangService.BooLangService languageService;
 
+    public bool CanDeleteItemsInProject
+    {
+        get
+        {
+            return this.CanProjectDeleteItems;
+        }
+        set
+        {
+            this.CanProjectDeleteItems = value;
+        }
+    }
+
     static BooProjectNode()
     {
       imageList =
@@ -62,7 +74,7 @@ namespace Boo.BooLangProject
       imageIndex = this.ImageHandler.ImageList.Images.Count;
       booFileNodeImageIndex = imageIndex + 1;
 
-      this.CanProjectDeleteItems = true;
+      this.CanDeleteItemsInProject = true;
 
       foreach (Image img in imageList.Images)
       {

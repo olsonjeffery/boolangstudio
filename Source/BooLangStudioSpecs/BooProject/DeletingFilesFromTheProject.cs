@@ -17,13 +17,14 @@ namespace Boo.BooLangStudioSpecs
     {
       var package = new BooLangStudioPackage();
       var service = new Boo.BooLangService.BooLangService();
+      
       node = new BooProjectNode(package, service);
     }
 
     [Fact]
     public void should_have_its_CanProjectDeleteItems_set_to_true()
     {
-      Assert.True(node.CanProjectDeleteItems);
+      Assert.True(node.CanDeleteItemsInProject);
     }
   }
 }
