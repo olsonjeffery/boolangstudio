@@ -124,6 +124,7 @@ namespace Boo.BooLangService.Intellisense
             var scopedParseTree = compiledProject.GetScope(fileName, lineNum);
             var declarations = new IntellisenseDeclarations();
 
+            AddSpecialTypes(declarations);
             AddMembersFromScopeTree(declarations, scopedParseTree);
             AddKeywords(declarations, scopedParseTree);
             AddImports(declarations, GetDocument(scopedParseTree));
@@ -132,6 +133,13 @@ namespace Boo.BooLangService.Intellisense
             declarations.Sort();
 
             return declarations;
+        }
+
+        private void AddSpecialTypes(IntellisenseDeclarations declarations)
+        {
+            ISourceOrigin origin = new TypeSourceOrigin(typeof(string));
+
+            declarations.Add(origin.ToTreeNode());
         }
 
         private DocumentTreeNode GetDocument(IBooParseTreeNode node)

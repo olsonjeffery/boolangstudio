@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Boo.BooLangProject;
 using Boo.BooLangService.Document;
+using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.StringParsing;
 using BooLangService;
 using Microsoft.VisualStudio.Package;
@@ -87,17 +89,13 @@ namespace Boo.BooLangService
             // Parse the method name before the current position to produce a list of all overloaded method signatures that match the method name. 
             if (request.Reason == ParseReason.MethodTip) return GetMethodTip(request, compiledProject);
 
-            // QuickInfo:
-            // Parse the identifier or selection at the given location to obtain type information to be shown in an IntelliSense quick info tool tip. 
-            if (request.Reason == ParseReason.QuickInfo) return GetQuickInfo(request);
-
             return GetDefault(request, compiledProject);
         }
 
         private AuthoringScope GetDefault(ParseRequest request, CompiledProject compiledProject)
         {
             Debug.WriteLine("Default");
-            return new BooScope(compiledProject, (BooSource)languageService.GetSource(request.View), request.FileName);
+            return new BooScope(compiledProject, (BooSource)languageService.GetSource(request.View), request, this);
         }
 
         private CompiledProject GetCompiledProject(ParseRequest request)
@@ -106,10 +104,27 @@ namespace Boo.BooLangService
             return project.GetCompiledProject();
         }
 
-        private AuthoringScope GetQuickInfo(ParseRequest request)
+        // QuickInfo:
+        // Parse the identifier or selection at the given location to obtain type information to be shown in an IntelliSense quick info tool tip. 
+        public string GetQuickInfo(int line, int column, ParseRequest request)
         {
             Debug.WriteLine("GetQuickInfo");
-            throw new System.NotImplementedException();
+            var compiledProject = GetCompiledProject(request);
+            var source = (BooSource)languageService.GetSource(request.View);
+            var lineContents = source.GetLine(line);
+            var parser = new LineEntityParser();
+
+            if (lineContents.EndsWith(":"))
+                lineContents = lineContents.Substring(0, lineContents.Length - 1);
+
+            var invocations = parser.GetEntityNames(lineContents);
+
+            var finder = new DeclarationFinder(compiledProject, source, request.FileName);
+            var declarations = finder.Find(request.Line, request.Col, request.Reason);
+
+            var node = declarations.Find(n => n.Name.Equals(invocations[0].Name, StringComparison.OrdinalIgnoreCase));
+
+            return node == null ? "" : node.GetIntellisenseDescription();
         }
 
         private AuthoringScope FindMembersAndHighlightBraces(ParseRequest request)
@@ -276,7 +291,7 @@ namespace Boo.BooLangService
                 request.Sink.StartName(ts, methods.GetName(0));
             }
 
-            return new BooScope(compiledProject, (BooSource)languageService.GetSource(request.View), request.FileName, methods);
+            return new BooScope(compiledProject, (BooSource)languageService.GetSource(request.View), request, methods, this);
         }
 
         private BooProjectSources GetProject(ParseRequest request)

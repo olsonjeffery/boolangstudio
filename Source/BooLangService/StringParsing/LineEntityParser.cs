@@ -5,9 +5,6 @@ namespace Boo.BooLangService.StringParsing
 {
     public class LineEntityParser
     {
-        private const string InsideString = "in string";
-        private const string InsideParentheses = "in paren";
-
         public Invocation[] GetEntityNames(string line)
         {
             var entities = new Queue<Invocation>();

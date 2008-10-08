@@ -62,6 +62,9 @@ namespace Boo.BooLangService
                     ideToken.Type = TokenType.Delimiter;
                     ideToken.Color = TokenColor.Text;
                     ideToken.Trigger = TokenTriggers.MatchBraces | TokenTriggers.ParameterStart;
+                    // TODO: The match braces on this should really be implemented as a look ahead.
+                    // the current implementation the matching doesn't occur until AFTER the open paren, which is not how the
+                    // other languages work
                     break;
                 case PegTokenType.RightParen:
                     ideToken.Type = TokenType.Delimiter;
