@@ -9,7 +9,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         public void IncludeSubNamespaces()
         {
             CompiledFixtures
-                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
+                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\build\Boo.Lang.dll"))
                 .GetDeclarations()
                 .AssertPresenceOf("Lang");
         }
@@ -18,7 +18,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         public void IncludeExposedTypes()
         {
             CompiledFixtures
-                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
+                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\build\Boo.Lang.dll"))
                 .GetDeclarations()
                 .AssertPresenceOf("ICallable", "IQuackFu");
         }

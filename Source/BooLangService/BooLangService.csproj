@@ -88,6 +88,7 @@
     <Compile Include="AssemblyHelper.cs" />
     <Compile Include="BooMethods.cs" />
     <Compile Include="BooProjectSources.cs" />
+    <Compile Include="BooViewFilter.cs" />
     <Compile Include="Document\Nodes\NamespaceTreeNode.cs" />
     <Compile Include="Document\Nodes\ReferencedNamespaceTreeNode.cs" />
     <Compile Include="Document\Nodes\ValueTypeTreeNode.cs" />

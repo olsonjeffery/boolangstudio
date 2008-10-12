@@ -14,30 +14,6 @@ namespace BooLangService
         {}
 
         /// <summary>
-        /// Occurs when the changes are committed to the document, typically on save, but more
-        /// importantly on enter.
-        /// </summary>
-        /// <param name="reason">Reason why the changes were committed, i.e. Save.</param>
-        /// <param name="changedArea">TextSpan of where the changes occurred.</param>
-        public override void OnChangesCommitted(uint reason, TextSpan[] changedArea)
-        {
-            base.OnChangesCommitted(reason, changedArea);
-
-            if (((ChangeCommitGestureFlags)reason & ChangeCommitGestureFlags.CCG_CARET_ON_NEW_BUFFER_LINE) == ChangeCommitGestureFlags.CCG_CARET_ON_NEW_BUFFER_LINE)
-            {
-                // there's been a newline put in by the user
-                if (changedArea.Length > 0)
-                {
-                    // and its actually changed the doc
-                    var indenter = new LineIndenter(this);
-
-                    // change the indentation, if necessary
-                    indenter.ChangeIndentation(changedArea[0]);
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets all text on the specified line upto the column specified.
         /// </summary>
         /// <param name="line"></param>

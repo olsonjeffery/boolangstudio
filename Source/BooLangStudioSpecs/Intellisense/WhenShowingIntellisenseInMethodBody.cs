@@ -42,7 +42,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
         public void ShowNamespacesFromReferences()
         {
             CompiledFixtures
-                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\bin\Boo.Lang.dll"))
+                .SetReferences(Assembly.LoadFrom(@"..\..\..\..\Dependencies\boo\build\Boo.Lang.dll"))
                 .GetDeclarations()
                 .AssertPresenceOf("Boo");
         }

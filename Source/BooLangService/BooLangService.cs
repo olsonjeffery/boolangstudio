@@ -40,12 +40,18 @@ namespace Boo.BooLangService
             return "Boo File (*.boo) *.boo";
         }
 
+        public override ViewFilter CreateViewFilter(CodeWindowManager mgr, IVsTextView newView)
+        {
+            return new BooViewFilter(mgr, newView);
+        }
+
         public override LanguagePreferences GetLanguagePreferences()
         {
             if (_languagePreferences == null)
             {
                 _languagePreferences = new LanguagePreferences(this.Site, typeof(BooLangService).GUID, BooLangService.LanguageName);
                 _languagePreferences.Init();
+                _languagePreferences.IndentStyle = IndentingStyle.Smart;
             }
             
             return _languagePreferences;

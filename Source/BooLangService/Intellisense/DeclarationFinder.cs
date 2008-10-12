@@ -124,7 +124,7 @@ namespace Boo.BooLangService.Intellisense
             var scopedParseTree = compiledProject.GetScope(fileName, lineNum);
             var declarations = new IntellisenseDeclarations();
 
-            AddSpecialTypes(declarations);
+            // AddSpecialTypes(declarations);
             AddMembersFromScopeTree(declarations, scopedParseTree);
             AddKeywords(declarations, scopedParseTree);
             AddImports(declarations, GetDocument(scopedParseTree));
