@@ -10,40 +10,27 @@ namespace Boo.BooLangService.Document.Nodes
     [Scopable]
     public class MethodTreeNode : AbstractTreeNode, IReturnableNode
     {
-        private readonly string returnType;
-        private readonly string containingClass;
-        private IList<MethodParameter> parameters = new List<MethodParameter>();
-
         public MethodTreeNode(ISourceOrigin sourceOrigin, string returnType, string containingClass) : base(sourceOrigin)
         {
-            this.returnType = returnType;
-            this.containingClass = containingClass;
+            ReturnType = returnType;
+            ContainingClass = containingClass;
+            Overloads = new List<MethodTreeNode>();
+            Parameters = new List<MethodParameter>();
         }
 
-        public string ReturnType
-        {
-            get { return returnType; }
-        }
+        public string ReturnType { get; private set; }
+        public string ContainingClass { get; private set; }
+        public IList<MethodParameter> Parameters { get; set; }
+        public IList<MethodTreeNode> Overloads { get; private set; }
 
-        public string ContainingClass
+        public override bool IntellisenseVisible
         {
-            get { return containingClass; }
-        }
-
-        public IList<MethodParameter> Parameters
-        {
-            get { return parameters; }
-            set { parameters = value; }
+            get { return true; }
         }
 
         public override string GetIntellisenseDescription()
         {
             return ReturnType + " " + ContainingClass + "." + Name + GetParametersIntellisenseDescription();
-        }
-
-        public override bool IntellisenseVisible
-        {
-            get { return true; }
         }
 
         private string GetParametersIntellisenseDescription()
@@ -56,9 +43,7 @@ namespace Boo.BooLangService.Document.Nodes
 
             foreach (var parameter in Parameters)
             {
-                builder.Append(parameter.Type);
-                builder.Append(" ");
-                builder.Append(parameter.Name);
+                builder.Append(parameter.GetIntellisenseDescription());
                 builder.Append(", ");
             }
 

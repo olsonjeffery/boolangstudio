@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Boo.BooLangProject;
 using Boo.BooLangService.Document;
+using Boo.BooLangService.Document.Nodes;
 using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.StringParsing;
 using BooLangService;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
 
@@ -78,7 +80,7 @@ namespace Boo.BooLangService
 
             // MemberSelect:
             // Parse the separator character before the current location to obtain a list of members for the class. 
-            if (request.Reason == ParseReason.MemberSelect) return FindMembers(request);
+            if (request.Reason == ParseReason.MemberSelect) return FindMembers(request, compiledProject);
 
             // MemberSelectAndHighlightBraces:
             // Parse the character at the current location to complete a member selection and to highlight the matching pair to the parsed
@@ -133,10 +135,10 @@ namespace Boo.BooLangService
             throw new System.NotImplementedException();
         }
 
-        private AuthoringScope FindMembers(ParseRequest request)
+        private AuthoringScope FindMembers(ParseRequest request, CompiledProject compiledProject)
         {
             Debug.WriteLine("FindMembers");
-            throw new System.NotImplementedException();
+            return GetDefault(request, compiledProject);
         }
 
         private AuthoringScope FindMatchingBrace(ParseRequest request)
@@ -221,77 +223,49 @@ namespace Boo.BooLangService
             throw new System.NotImplementedException();
         }
 
+        private string methodName;
+
         private AuthoringScope GetMethodTip(ParseRequest request, CompiledProject compiledProject)
         {
             Debug.WriteLine("GetMethodTip");
-            int col = request.Col;
 
-            if (request.TokenInfo != null &&
-                (request.TokenInfo.Trigger & TokenTriggers.ParameterStart) == TokenTriggers.ParameterStart &&
-                request.Col == request.TokenInfo.StartIndex)
-            {
-                col++;
-            }
+            var source = languageService.GetSource(request.View);
+            var previousWordSpan = GetPreviousWord(request);
+            var previousWord = source.GetText(previousWordSpan);
+            var method = FindInScope(request, compiledProject, previousWord) as MethodTreeNode;
 
-            BooMethods methods = new BooMethods();
-
-            // add methods from parsed scope...
-
-            methods.StartName = new TextSpan
-            {
-                iStartLine = request.Line,
-                iEndLine = request.Line,
-                iStartIndex = request.Col,
-                iEndIndex = request.Col + 10
-            };
-            methods.StartParameters = new TextSpan
-            {
-                iStartLine = request.Line,
-                iEndLine = request.Line,
-                iStartIndex = request.Col + 11,
-                iEndIndex = request.Col + 12
-            };
-            methods.NextParameters = new List<TextSpan>
-            {
-                new TextSpan
-                {
-                    iStartLine = request.Line,
-                    iEndLine = request.Line,
-                    iStartIndex = request.Col + 18,
-                    iEndIndex = request.Col + 19
-                }
-            };
-            methods.EndParameters = new TextSpan
-            {
-                iStartLine = request.Line,
-                iEndLine = request.Line,
-                iStartIndex = request.Col + 24,
-                iEndIndex = request.Col + 25
-            };
-
-            if (methods.StartName.iEndLine > 0)
-            {
-                request.Sink.StartName(methods.StartName, methods.GetName(0));
-                request.Sink.StartParameters(methods.StartParameters);
-
-                foreach (var span in methods.NextParameters)
-                    request.Sink.NextParameter(span);
-
-                request.Sink.EndParameters(methods.EndParameters);
-            }
+            if (method != null)
+                methodName = previousWord; // method name
             else
-            {
-                TextSpan ts = new TextSpan();
+                previousWord = methodName; // were parsing a parameter, so used our stored method namae
 
-                ts.iStartIndex = request.Line;
-                ts.iEndIndex = request.Line;
-                ts.iStartIndex = request.Col - 1;
-                ts.iEndIndex = request.Col + 1;
+            request.Sink.StartName(previousWordSpan, previousWord);
+            request.Sink.StartParameters(previousWordSpan);
 
-                request.Sink.StartName(ts, methods.GetName(0));
-            }
+            // still need to add EndParameters here, otherwise the tip doesn't close
+
+            var methods = new BooMethods(method);
 
             return new BooScope(compiledProject, (BooSource)languageService.GetSource(request.View), request, methods, this);
+        }
+
+        private IBooParseTreeNode FindInScope(ParseRequest request, CompiledProject compiledProject, string find)
+        {
+            var source = languageService.GetSource(request.View);
+            var finder = new DeclarationFinder(compiledProject, (ILineView)source, request.FileName);
+            var declarations = finder.Find(request.Line, request.Col, request.Reason);
+
+            return declarations.Find(n => n.Name.Equals(find, StringComparison.OrdinalIgnoreCase)) as MethodTreeNode;
+        }
+
+        private TextSpan GetPreviousWord(ParseRequest request)
+        {
+            TextSpan[] spans = new TextSpan[1];
+
+            if (request.View.GetWordExtent(request.Line, request.Col + 1, (uint)WORDEXTFLAGS.WORDEXT_PREVIOUS, spans) != VSConstants.S_OK || spans.Length == 0)
+                throw new ParseRequestException("Couldn't find previous word.");
+
+            return spans[0];
         }
 
         private BooProjectSources GetProject(ParseRequest request)

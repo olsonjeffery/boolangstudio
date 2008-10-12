@@ -119,6 +119,7 @@
     <Compile Include="Document\ScopableAttribute.cs" />
     <Compile Include="AttributeHelper.cs" />
     <Compile Include="Intellisense\Invocation.cs" />
+    <Compile Include="ParseRequestException.cs" />
     <Compile Include="StringParsing\BracketPair.cs" />
     <Compile Include="StringParsing\BracketPairCollection.cs" />
     <Compile Include="StringParsing\BracketPairFinder.cs" />

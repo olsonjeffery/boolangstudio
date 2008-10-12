@@ -171,10 +171,35 @@ namespace Boo.BooLangService.Document
 
             //           method in class                   ?? method in property, in class
             var parent = node.ParentNode as TypeDefinition ?? node.ParentNode.ParentNode as TypeDefinition;
-            var method = new MethodTreeNode(new EntitySourceOrigin(GetEntity(node)), node.ReturnType != null ? node.ReturnType.ToString() : "void", parent != null ? parent.Name : "");
-            method.Parameters = parameters;
+            MethodTreeNode method = null;
 
-            Push(method, node.LexicalInfo.Line);
+            // find if the method has already been declared (if so, we're an overload)
+            foreach (var child in currentScope.Children)
+            {
+                if (child.Name == node.Name)
+                {
+                    method = (MethodTreeNode)child;
+                }
+            }
+
+            if (method == null)
+            {
+                // new method
+                method = new MethodTreeNode(new EntitySourceOrigin(GetEntity(node)), node.ReturnType != null ? node.ReturnType.ToString() : "void", parent != null ? parent.Name : "");
+                method.Parameters = parameters;
+
+                Push(method, node.LexicalInfo.Line);
+            }
+            else
+            {
+                // method overload
+                var overload = new MethodTreeNode(new EntitySourceOrigin(GetEntity(node)), node.ReturnType != null ? node.ReturnType.ToString() : "void", parent != null ? parent.Name : "");
+                overload.Parameters = parameters;
+
+                method.Overloads.Add(overload);
+
+                Push(overload, node.LexicalInfo.Line);
+            }
 
             return base.EnterMethod(node);
         }
