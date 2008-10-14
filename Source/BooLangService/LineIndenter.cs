@@ -6,35 +6,30 @@ namespace BooLangService
     /// <summary>
     /// Checks the current users line and indents or dedents the next one.
     /// </summary>
-    public class LineIndenter
+    public class LineIndenter : ILineIndenter
     {
         // matches comments on the end of a line
         private readonly Regex removeCommentsRegExp = new Regex(@".*((?:#|\/\/|\/\*).*)$", RegexOptions.Compiled);
         // matches a dedenting code line (pass, return, return xxx, return if x = x, return xxx unless x = x, etc...)
         private readonly Regex dedentRegExp = new Regex(@"(?:return|pass)(?:[\t ]?[\w]*[\t ]?(?<exp>(?:if|unless)))?", RegexOptions.Compiled);
-        private readonly BooSource source;
+        private readonly ISource source;
         private readonly IVsTextView view;
         private readonly char IndentChar;
 
-        public LineIndenter(BooSource source, IVsTextView view)
+        public LineIndenter(ISource source, IVsTextView view)
         {
             this.source = source;
             this.view = view;
 
-            IndentChar = source.LanguageService.Preferences.InsertTabs ? '\t' : ' ';
+            IndentChar = source.UseTabs ? '\t' : ' ';
         }
 
         /// <summary>
-        /// Sets the indentation for the next line.
+        /// Sets the indentation for the next lineNumber.
         /// </summary>
-        public void SetIndentationForNextLine()
+        public void SetIndentationForNextLine(int lineNumber)
         {
-            int line;
-            int col;
-
-            view.GetCaretPos(out line, out col);
-
-            string previousLine = GetPreviousNonWhitespaceLine(line);
+            string previousLine = GetPreviousNonWhitespaceLine(lineNumber);
             int indentLevel = GetIndentLevel(previousLine);
 
             if (RequiresIndent(previousLine))
@@ -43,10 +38,10 @@ namespace BooLangService
                 indentLevel--;
 
             var nextLine = "".PadRight(indentLevel, IndentChar);
-            var firstChar = source.ScanToNonWhitespaceChar(line);
+            var firstChar = source.ScanToNonWhitespaceChar(lineNumber);
 
-            source.SetText(line, 0, line, firstChar, nextLine);
-            view.PositionCaretForEditing(line, indentLevel);
+            source.SetText(lineNumber, firstChar, nextLine);
+            view.PositionCaretForEditing(lineNumber, indentLevel);
         }
 
         private int GetIndentLevel(string line)

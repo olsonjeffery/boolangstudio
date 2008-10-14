@@ -49,7 +49,7 @@ namespace Boo.BooLangStudioSpecs.Intellisense
 
         protected DeclarationFinder CreateFinder(params Assembly[] assemblies)
         {
-            var lineView = new SimpleStubLineView(CaretLocation.LineSource);
+            var lineView = new StubSource(CaretLocation.LineSource);
 
             return new DeclarationFinder(Project, lineView, CaretLocation.FileName);
         }

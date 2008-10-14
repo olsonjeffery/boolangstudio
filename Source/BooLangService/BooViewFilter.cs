@@ -11,11 +11,8 @@ namespace Boo.BooLangService
 
         public override bool HandleSmartIndent()
         {
-            var indenter = new LineIndenter((BooSource)Source, TextView);
-
-            indenter.SetIndentationForNextLine();
-
-            return false;
+            return new HandleSmartIndentAction((ISource)Source, TextView)
+                .Execute();
         }
     }
 }

@@ -9,6 +9,7 @@ using Boo.BooLangService.Intellisense;
 using Boo.BooLangService.StringParsing;
 using Boo.BooLangStudioSpecs.Document;
 using Boo.Lang.Compiler.TypeSystem;
+using BooLangService;
 using Microsoft.VisualStudio.Package;
 
 namespace Boo.BooLangService.Intellisense
@@ -18,13 +19,13 @@ namespace Boo.BooLangService.Intellisense
         private const string ImportKeyword = "import";
         
         private readonly CompiledProject compiledProject;
-        private readonly ILineView lineView;
+        private readonly ISource source;
         private readonly string fileName;
 
-        public DeclarationFinder(CompiledProject compiledProject, ILineView lineView, string fileName)
+        public DeclarationFinder(CompiledProject compiledProject, ISource source, string fileName)
         {
             this.compiledProject = compiledProject;
-            this.lineView = lineView;
+            this.source = source;
             this.fileName = fileName;
         }
 
@@ -45,7 +46,7 @@ namespace Boo.BooLangService.Intellisense
         /// <returns>IntellisenseDeclarations</returns>
         public IntellisenseDeclarations Find(int lineNum, int colNum, ParseReason reason)
         {
-            string line = lineView.GetTextUptoPosition(lineNum, colNum);
+            string line = source.GetTextUptoPosition(lineNum, colNum);
             bool isImportStatement = line.StartsWith(ImportKeyword);
             var declarations = (isImportStatement) ? new ImportIntellisenseDeclarations() : new IntellisenseDeclarations();
 

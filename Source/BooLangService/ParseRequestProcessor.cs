@@ -252,7 +252,7 @@ namespace Boo.BooLangService
         private IBooParseTreeNode FindInScope(ParseRequest request, CompiledProject compiledProject, string find)
         {
             var source = languageService.GetSource(request.View);
-            var finder = new DeclarationFinder(compiledProject, (ILineView)source, request.FileName);
+            var finder = new DeclarationFinder(compiledProject, (ISource)source, request.FileName);
             var declarations = finder.Find(request.Line, request.Col, request.Reason);
 
             return declarations.Find(n => n.Name.Equals(find, StringComparison.OrdinalIgnoreCase)) as MethodTreeNode;

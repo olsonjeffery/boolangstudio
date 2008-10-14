@@ -104,8 +104,10 @@
     <Compile Include="Document\Nodes\PropertyTreeNode.cs" />
     <Compile Include="Document\Nodes\TypeDeclarationTreeNode.cs" />
     <Compile Include="Document\Origins\TypeSourceOrigin.cs" />
+    <Compile Include="HandleSmartIndentAction.cs" />
     <Compile Include="HierarchyEventArgs.cs" />
     <Compile Include="HierarchyListener.cs" />
+    <Compile Include="ILineIndenter.cs" />
     <Compile Include="Intellisense\DeclarationFinder.cs" />
     <Compile Include="Document\CompiledProject.cs" />
     <Compile Include="Document\BooParseTreeNodeFlatterner.cs" />
@@ -113,13 +115,13 @@
     <Compile Include="Document\Nodes\InterfaceTreeNode.cs" />
     <Compile Include="Document\Nodes\IReturnableNode.cs" />
     <Compile Include="Intellisense\EntityToTreeNodeConverter.cs" />
-    <Compile Include="Intellisense\ILineView.cs" />
     <Compile Include="Intellisense\ImportIntellisenseDeclarations.cs" />
     <Compile Include="Intellisense\IntellisenseNodeList.cs" />
     <Compile Include="Document\Nodes\TryTreeNode.cs" />
     <Compile Include="Document\ScopableAttribute.cs" />
     <Compile Include="AttributeHelper.cs" />
     <Compile Include="Intellisense\Invocation.cs" />
+    <Compile Include="ISource.cs" />
     <Compile Include="ParseRequestException.cs" />
     <Compile Include="StringParsing\BracketPair.cs" />
     <Compile Include="StringParsing\BracketPairCollection.cs" />
