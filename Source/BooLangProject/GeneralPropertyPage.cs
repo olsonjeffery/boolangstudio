@@ -3,9 +3,10 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Package;
+using SettingsPage=Microsoft.VisualStudio.Project.SettingsPage;
 
 
 namespace Boo.BooLangProject
@@ -27,7 +28,7 @@ namespace Boo.BooLangProject
         private string defaultNamespace;        
         private bool ducky;
         private bool whiteSpaceAgnostic;
-        private OutputType outputType;
+        private Microsoft.VisualStudio.Project.OutputType outputType;
         #endregion
 
         #region ctor
@@ -58,7 +59,7 @@ namespace Boo.BooLangProject
             {
                 try
                 {
-                    this.outputType = (OutputType)Enum.Parse(typeof(OutputType), outputType);
+                    this.outputType = (Microsoft.VisualStudio.Project.OutputType)Enum.Parse(typeof(OutputType), outputType);
                 }
                 catch { }
             }
@@ -131,7 +132,7 @@ namespace Boo.BooLangProject
         [SRCategoryAttribute(SR.Application)]
         [LocDisplayName(SR.OutputType)]
         [SRDescriptionAttribute(SR.OutputTypeDescription)]
-        public OutputType OutputType
+        public Microsoft.VisualStudio.Project.OutputType OutputType
         {
             get { return this.outputType; }
             set { this.outputType = value; this.IsDirty = true; }

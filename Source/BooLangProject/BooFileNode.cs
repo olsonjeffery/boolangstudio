@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.Package;
+using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Boo.BooLangProject

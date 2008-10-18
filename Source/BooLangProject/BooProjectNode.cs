@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Security.Policy;
-using Microsoft.VisualStudio.Package;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
-using EnvDTE;
-using System.Reflection;
 
 namespace Boo.BooLangProject
 {

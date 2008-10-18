@@ -1,6 +1,7 @@
 using System;
 using EnvDTE;
 using Microsoft.VisualStudio.Package;
+using Microsoft.VisualStudio.Project;
 using VSLangProj;
 using VSLangProj80;
 

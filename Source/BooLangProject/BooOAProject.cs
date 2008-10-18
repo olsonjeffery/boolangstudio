@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.Package.Automation;
+using Microsoft.VisualStudio.Project.Automation;
 
 namespace Boo.BooLangProject
 {
