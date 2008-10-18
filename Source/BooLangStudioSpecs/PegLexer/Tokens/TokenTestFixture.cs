@@ -13,7 +13,7 @@ using Boo.BooLangService;
 
 namespace Boo.BooLangStudioSpecs
 {
-  public abstract class AutoTokenTestFixture : AutoMockingTestFixture
+  public abstract class AutoTokenTestFixture
   {
     protected BooScanner scanner;
     
@@ -81,7 +81,7 @@ namespace Boo.BooLangStudioSpecs
     
   }
 
-  public class ManualTokenTestFixture : AutoMockingTestFixture
+  public class ManualTokenTestFixture
   {
 
       protected PegLexer lexer;

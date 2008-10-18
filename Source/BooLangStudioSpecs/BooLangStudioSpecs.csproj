@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{80136D9A-B3E5-47D6-98A7-6B926FCFFD20}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -63,6 +63,9 @@
     </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.Package.LanguageService.9.0, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Shell.9.0, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop.9.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
@@ -95,7 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMockingTestFixture.cs" />
+    <Compile Include="BooProject\DeletingFilesFromTheProject.cs" />
     <Compile Include="Intellisense\CaretNotFoundException.cs" />
     <Compile Include="Intellisense\CompilationOutput.cs" />
     <Compile Include="Intellisense\Constants.cs" />
@@ -104,7 +107,6 @@
     <Compile Include="Intellisense\LineEntityParserTests.cs" />
     <Compile Include="Intellisense\WhenParsingMultipleFilesForIntellisense.cs" />
     <Compile Include="Intellisense\WhenShowingIntellisenseForNamespaceSuggestion.cs" />
-    <Compile Include="WhenHandleSmartIndentActionExecutes.cs" />
     <Compile Include="LineScanner\LexingBaseFixture.cs" />
     <Compile Include="LineScanner\LineCommentLexing.cs" />
     <Compile Include="LineScanner\MalformedStrings.cs" />
@@ -155,9 +157,17 @@
     <Compile Include="StringParsing\ExcludeStringMatcherTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BooLangProject\BooLangProject.csproj">
+      <Project>{35549DBF-BC64-4D4E-904C-7AE3A35B998B}</Project>
+      <Name>BooLangProject</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BooLangService\BooLangService.csproj">
       <Project>{947EAB0F-FEAE-4D39-B08B-55CC0C84BE07}</Project>
       <Name>BooLangService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BooLangStudio\BooLangStudio.csproj">
+      <Project>{F269FE5C-0B4B-4DD9-B8CC-46856C434DB3}</Project>
+      <Name>BooLangStudio</Name>
     </ProjectReference>
     <ProjectReference Include="..\BooPegLexer\BooPegLexer.booproj">
       <Project>{4E326F12-116A-4A83-96E5-6433540E13A1}</Project>

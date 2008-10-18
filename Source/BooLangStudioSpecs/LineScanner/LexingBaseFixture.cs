@@ -11,7 +11,7 @@ using BooPegLexer;
 namespace Boo.BooLangStudioSpecs
 {
 
-    public abstract class LexingBaseFixture : AutoMockingTestFixture
+    public abstract class LexingBaseFixture
     {
         protected antlr.TokenStream lexer;
         protected List<TokenInfo> tokens;

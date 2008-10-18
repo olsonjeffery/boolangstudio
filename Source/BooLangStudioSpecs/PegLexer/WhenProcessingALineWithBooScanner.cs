@@ -19,7 +19,7 @@ namespace Boo.BooLangStudioSpecs
 	/// <summary>
 	/// Description of WhenSettingTheSourceInBooScanner.
 	/// </summary>
-	public abstract class WhenProcessingALineWithBooScanner : AutoMockingTestFixture
+	public abstract class WhenProcessingALineWithBooScanner
 	{
 		protected BooScanner scanner;
 		//                       0         1

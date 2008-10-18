@@ -16,13 +16,13 @@ namespace Boo.BooLangStudioSpecs
 	/// <summary>
 	/// Description of LexerPartialMockFixture.
 	/// </summary>
-	public class LexerPartialMockFixture : AutoMockingTestFixture
+	public class LexerPartialMockFixture
 	{
 		protected PegLexer lexer = null;		
 		public LexerPartialMockFixture()
 			: base()
 		{
-			lexer = Mocks.PartialMock<PegLexer>();			
+		  lexer = MockRepository.GenerateMock<PegLexer>();
 		}
 	}
 }

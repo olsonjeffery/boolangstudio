@@ -19,7 +19,7 @@ namespace Boo.BooLangStudioSpecs
 	/// <summary>
 	/// Description of WhenAttemptingToGetATokenFromThePegLexer.
 	/// </summary>
-	public abstract class WhenAttemptingToGetATokenFromThePegLexer : AutoMockingTestFixture
+	public abstract class WhenAttemptingToGetATokenFromThePegLexer
 	{
 		protected PegLexer lexer = null;
 		protected int state = 0;
@@ -29,7 +29,7 @@ namespace Boo.BooLangStudioSpecs
 		public WhenAttemptingToGetATokenFromThePegLexer()
 			: base()
 		{
-			lexer = Mocks.PartialMock<PegLexer>();
+		  lexer = MockRepository.GenerateMock<PegLexer>();
 			token = new TokenInfo();
 			pegToken = new PegToken();
 		}

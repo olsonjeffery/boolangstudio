@@ -7,7 +7,7 @@ using BooPegLexer;
 
 namespace Boo.BooLangStudioSpecs
 {
-	public abstract class WhenTranslatingTokens : AutoMockingTestFixture
+	public abstract class WhenTranslatingTokens
 	{
 		protected BooScanner scanner;
 		protected PegToken pegToken;
