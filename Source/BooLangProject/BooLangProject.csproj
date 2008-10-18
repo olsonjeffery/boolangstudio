@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{35549DBF-BC64-4D4E-904C-7AE3A35B998B}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -12,7 +12,7 @@
     <AssemblyName>BooLangProject</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectBasePath>$(VSSDK90Install)VisualStudioIntegration\Common\Source\CSharp\Project</ProjectBasePath>
+    <ProjectBasePath>..\..\Dependencies\MPFProjectBase</ProjectBasePath>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>BooLangStudio.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -150,7 +150,7 @@
   <ItemGroup>
     <None Include="BooLangStudio.snk" />
   </ItemGroup>
-  <Import Project="$(ProjectBasePath)\ProjectBase.Files" />
+  <Import Project="..\..\Dependencies\MPFProjectBase\ProjectBase.Files" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
