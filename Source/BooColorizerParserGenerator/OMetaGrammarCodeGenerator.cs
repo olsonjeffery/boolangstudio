@@ -6,14 +6,12 @@ using OMetaSharp.OMetaCS;
 
 namespace BooColorizerParserGenerator
 {
-  public class OMetaGrammarCodeGenerator : OMetaCSConsoleProgram<BooColorizerParserGenerated>
+  public class OMetaGrammarCodeGenerator<TGrammar>  : OMetaCSConsoleProgram<TGrammar> where TGrammar : OMeta<char>, new()
   {
-    public void CompileGrammarFromSourceAndOutputToFile()
+    public void CompileGrammarFromSourceAndOutputToFile(string ometacsPath, string generatedClassPath)
     {
       // We want to make the default case simple and have it
       // "magically" just work.   
-      var ometacsPath = Environment.CurrentDirectory + @"\..\..\..\BooColorizerParser\BooColorizerParser.ometacs";
-      var generatedParserPath = Environment.CurrentDirectory + @"\..\..\..\BooColorizerParser\BooColorizerParserGenerated.cs";
       var generatedCode = 
         Grammars.ParseGrammarThenOptimizeThenTranslate<OMetaParser, OMetaOptimizer, OMetaTranslator>
           (File.ReadAllText(ometacsPath),
@@ -21,7 +19,7 @@ namespace BooColorizerParserGenerator
           translator => translator.OptimizeGrammar,
           optimizer => optimizer.Trans
           );
-      Grammars.WriteGeneratedCode(generatedCode, generatedParserPath);
+      Grammars.WriteGeneratedCode(generatedCode, generatedClassPath);
     }
   }
 }
