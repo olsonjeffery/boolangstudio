@@ -12,6 +12,8 @@
     <AssemblyName>BooColorizerParser</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>BooLangStudio.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,12 +51,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BooColorizerParserGenerated.cs" />
     <Compile Include="ColorizerParser.cs" />
+    <Compile Include="BooTokenLexer.cs" />
+    <Compile Include="ColorizerToken.cs" />
+    <Compile Include="ILexer.cs" />
+    <Compile Include="PegTokenType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BooColorizerParser.ometacs" />
+    <None Include="ColorizerParser.ometacs" />
+    <None Include="BooLangStudio.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
