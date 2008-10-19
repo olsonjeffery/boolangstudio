@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BooColorizerParser;
 using Microsoft.VisualStudio.Package;
 using System.IO;
 using Xunit;
 using Spec = Xunit.FactAttribute;
-using BooPegLexer;
 
 namespace Boo.BooLangStudioSpecs
 {
@@ -23,7 +23,7 @@ namespace Boo.BooLangStudioSpecs
         {
             lexer = GetLexer(rawCodeString);
             tokens = new List<TokenInfo>();
-            scanner = new Boo.BooLangService.BooScanner(new PegLexer());
+            scanner = new Boo.BooLangService.BooScanner(new BooTokenLexer());
         }
 
         public antlr.TokenStream GetLexer(string line)

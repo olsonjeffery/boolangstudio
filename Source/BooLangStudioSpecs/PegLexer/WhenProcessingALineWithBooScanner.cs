@@ -9,10 +9,11 @@
 
 using System;
 using System.IO;
+using BooColorizerParser;
 using Xunit;
 using Boo.BooLangService;
 using Microsoft.VisualStudio.Package;
-using BooPegLexer;
+
 
 namespace Boo.BooLangStudioSpecs
 {
@@ -26,12 +27,12 @@ namespace Boo.BooLangStudioSpecs
 		//                       012345678901234
 		protected string line = "  print 'hello'";
 		protected int offset = 0;
-		protected PegLexer lexer;
+		protected BooTokenLexer lexer;
 		
 		public WhenProcessingALineWithBooScanner()
 			: base()
 		{
-			lexer = new PegLexer();
+			lexer = new BooTokenLexer();
 			scanner = new BooScanner(lexer);
 			
 			scanner.SetSource(line,offset);

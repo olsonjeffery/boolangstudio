@@ -8,7 +8,7 @@ using Xunit;
 using Spec = Xunit.FactAttribute;
 using Rhino.Mocks;
 using Rhino.Testing.AutoMocking;
-using BooPegLexer;
+
 using Boo.BooLangService;
 
 namespace Boo.BooLangStudioSpecs

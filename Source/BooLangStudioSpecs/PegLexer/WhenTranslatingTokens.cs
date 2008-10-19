@@ -1,21 +1,22 @@
 using System;
 using System.IO;
+using BooColorizerParser;
 using Xunit;
 using Boo.BooLangService;
 using Microsoft.VisualStudio.Package;
-using BooPegLexer;
+
 
 namespace Boo.BooLangStudioSpecs
 {
 	public abstract class WhenTranslatingTokens
 	{
 		protected BooScanner scanner;
-		protected PegToken pegToken;
+		protected ColorizerToken pegToken;
 		protected TokenInfo ideToken;
 		public WhenTranslatingTokens()
 			:base()
 		{
-			pegToken = new PegToken();
+			pegToken = new ColorizerToken();
 			ideToken = new TokenInfo();
 			scanner = new BooScanner();
 		}
@@ -26,10 +27,8 @@ namespace Boo.BooLangStudioSpecs
 		public AndPegTokenTypeIsWhitespace()
 			: base()
 		{
-			pegToken.Type = PegTokenType.Whitespace;
-			pegToken.StartIndex = 0;
-			pegToken.EndIndex = 1;
-			scanner.TranslatePegToken(pegToken,ideToken);
+		  pegToken = new ColorizerToken(PegTokenType.Whitespace, 0, 1);
+	    scanner.TranslatePegToken(pegToken,ideToken);
 		}
 		
 		[Fact]

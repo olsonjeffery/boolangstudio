@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Boo.BooLangService.Document.Nodes;
+using BooColorizerParser;
 using BooLangService;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
 using VSLangProj;
-using BooPegLexer;
 
 namespace Boo.BooLangService
 {
@@ -71,7 +71,7 @@ namespace Boo.BooLangService
             if (_scanner == null)
             {
                 //_scanner = new RegularExpressionScanner();
-                _scanner = new BooScanner(new PegLexer());
+                _scanner = new BooScanner(new BooTokenLexer());
             }
             return _scanner;
         }

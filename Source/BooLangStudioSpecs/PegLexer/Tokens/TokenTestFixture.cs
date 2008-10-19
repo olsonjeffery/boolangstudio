@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BooColorizerParser;
 using Microsoft.VisualStudio.Package;
 using System.IO;
 using Xunit;
 using Spec = Xunit.FactAttribute;
 using Rhino.Mocks;
 using Rhino.Testing.AutoMocking;
-using BooPegLexer;
+
 using Boo.BooLangService;
 
 namespace Boo.BooLangStudioSpecs
@@ -30,7 +31,7 @@ namespace Boo.BooLangStudioSpecs
     public AutoTokenTestFixture()
       : base()
     {
-    	scanner = new BooScanner(new PegLexer());
+    	scanner = new BooScanner(new BooTokenLexer());
     }
     
     public virtual void BuildTokens(string codeLine, int startOffset)
@@ -84,7 +85,7 @@ namespace Boo.BooLangStudioSpecs
   public class ManualTokenTestFixture
   {
 
-      protected PegLexer lexer;
+      protected ILexer lexer;
       protected TokenType expectedTokenType;
       protected TokenColor expectedTokenColor;
       protected int expectedStartIndex;
@@ -110,7 +111,7 @@ namespace Boo.BooLangStudioSpecs
           expectedEndIndex = 0;
           state = 0;
 
-          lexer = new PegLexer();
+          lexer = new BooTokenLexer();
           scanner = new BooScanner(lexer);
           token = new TokenInfo();
       }

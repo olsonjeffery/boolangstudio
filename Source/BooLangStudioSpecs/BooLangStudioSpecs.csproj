@@ -157,6 +157,10 @@
     <Compile Include="StringParsing\ExcludeStringMatcherTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BooColorizerParser\BooColorizerParser.csproj">
+      <Project>{AE3A1B74-8390-4CC5-BF98-621413C84413}</Project>
+      <Name>BooColorizerParser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BooLangProject\BooLangProject.csproj">
       <Project>{35549DBF-BC64-4D4E-904C-7AE3A35B998B}</Project>
       <Name>BooLangProject</Name>
@@ -168,10 +172,6 @@
     <ProjectReference Include="..\BooLangStudio\BooLangStudio.csproj">
       <Project>{F269FE5C-0B4B-4DD9-B8CC-46856C434DB3}</Project>
       <Name>BooLangStudio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BooPegLexer\BooPegLexer.booproj">
-      <Project>{4E326F12-116A-4A83-96E5-6433540E13A1}</Project>
-      <Name>BooPegLexer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

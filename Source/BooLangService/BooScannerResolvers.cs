@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BooColorizerParser;
 using Microsoft.VisualStudio.Package;
-using BooPegLexer;
 
 namespace Boo.BooLangService
 {
@@ -13,7 +13,7 @@ namespace Boo.BooLangService
 
         #region token builder helper methods
 
-        public void TranslatePegToken(PegToken token, TokenInfo ideToken)
+        public void TranslatePegToken(ColorizerToken token, TokenInfo ideToken)
         {
             // setting ide token and coloring info
             switch (token.Type)

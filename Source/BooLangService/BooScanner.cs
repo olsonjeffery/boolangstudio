@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
+using BooColorizerParser;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
-using BooPegLexer;
 
 namespace Boo.BooLangService
 {
@@ -54,12 +54,12 @@ namespace Boo.BooLangService
 
         #region lexer/colorizing-related
         
-        PegToken pegToken = new PegToken();
+        ColorizerToken colorizerToken = new ColorizerToken();
         public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
         {
-        	Lexer.NextToken(pegToken,ref state);
-        	TranslatePegToken(pegToken, tokenInfo);
-            if (pegToken.Type == PegTokenType.EOL)
+        	Lexer.NextToken(colorizerToken,ref state);
+        	TranslatePegToken(colorizerToken, tokenInfo);
+            if (colorizerToken.Type == PegTokenType.EOL)
                 return false;
         	
         	return true;

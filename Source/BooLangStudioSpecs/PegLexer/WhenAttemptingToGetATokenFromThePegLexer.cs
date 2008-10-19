@@ -8,10 +8,11 @@
  */
 
 using System;
+using BooColorizerParser;
 using Xunit;
 using Microsoft.VisualStudio.Package;
 using BooLangService;
-using BooPegLexer;
+
 using Rhino.Mocks;
 
 namespace Boo.BooLangStudioSpecs
@@ -21,17 +22,17 @@ namespace Boo.BooLangStudioSpecs
 	/// </summary>
 	public abstract class WhenAttemptingToGetATokenFromThePegLexer
 	{
-		protected PegLexer lexer = null;
+		protected BooTokenLexer lexer = null;
 		protected int state = 0;
 		protected string line = string.Empty;
 		protected TokenInfo token = null;
-		protected PegToken pegToken = null;
+		protected ColorizerToken pegToken = null;
 		public WhenAttemptingToGetATokenFromThePegLexer()
 			: base()
 		{
-		  lexer = MockRepository.GenerateMock<PegLexer>();
+		  lexer = MockRepository.GenerateMock<BooTokenLexer>();
 			token = new TokenInfo();
-			pegToken = new PegToken();
+			pegToken = new ColorizerToken();
 		}
 	}	
 }
