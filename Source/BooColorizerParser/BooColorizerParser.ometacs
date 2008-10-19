@@ -1,0 +1,16 @@
+using OMetaSharp;
+
+ometa BooColorizerParser.BooColorizerParserGenerated<char, int> : Parser<char> {
+  Digit   ^= Super(Digit):d           -> { d },
+  Number  ^= Number:n Digit:d         -> { n * 10 + d }
+           | Digit,
+  AddExpr  = AddExpr:x '+' MulExpr:y  -> { x + y }
+           | AddExpr:x '-' MulExpr:y  -> { x - y }
+           | MulExpr,
+  MulExpr  = MulExpr:x '*' PrimExpr:y -> { x * y }
+           | MulExpr:x '/' PrimExpr:y -> { x / y }
+           | PrimExpr,
+  PrimExpr = '(' Expr:x ')'           -> { x }
+           | Number,
+  Expr     = AddExpr
+}
