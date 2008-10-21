@@ -1,6 +1,6 @@
 using OMetaSharp;
 
-ometa BooColorizerParser.ColorizerParser<char, int> : Parser<char> {
+ometa BooColorizerParser.ColorizerParser<char, int> : ColorizerParserBase<char> {
   Digit   ^= Super(Digit):d           -> { d },
   Number  ^= Number:n Digit:d         -> { n * 10 + d }
            | Digit,

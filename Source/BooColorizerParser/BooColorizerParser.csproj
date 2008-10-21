@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="ColorizerParser.cs" />
     <Compile Include="BooTokenLexer.cs" />
+    <Compile Include="ColorizerParserBase.cs" />
     <Compile Include="ColorizerToken.cs" />
     <Compile Include="ILexer.cs" />
     <Compile Include="PegTokenType.cs" />

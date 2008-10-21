@@ -2,7 +2,7 @@ using OMetaSharp;
 
 namespace BooColorizerParser
 {
-    public class ColorizerParser : Parser<char>
+    public class ColorizerParser : ColorizerParserBase<char>
     {
         public override bool Digit(OMetaStream<char> inputStream, out OMetaList<HostExpression> result, out OMetaStream <char> modifiedStream)
         {
